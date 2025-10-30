@@ -1,0 +1,48 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegistrationValidatorController;
+
+// Landing Page Routes
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+Route::get('/features', [LandingPageController::class, 'features'])->name('features');
+Route::get('/community', [LandingPageController::class, 'community'])->name('community');
+Route::get('/api/chart-data', [LandingPageController::class, 'getChartData']);
+
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Google OAuth Routes
+Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
+// Registration Validation Routes
+Route::prefix('api/register')->group(function () {
+    Route::post('/validate-step-1', [RegistrationValidatorController::class, 'validateStep1']);
+    Route::post('/validate-step-2', [RegistrationValidatorController::class, 'validateStep2']);
+    Route::post('/validate-step-3', [RegistrationValidatorController::class, 'validateStep3']);
+    Route::post('/validate-step-4', [RegistrationValidatorController::class, 'validateStep4']);
+    Route::post('/validate-referral', [RegistrationValidatorController::class, 'validateReferralCode']);
+    Route::post('/complete', [RegistrationValidatorController::class, 'completeRegistration']);
+});
+
+// Protected Routes (for future dashboard)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+    
+    Route::get('/profile', function () {
+        return view('profile');
+    })->name('profile');
+    
+    Route::get('/settings', function () {
+        return view('settings');
+    })->name('settings');
+});
