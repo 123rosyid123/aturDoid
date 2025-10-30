@@ -3,7 +3,9 @@
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex items-center">
-                <a href="{{ route('landing') }}" class="text-2xl font-bold text-orange-500">atur<span class="text-gray-800">DOit</span></a>
+                <a href="{{ route('landing') }}" class="flex items-center">
+                    <img src="{{ asset('images/icons/logo.png') }}" alt="AturDOit Logo" class="h-8 w-auto">
+                </a>
             </div>
 
             <!-- Desktop Navigation -->

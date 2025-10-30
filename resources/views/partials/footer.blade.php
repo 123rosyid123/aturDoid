@@ -3,8 +3,8 @@
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <!-- Logo and Description -->
             <div>
-                <div class="text-2xl font-bold mb-4">
-                    <span class="text-orange-500">atur</span><span class="text-white">DOit</span>
+                <div class="mb-4">
+                    <img src="{{ asset('images/icons/logo.png') }}" alt="AturDOit Logo" class="h-12 w-auto">
                 </div>
                 <p class="text-gray-300 text-sm">
                     Solusi keuangan digital untuk masa depan yang lebih cerah

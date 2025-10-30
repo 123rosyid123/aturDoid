@@ -11,92 +11,83 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        // Data untuk landing page
+        // Data untuk landing page sesuai design Figma
         $data = [
-            'stats' => [
-                'users' => '50K+',
-                'transactions' => 'Rp 10M+',
-                'rating' => '4.8★'
+            'hero' => [
+                'title' => 'Grow Your Money. Guide Your Friends. Win Together.',
+                'subtitle' => 'Kelola keuangan, pantau pengeluaran, dan kembangkan penghasilan Anda dalam satu aplikasi. Dapatkan keuntungan tambahan lewat sistem referal yang memberi Anda peluang untuk tumbuh bersama komunitas.',
+                'cta_text' => 'Daftar Sekarang',
+                'cta_link' => route('register')
+            ],
+            'warren_buffett' => [
+                'quote' => 'Making money is action Keeping money is behavior Growing money is knowledge',
+                'author' => '- Warren Buffett'
+            ],
+            'financial_problem' => [
+                'title' => 'Masalah Keuangan Sehari-hari dan Solusi dari aturDOit',
+                'subtitle' => 'Kami memahami tantangan yang sering dihadapi banyak orang dalam mengelola keuangan. Karena itu, aturDOit dirancang untuk menjadi solusi yang nyata dan menyeluruh.',
+                'problem' => 'Tidak Punya Sistem Pengelolaan Keuangan yang Terarah',
+                'problem_desc' => 'Sebagian besar orang masih mengandalkan pencatatan manual atau aplikasi terpisah, sehingga sulit memahami kondisi keuangan secara menyeluruh.',
+                'solution' => 'AturDOit menyediakan Smart Financial Tools yang mencatat pemasukan, pengeluaran, aset, dan kewajiban yang secara otomatis akan menyusun laporan keuangan pribadi beserta analisa keuangan dan rekomendasi dari penasehat keuangan yg bersertifikasi dan ditampilkan dalam dashboard yang mudah dipahami.',
+                'cta_text' => 'Tangani Masalah Anda'
             ],
             'features' => [
                 [
-                    'icon' => 'fa-chart-line',
-                    'color' => 'orange',
-                    'title' => 'Analisis Real-time',
-                    'description' => 'Pantau performa keuangan Anda dengan grafik dan analisis yang mudah dipahami'
+                    'title' => 'Smart Financial Tools',
+                    'description' => 'Catat pemasukan, pengeluaran, aset, dan kewajiban dengan cepat dan akurat. Setiap transaksi otomatis tersusun dalam laporan keuangan lengkap, termasuk arus kas dan neraca pribadi. Tampilan interaktifnya memudahkan Anda memantau kondisi keuangan kapan pun tanpa perlu latar belakang akuntansi.',
+                    'icon' => 'fa-clipboard-list',
+                    'color' => 'orange'
                 ],
                 [
-                    'icon' => 'fa-wallet',
-                    'color' => 'blue',
-                    'title' => 'Multi-rekening',
-                    'description' => 'Kelola semua rekening bank Anda dalam satu platform terintegrasi'
-                ],
-                [
-                    'icon' => 'fa-piggy-bank',
-                    'color' => 'green',
-                    'title' => 'Auto-saving',
-                    'description' => 'Sistem otomatis yang membantu Anda menabung secara konsisten'
-                ],
-                [
-                    'icon' => 'fa-bullseye',
-                    'color' => 'purple',
-                    'title' => 'Goal Tracking',
-                    'description' => 'Tetapkan dan capai tujuan finansial Anda dengan tracking otomatis'
-                ],
-                [
-                    'icon' => 'fa-shield-alt',
-                    'color' => 'red',
-                    'title' => 'Keamanan Terjamin',
-                    'description' => 'Enkripsi data tingkat bank untuk melindungi informasi keuangan Anda'
-                ],
-                [
-                    'icon' => 'fa-mobile-alt',
-                    'color' => 'indigo',
-                    'title' => 'Mobile App',
-                    'description' => 'Akses keuangan Anda kapan saja dan dimana saja melalui smartphone'
-                ]
-            ],
-            'community_features' => [
-                [
-                    'icon' => 'fa-users',
-                    'color' => 'orange',
-                    'title' => 'Forum Diskusi',
-                    'description' => 'Bagikan pengalaman dan dapatkan tips dari anggota komunitas lainnya'
-                ],
-                [
+                    'title' => 'Edukasi Finansial',
+                    'description' => 'Pelajari pengelolaan keuangan lewat video dan modul singkat yang mudah dipahami. Materinya mencakup dasar-dasar finansial, perencanaan keuangan pribadi, hingga strategi investasi sederhana. Dirancang agar pengguna dapat belajar mandiri dan membangun kebiasaan finansial yang lebih teratur.',
                     'icon' => 'fa-graduation-cap',
-                    'color' => 'blue',
-                    'title' => 'Kursus Gratis',
-                    'description' => 'Akses materi pembelajaran tentang literasi keuangan yang komprehensif'
+                    'color' => 'blue'
                 ],
                 [
-                    'icon' => 'fa-calendar-alt',
-                    'color' => 'green',
-                    'title' => 'Event & Webinar',
-                    'description' => 'Ikuti webinar dan workshop dengan ahli keuangan profesional'
+                    'title' => 'Sistem Afiliasi',
+                    'description' => 'Hasilkan pendapatan tambahan melalui sistem afiliasi tiga level yang transparan dan mudah dijalankan. Bagikan link referral Anda dan dapatkan komisi setiap kali jaringan Anda bertransaksi premium. Model ini membuka peluang penghasilan pasif tanpa perlu menjual produk atau memiliki stok.',
+                    'icon' => 'fa-link',
+                    'color' => 'green'
                 ],
                 [
-                    'icon' => 'fa-trophy',
-                    'color' => 'purple',
-                    'title' => 'Challenge & Reward',
-                    'description' => 'Ikuti challenge menabung dan dapatkan reward menarik'
+                    'title' => 'Platform Advisor Profesional',
+                    'description' => 'Bagi penasehat keuangan bersertifikat, aturDOit menyediakan ruang kerja digital yang lengkap dan efisien. Akses alat profesional seperti analisa keuangan, perhitungan asuransi, penilaian aset, hingga perencanaan pensiun dan warisan. Semua terintegrasi untuk membantu advisor melayani klien dengan profesionalisme tinggi.',
+                    'icon' => 'fa-user-tie',
+                    'color' => 'purple'
+                ],
+                [
+                    'title' => 'Koneksi Pengguna & Advisor',
+                    'description' => 'AturDOit mempertemukan pengguna yang membutuhkan bimbingan finansial dengan penasehat keuangan profesional. Pengguna dapat memilih dan menggunakan layanan advisor langsung melalui marketplace, sementara para advisor memperluas jaringan dan membangun reputasi di komunitas finansial digital.',
+                    'icon' => 'fa-handshake',
+                    'color' => 'indigo'
                 ]
             ],
-            'testimonials' => [
-                [
-                    'name' => 'Sarah Putri',
-                    'role' => 'Professional, Jakarta',
-                    'avatar' => 'user1',
-                    'content' => 'AturDOit membantu saya mengelola keuangan dengan lebih baik. Fitur auto-savingnya sangat berguna!',
-                    'rating' => 5
-                ],
-                [
-                    'name' => 'Budi Santoso',
-                    'role' => 'Entrepreneur, Surabaya',
-                    'avatar' => 'user2',
-                    'content' => 'Komunitasnya sangat supportive. Saya jadi lebih termotivasi untuk mencapai tujuan finansial saya.',
-                    'rating' => 5
+            'network' => [
+                'title' => 'Bangun Jaringan dan Dapatkan Penghasilan',
+                'description' => 'AturDOit menyediakan sistem afiliasi dengan struktur hingga 3 generasi. Pengguna premium dapat memperoleh insentif dari referral langsung dan tidak langsung, tanpa harus menjual produk atau melakukan reselling. Disamping itu akan terdapat tambahan bonus/insentif yang didasarkan dari pencapaian level keuangan anda',
+                'incentives' => [
+                    [
+                        'generation' => 'Gen 1',
+                        'percentage' => '20%',
+                        'description' => 'Komisi dari referral langsung'
+                    ],
+                    [
+                        'generation' => 'Gen 2',
+                        'percentage' => '5%',
+                        'description' => 'Komisi dari referral tingkat 2'
+                    ],
+                    [
+                        'generation' => 'Gen 3',
+                        'percentage' => '5%',
+                        'description' => 'Komisi dari referral tingkat 3'
+                    ]
                 ]
+            ],
+            'cta' => [
+                'title' => 'Saatnya Mulai Mengubah Cara Anda Mengatur Keuangan',
+                'description' => 'Keuangan Anda tidak akan berubah jika Anda hanya jadi penonton. Ayo mulai sekarang — atur uangmu, bangun jaringanmu, dan raih kebebasan finansialmu bersama aturDOit.',
+                'button_text' => 'Daftar Sekarang'
             ]
         ];
 

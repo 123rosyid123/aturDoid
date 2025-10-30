@@ -1,8 +1,8 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Register - AturDOit')
 
-@section('styles')
+@push('styles')
 <style>
 .form-input {
     transition: all 0.3s ease;
@@ -34,7 +34,7 @@ select.form-input:focus {
     20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 </style>
-@endsection
+@endpush
 
 @section('content')
 <div class="flex min-h-screen">
@@ -99,30 +99,30 @@ select.form-input:focus {
 
                 <!-- Progress Steps -->
                 <div class="flex justify-center mb-8">
-                    <div class="flex items-center space-x-4">
-                        <div class="flex items-center">
+                    <div class="flex items-center space-x-3">
+                        <div class="flex flex-col items-center">
                             <div id="step1Circle" class="w-8 h-8 bg-orange-500 text-white rounded-full flex items-center justify-center text-sm font-semibold">1</div>
-                            <span class="ml-2 text-sm text-gray-700">Account</span>
+                            <span class="mt-1 text-xs text-gray-700">Account</span>
                         </div>
-                        <div id="line1" class="w-12 h-px bg-gray-300"></div>
-                        <div class="flex items-center">
+                        <div id="line1" class="w-8 h-px bg-gray-300"></div>
+                        <div class="flex flex-col items-center">
                             <div id="step2Circle" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-semibold">2</div>
-                            <span class="ml-2 text-sm text-gray-500">Verify</span>
+                            <span class="mt-1 text-xs text-gray-500">Verify</span>
                         </div>
-                        <div id="line2" class="w-12 h-px bg-gray-300"></div>
-                        <div class="flex items-center">
+                        <div id="line2" class="w-8 h-px bg-gray-300"></div>
+                        <div class="flex flex-col items-center">
                             <div id="step3Circle" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-semibold">3</div>
-                            <span class="ml-2 text-sm text-gray-500">Profile</span>
+                            <span class="mt-1 text-xs text-gray-500">Profile</span>
                         </div>
-                        <div id="line3" class="w-12 h-px bg-gray-300"></div>
-                        <div class="flex items-center">
+                        <div id="line3" class="w-8 h-px bg-gray-300"></div>
+                        <div class="flex flex-col items-center">
                             <div id="step4Circle" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-semibold">4</div>
-                            <span class="ml-2 text-sm text-gray-500">Referral</span>
+                            <span class="mt-1 text-xs text-gray-500">Referral</span>
                         </div>
-                        <div id="line4" class="w-12 h-px bg-gray-300"></div>
-                        <div class="flex items-center">
+                        <div id="line4" class="w-8 h-px bg-gray-300"></div>
+                        <div class="flex flex-col items-center">
                             <div id="step5Circle" class="w-8 h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-sm font-semibold">5</div>
-                            <span class="ml-2 text-sm text-gray-500">Complete</span>
+                            <span class="mt-1 text-xs text-gray-500">Complete</span>
                         </div>
                     </div>
                 </div>
@@ -529,7 +529,8 @@ select.form-input:focus {
 </div>
 @endsection
 
-@section('scripts')
+@push('scripts')
+<script>
     let currentStep = 1;
     let formData = {};
 
@@ -1165,4 +1166,5 @@ select.form-input:focus {
             });
         }
     });
-@endsection
+</script>
+@endpush
