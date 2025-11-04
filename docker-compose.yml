@@ -42,15 +42,13 @@ services:
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-aturdoit}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-bismillah}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-bismillah}
-      MYSQL_USER: ${DB_USERNAME:-laravel}
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
     volumes:
       - dbdata:/var/lib/mysql
       - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
     ports:
-      - "3307:3306"
+      - "33060:3306"
     networks:
       - aturdoit-network
 
