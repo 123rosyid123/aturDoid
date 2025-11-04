@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # Application Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: aturdoit-app
+    container_name: aturdoit-app
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - aturdoit-network
+    depends_on:
+      - db
+      - redis
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: aturdoit-nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - aturdoit-network
+    depends_on:
+      - app
+
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: aturdoit-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE:-aturdoit}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-bismillah}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-bismillah}
+      MYSQL_USER: ${DB_USERNAME:-laravel}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    ports:
+      - "3307:3306"
+    networks:
+      - aturdoit-network
+
+  # Redis Service
+  redis:
+    image: redis:alpine
+    container_name: aturdoit-redis
+    restart: unless-stopped
+    ports:
+      - "6380:6379"
+    networks:
+      - aturdoit-network
+
+  # Node Service for development (optional)
+  node:
+    image: node:20-alpine
+    container_name: aturdoit-node
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "5173:5173"
+    command: sh -c "npm install && npm run dev -- --host"
+    networks:
+      - aturdoit-network
+
+# Docker Networks
+networks:
+  aturdoit-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  dbdata:
+    driver: local

@@ -1,11 +1,191 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# AturDOit - Platform Finansial Digital
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Platform finansial digital yang menyediakan tools manajemen keuangan, edukasi finansial, dan sistem afiliasi.
+
+## 🐳 Docker Setup (Recommended)
+
+Project ini sudah di-dockerize untuk memudahkan development dan deployment. Lihat [DOCKER.md](DOCKER.md) untuk dokumentasi lengkap.
+
+### Quick Start dengan Docker
+
+1. **Clone repository dan masuk ke direktori**
+   ```bash
+   git clone <repository-url>
+   cd aturdoid
+   ```
+
+2. **Setup environment file**
+   ```bash
+   cp .env.docker .env
+   ```
+
+3. **Jalankan initial setup**
+   ```bash
+   ./docker.sh setup
+   ```
+
+4. **Akses aplikasi**
+   - **Web Application**: http://localhost:8000
+   - **Vite Dev Server**: http://localhost:5173
+   - **MySQL Database**: localhost:3307
+   - **Redis**: localhost:6380
+
+### Docker Commands
+
+```bash
+# Start containers
+./docker.sh start
+
+# Stop containers
+./docker.sh stop
+
+# View logs
+./docker.sh logs
+
+# Enter app container
+./docker.sh shell
+
+# Run artisan commands
+./docker.sh artisan migrate
+./docker.sh artisan db:seed
+
+# Run composer
+./docker.sh composer install
+
+# Run npm
+./docker.sh npm run dev
+
+# Clear cache
+./docker.sh cache-clear
+```
+
+## 📦 Manual Installation (Tanpa Docker)
+
+Jika tidak menggunakan Docker, ikuti langkah berikut:
+
+### Requirements
+- PHP 8.2+
+- Composer
+- Node.js & NPM
+- MySQL 8.0+
+- Redis (optional)
+
+### Installation Steps
+
+1. **Install dependencies**
+   ```bash
+   composer install
+   npm install
+   ```
+
+2. **Setup environment**
+   ```bash
+   cp .env.example .env
+   php artisan key:generate
+   ```
+
+3. **Configure database di `.env`**
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=aturdoit
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+   ```
+
+4. **Run migrations**
+   ```bash
+   php artisan migrate
+   ```
+
+5. **Build assets**
+   ```bash
+   npm run build
+   # Atau untuk development
+   npm run dev
+   ```
+
+6. **Start server**
+   ```bash
+   php artisan serve
+   ```
+
+## 🚀 Features
+
+- **Smart Financial Tools** - Tools untuk manajemen keuangan pribadi
+- **Edukasi Finansial** - Konten pembelajaran finansial
+- **Sistem Afiliasi** - Program referral dengan rewards
+- **Platform Advisor** - Konsultasi dengan advisor profesional
+- **Community** - Networking dengan pengguna lain
+- **Google OAuth** - Login dengan Google
+
+## 🛠️ Tech Stack
+
+- **Backend**: Laravel 12.x (PHP 8.2)
+- **Frontend**: Blade Templates, Alpine.js, Tailwind CSS
+- **Database**: MySQL 8.0
+- **Cache**: Redis
+- **Build Tool**: Vite
+- **Containerization**: Docker & Docker Compose
+
+## 📚 Documentation
+
+- [Docker Setup Guide](DOCKER.md)
+- [AturDOit Project Info](README-aturdoit.md)
+- [Google OAuth Setup](GOOGLE_OAUTH_SETUP.md)
+
+## 🔧 Development
+
+### Running Tests
+```bash
+# Dengan Docker
+./docker.sh test
+
+# Tanpa Docker
+php artisan test
+```
+
+### Code Quality
+```bash
+# Format code dengan Pint
+composer pint
+
+# Run static analysis
+composer analyse
+```
+
+## 📁 Project Structure
+
+```
+aturdoid/
+├── app/                    # Application code
+├── docker/                 # Docker configuration files
+│   ├── nginx/             # Nginx configuration
+│   ├── php/               # PHP configuration
+│   └── mysql/             # MySQL configuration
+├── resources/
+│   ├── views/             # Blade templates
+│   ├── js/                # JavaScript files
+│   └── css/               # CSS files
+├── routes/                # Route definitions
+├── database/
+│   ├── migrations/        # Database migrations
+│   └── seeders/           # Database seeders
+├── docker-compose.yml     # Docker Compose configuration
+├── Dockerfile            # Docker image definition
+└── docker.sh             # Docker helper script
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open-sourced software licensed under the MIT license.
+
+---
 
 ## About Laravel
 
