@@ -71,10 +71,30 @@
             </h2>
 
             <!-- Activities Carousel -->
-            <div class="relative pt-20 pb-8" x-data="{ currentSlide: 0, totalSlides: 2 }">
+            <div class="relative pt-20 pb-8"
+                x-data="{
+                    currentSlide: 0,
+                    getTotalSlides() {
+                        return window.innerWidth >= 768 ? 2 : 4;
+                    },
+                    getTranslateValue() {
+                        if (window.innerWidth >= 768) {
+                            return this.currentSlide * 33.333;
+                        } else {
+                            return this.currentSlide * 100;
+                        }
+                    }
+                }"
+                x-init="
+                    window.addEventListener('resize', () => {
+                        if (currentSlide >= getTotalSlides()) {
+                            currentSlide = getTotalSlides() - 1;
+                        }
+                    });
+                ">
                 <div class="overflow-hidden py-8">
                     <div class="flex transition-transform duration-500 ease-in-out"
-                        :style="`transform: translateX(-${currentSlide * 33.333}%)`">
+                        :style="`transform: translateX(-${getTranslateValue()}%)`">
                         <!-- Activity 1: Board Game -->
                         <div class="w-full md:w-1/3 flex-shrink-0 px-4">
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -147,11 +167,11 @@
                 </div>
 
                 <!-- Navigation Arrows -->
-                <button @click="currentSlide = currentSlide > 0 ? currentSlide - 1 : totalSlides - 1"
+                <button @click="currentSlide = currentSlide > 0 ? currentSlide - 1 : getTotalSlides() - 1"
                     class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors">
                     <i class="fas fa-chevron-left"></i>
                 </button>
-                <button @click="currentSlide = currentSlide < totalSlides - 1 ? currentSlide + 1 : 0"
+                <button @click="currentSlide = currentSlide < getTotalSlides() - 1 ? currentSlide + 1 : 0"
                     class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-orange-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors">
                     <i class="fas fa-chevron-right"></i>
                 </button>
@@ -214,7 +234,6 @@
     </section>
 
     <!-- CTA Section -->
-    {{-- <section class="py-20 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)]" style="background-image: url('{{ asset('images/assets/community/element.png') }}')"> --}}
     <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url('{{ asset('images/assets/community/element.png') }}'), linear-gradient(180deg, rgba(46, 83, 150, 1) 0%, rgba(33, 46, 94, 1) 100%);">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">

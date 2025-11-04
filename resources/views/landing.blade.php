@@ -161,149 +161,143 @@
         </div>
 
         <!-- Features Cards Carousel -->
-        <div class="w-full max-w-7xl mx-auto relative pt-20 pb-8" x-data="{ currentSlide: 0, totalSlides: 2, autoplay: null }" 
+        <div class="w-full h-full max-w-7xl mx-auto relative pt-20 pb-8"
+            x-data="{
+                currentSlide: 0,
+                getTotalSlides() {
+                    return window.innerWidth >= 768 ? 2 : 5;
+                },
+                getTranslateValue() {
+                    if (window.innerWidth >= 768) {
+                        return this.currentSlide * 33.333;
+                    } else {
+                        return this.currentSlide * 100;
+                    }
+                }
+            }"
             x-init="
-                autoplay = setInterval(() => { 
-                    currentSlide = (currentSlide + 1) % totalSlides 
-                }, 5000);
-            "
-            @mouseenter="clearInterval(autoplay)" 
-            @mouseleave="autoplay = setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000)">
-            
+                window.addEventListener('resize', () => {
+                    if (currentSlide >= getTotalSlides()) {
+                        currentSlide = getTotalSlides() - 1;
+                    }
+                });
+            ">
+
             <!-- Carousel Container -->
-            <div class="overflow-hidden pt-20 pb-20">
-                <div class="flex transition-transform duration-700 ease-in-out"
-                    :style="'transform: translateX(-' + (currentSlide * 100) + '%)'">
-                    
-                    <!-- Slide 1: Cards 1, 2, 3 -->
-                    <div class="min-w-full flex-shrink-0 px-4">
-                        <div class="max-w-7xl mx-auto">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                            
-                            <!-- Feature Card 1: Smart Financial Tools -->
-                            <div class="flex flex-col items-center">
-                                <div class="w-full bg-white shadow-2xl rounded-2xl p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
-                                    <!-- Icon Circle -->
-                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
-                                        <i class="fas fa-chart-line text-white text-5xl"></i>
-                                    </div>
-                                    
-                                    <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
-                                        Smart Financial Tools
-                                    </h3>
-                                    
-                                    <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                        Catat pemasukan, pengeluaran, aset, dan kewajiban dengan cepat dan akurat. Setiap transaksi otomatis tersusun dalam laporan keuangan lengkap, termasuk arus kas dan neraca pribadi. Tampilan interaktifnya memudahkan Anda memantau kondisi keuangan kapan pun tanpa perlu latar belakang akuntansi.
-                                    </p>
-                                </div>
-                            </div>
+            <div class="overflow-hidden pt-20 pb-4">
+                <div class="flex transition-transform duration-500 ease-in-out"
+                    :style="`transform: translateX(-${getTranslateValue()}%)`">
 
-                            <!-- Feature Card 2: Edukasi Finansial -->
-                            <div class="flex flex-col items-center">
-                                <div class="w-full bg-white shadow-2xl rounded-2xl p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
-                                    <!-- Icon Circle -->
-                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
-                                        <i class="fas fa-graduation-cap text-white text-5xl"></i>
-                                    </div>
-                                    
-                                    <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
-                                        Edukasi Finansial
-                                    </h3>
-                                    
-                                    <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                        Pelajari pengelolaan keuangan lewat video dan modul singkat yang mudah dipahami. Materinya mencakup dasar-dasar finansial, perencanaan keuangan pribadi, hingga strategi investasi sederhana. Dirancang agar pengguna dapat belajar mandiri dan membangun kebiasaan finansial yang lebih teratur.
-                                    </p>
+                    <!-- Feature Card 1: Smart Financial Tools -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 px-4 md:px-4">
+                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                            <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
+                                <!-- Icon Circle -->
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                    <i class="fas fa-chart-line text-white text-5xl"></i>
                                 </div>
-                            </div>
 
-                            <!-- Feature Card 3: Sistem Afiliasi -->
-                            <div class="flex flex-col items-center">
-                                <div class="w-full bg-white shadow-2xl rounded-2xl p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
-                                    <!-- Icon Circle -->
-                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
-                                        <i class="fas fa-users text-white text-5xl"></i>
-                                    </div>
-                                    
-                                    <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
-                                        Sistem Afiliasi
-                                    </h3>
-                                    
-                                    <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                        Hasilkan pendapatan tambahan melalui sistem afiliasi tiga level yang transparan dan mudah dijalankan. Bagikan link referral Anda dan dapatkan komisi setiap kali jaringan Anda bertransaksi premium. Model ini membuka peluang penghasilan pasif tanpa perlu menjual produk atau memiliki stok.
-                                    </p>
-                                </div>
+                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                    Smart Financial Tools
+                                </h3>
+
+                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Catat pemasukan, pengeluaran, aset, dan kewajiban dengan cepat dan akurat. Setiap transaksi otomatis tersusun dalam laporan keuangan lengkap, termasuk arus kas dan neraca pribadi. Tampilan interaktifnya memudahkan Anda memantau kondisi keuangan kapan pun tanpa perlu latar belakang akuntansi.
+                                </p>
                             </div>
-                        </div>
                         </div>
                     </div>
 
-                    <!-- Slide 2: Cards 4, 5 -->
-                    <div class="min-w-full flex-shrink-0 px-4">
-                        <div class="max-w-7xl mx-auto">
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-                            
-                            <!-- Feature Card 4: Platform Advisor Profesional -->
-                            <div class="flex flex-col items-center">
-                                <div class="w-full bg-white shadow-2xl rounded-2xl p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
-                                    <!-- Icon Circle -->
-                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
-                                        <i class="fas fa-briefcase text-white text-5xl"></i>
-                                    </div>
-                                    
-                                    <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
-                                        Platform Advisor Profesional
-                                    </h3>
-                                    
-                                    <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                        Bagi penasehat keuangan bersertifikat, aturDOit menyediakan ruang kerja digital yang lengkap dan efisien. Akses alat profesional seperti analisa keuangan, perhitungan asuransi, penilaian aset, hingga perencanaan pensiun dan warisan. Semua terintegrasi untuk membantu advisor melayani klien dengan profesionalisme tinggi.
-                                    </p>
+                    <!-- Feature Card 2: Edukasi Finansial -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                            <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
+                                <!-- Icon Circle -->
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                    <i class="fas fa-graduation-cap text-white text-5xl"></i>
                                 </div>
-                            </div>
 
-                            <!-- Feature Card 5: Koneksi Pengguna & Advisor -->
-                            <div class="flex flex-col items-center">
-                                <div class="w-full bg-white shadow-2xl rounded-2xl p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
-                                    <!-- Icon Circle -->
-                                    <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
-                                        <i class="fas fa-handshake text-white text-5xl"></i>
-                                    </div>
-                                    
-                                    <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
-                                        Koneksi Pengguna & Advisor
-                                    </h3>
-                                    
-                                    <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                        AturDOit mempertemukan pengguna yang membutuhkan bimbingan finansial dengan penasehat keuangan profesional. Pengguna dapat memilih dan menggunakan layanan advisor langsung melalui marketplace, sementara para advisor memperluas jaringan dan membangun reputasi di komunitas finansial digital.
-                                    </p>
-                                </div>
-                            </div>
+                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                    Edukasi Finansial
+                                </h3>
 
-                            <!-- Empty space for alignment -->
-                            <div class="hidden lg:block"></div>
+                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Pelajari pengelolaan keuangan lewat video dan modul singkat yang mudah dipahami. Materinya mencakup dasar-dasar finansial, perencanaan keuangan pribadi, hingga strategi investasi sederhana. Dirancang agar pengguna dapat belajar mandiri dan membangun kebiasaan finansial yang lebih teratur.
+                                </p>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- Feature Card 3: Sistem Afiliasi -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                            <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
+                                <!-- Icon Circle -->
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                    <i class="fas fa-users text-white text-5xl"></i>
+                                </div>
+
+                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                    Sistem Afiliasi
+                                </h3>
+
+                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Hasilkan pendapatan tambahan melalui sistem afiliasi tiga level yang transparan dan mudah dijalankan. Bagikan link referral Anda dan dapatkan komisi setiap kali jaringan Anda bertransaksi premium. Model ini membuka peluang penghasilan pasif tanpa perlu menjual produk atau memiliki stok.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 4: Platform Advisor Profesional -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                            <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
+                                <!-- Icon Circle -->
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                    <i class="fas fa-briefcase text-white text-5xl"></i>
+                                </div>
+
+                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                    Platform Advisor Profesional
+                                </h3>
+
+                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Bagi penasehat keuangan bersertifikat, aturDOit menyediakan ruang kerja digital yang lengkap dan efisien. Akses alat profesional seperti analisa keuangan, perhitungan asuransi, penilaian aset, hingga perencanaan pensiun dan warisan. Semua terintegrasi untuk membantu advisor melayani klien dengan profesionalisme tinggi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 5: Koneksi Pengguna & Advisor -->
+                    <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                            <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
+                                <!-- Icon Circle -->
+                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                    <i class="fas fa-handshake text-white text-5xl"></i>
+                                </div>
+
+                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                    Koneksi Pengguna & Advisor
+                                </h3>
+
+                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    AturDOit mempertemukan pengguna yang membutuhkan bimbingan finansial dengan penasehat keuangan profesional. Pengguna dapat memilih dan menggunakan layanan advisor langsung melalui marketplace, sementara para advisor memperluas jaringan dan membangun reputasi di komunitas finansial digital.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Navigation Dots -->
-            <div class="flex justify-center items-center gap-3 mt-12">
-                <template x-for="i in totalSlides" :key="i">
-                    <button @click="currentSlide = i - 1; clearInterval(autoplay); autoplay = setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000);" 
-                        class="transition-all duration-300 rounded-full"
-                        :class="currentSlide === (i - 1) ? 'bg-gradient-to-r from-[#2E5396] to-[#212E5E] w-12 h-3' : 'bg-gray-300 w-3 h-3 hover:bg-gray-400'">
-                    </button>
-                </template>
-            </div>
-
-            <!-- Arrow Navigation -->
-            <button @click="currentSlide = (currentSlide - 1 + totalSlides) % totalSlides; clearInterval(autoplay); autoplay = setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000);"
-                class="hidden lg:flex absolute -left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white shadow-2xl hover:shadow-3xl items-center justify-center text-[#2E5396] text-2xl transition-all duration-300 hover:scale-110 hover:bg-gradient-to-r hover:from-[#2E5396] hover:to-[#212E5E] hover:text-white group z-10">
-                <i class="fas fa-chevron-left transform group-hover:-translate-x-1 transition-transform duration-300"></i>
+            <!-- Navigation Arrows -->
+            <button @click="currentSlide = currentSlide > 0 ? currentSlide - 1 : getTotalSlides() - 1"
+                class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:opacity-80 transition-opacity">
+                <i class="fas fa-chevron-left"></i>
             </button>
-            <button @click="currentSlide = (currentSlide + 1) % totalSlides; clearInterval(autoplay); autoplay = setInterval(() => { currentSlide = (currentSlide + 1) % totalSlides }, 5000);"
-                class="hidden lg:flex absolute -right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-white shadow-2xl hover:shadow-3xl items-center justify-center text-[#2E5396] text-2xl transition-all duration-300 hover:scale-110 hover:bg-gradient-to-r hover:from-[#2E5396] hover:to-[#212E5E] hover:text-white group z-10">
-                <i class="fas fa-chevron-right transform group-hover:translate-x-1 transition-transform duration-300"></i>
+            <button @click="currentSlide = currentSlide < getTotalSlides() - 1 ? currentSlide + 1 : 0"
+                class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:opacity-80 transition-opacity">
+                <i class="fas fa-chevron-right"></i>
             </button>
         </div>
     </section>
