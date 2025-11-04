@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
+        'status',
         'referral_code',
         'upline_code',
         'is_verified',
@@ -52,6 +53,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * The attributes that should have default values.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'status' => 'active',
+    ];
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -79,5 +89,69 @@ class User extends Authenticatable
     public function downlines()
     {
         return $this->hasMany(User::class, 'upline_code', 'referral_code');
+    }
+
+    /**
+     * Check if user is active.
+     */
+    public function isActive(): bool
+    {
+        return $this->status === 'active';
+    }
+
+    /**
+     * Check if user is inactive.
+     */
+    public function isInactive(): bool
+    {
+        return $this->status === 'inactive';
+    }
+
+    /**
+     * Check if user is suspended.
+     */
+    public function isSuspended(): bool
+    {
+        return $this->status === 'suspended';
+    }
+
+    /**
+     * Check if user is banned.
+     */
+    public function isBanned(): bool
+    {
+        return $this->status === 'banned';
+    }
+
+    /**
+     * Activate the user.
+     */
+    public function activate(): bool
+    {
+        return $this->update(['status' => 'active']);
+    }
+
+    /**
+     * Deactivate the user.
+     */
+    public function deactivate(): bool
+    {
+        return $this->update(['status' => 'inactive']);
+    }
+
+    /**
+     * Suspend the user.
+     */
+    public function suspend(): bool
+    {
+        return $this->update(['status' => 'suspended']);
+    }
+
+    /**
+     * Ban the user.
+     */
+    public function ban(): bool
+    {
+        return $this->update(['status' => 'banned']);
     }
 }

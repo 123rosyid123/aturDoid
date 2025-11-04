@@ -6,8 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use App\Models\User;
+use App\Mail\ResetPasswordMail;
 use Laravel\Socialite\Facades\Socialite;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -52,7 +57,7 @@ class AuthController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Login successful!',
-                'redirect' => route('dashboard')
+                'redirect' => route('landing')
             ]);
         }
 
@@ -91,7 +96,7 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Registration successful!',
-            'redirect' => route('dashboard')
+            'redirect' => route('landing')
         ]);
     }
 
@@ -162,7 +167,7 @@ class AuthController extends Controller
             if ($user) {
                 // User already connected with Google
                 Auth::login($user);
-                return redirect()->route('dashboard')->with('success', 'Successfully logged in with Google!');
+                return redirect()->route('landing')->with('success', 'Successfully logged in with Google!');
             }
 
             // Check if user exists with same email
@@ -178,7 +183,7 @@ class AuthController extends Controller
                 ]);
 
                 Auth::login($existingUser);
-                return redirect()->route('dashboard')->with('success', 'Google account linked successfully!');
+                return redirect()->route('landing')->with('success', 'Google account linked successfully!');
             }
 
             // Create new user from Google data
@@ -198,10 +203,165 @@ class AuthController extends Controller
 
             Auth::login($newUser);
 
-            return redirect()->route('dashboard')->with('success', 'Account created successfully with Google!');
+            return redirect()->route('landing')->with('success', 'Account created successfully with Google!');
         } catch (\Exception $e) {
             \Log::error('Google OAuth Error: ' . $e->getMessage());
             return redirect()->route('login')->with('error', 'Failed to login with Google. Please try again.');
         }
+    }
+
+    /**
+     * Show forgot password form
+     */
+    public function showForgotPassword()
+    {
+        return view('auth.forgot-password');
+    }
+
+    /**
+     * Send password reset link email
+     */
+    public function sendResetLinkEmail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'email.required' => 'Email address is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.exists' => 'We could not find an account with this email address',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Get user information
+        $user = User::where('email', $request->email)->first();
+
+        // Generate token
+        $token = Str::random(64);
+
+        // Delete old tokens for this email
+        DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->delete();
+
+        // Create new token
+        DB::table('password_reset_tokens')->insert([
+            'email' => $request->email,
+            'token' => $token,
+            'created_at' => Carbon::now()
+        ]);
+
+        try {
+            // Send email with reset link
+            $userName = $user->first_name ?? ($user->name ?? explode('@', $request->email)[0]);
+            Mail::to($request->email)->send(new ResetPasswordMail($token, $request->email, $userName));
+
+            $response = [
+                'success' => true,
+                'message' => 'We have emailed your password reset link! Please check your inbox.',
+            ];
+
+            // Only include reset URL in non-production environments for testing
+            if (config('app.env') !== 'production') {
+                $response['reset_url'] = route('password.reset', ['token' => $token]);
+            }
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            // Log error but don't expose details to user
+            \Log::error('Failed to send password reset email: ' . $e->getMessage());
+            
+            $response = [
+                'success' => false,
+                'message' => 'Failed to send email. Please try again later or contact support.',
+            ];
+
+            // Only include reset URL in non-production environments for testing/fallback
+            if (config('app.env') !== 'production') {
+                $response['reset_url'] = route('password.reset', ['token' => $token]);
+            }
+
+            return response()->json($response, 500);
+        }
+    }
+
+    /**
+     * Show reset password form
+     */
+    public function showResetPassword($token)
+    {
+        return view('auth.reset-password', ['token' => $token]);
+    }
+
+    /**
+     * Reset password
+     */
+    public function resetPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8|confirmed',
+        ], [
+            'email.required' => 'Email address is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.exists' => 'We could not find an account with this email address',
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 8 characters',
+            'password.confirmed' => 'Password confirmation does not match',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Verify token
+        $tokenData = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$tokenData) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid or expired reset token'
+            ], 400);
+        }
+
+        // Check if token is expired (24 hours)
+        if (Carbon::parse($tokenData->created_at)->addHours(24)->isPast()) {
+            DB::table('password_reset_tokens')
+                ->where('email', $request->email)
+                ->delete();
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Reset token has expired. Please request a new one.'
+            ], 400);
+        }
+
+        // Update password
+        $user = User::where('email', $request->email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Delete token
+        DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Your password has been reset successfully!',
+            'redirect' => route('login')
+        ]);
     }
 }

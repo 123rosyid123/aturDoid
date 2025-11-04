@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('google_id')->nullable()->unique();
             $table->string('avatar')->nullable();
-            $table->string('upline_code')->nullable();
         });
     }
 
@@ -24,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn(['google_id', 'avatar', 'upline_code']);
+            $table->dropColumn(['google_id', 'avatar']);
         });
     }
 };

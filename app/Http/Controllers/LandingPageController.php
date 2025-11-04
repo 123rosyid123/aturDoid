@@ -111,6 +111,48 @@ class LandingPageController extends Controller
     }
 
     /**
+     * Display the about us page
+     */
+    public function about()
+    {
+        return view('about');
+    }
+
+    /**
+    * Display the contact us page
+    */
+    public function contactus()
+    {
+        return view('contactus');
+    }
+
+    /**
+     * Display the referral page
+     */
+    public function refferal()
+    {
+        $user = auth()->user();
+        $referralCode = $user->referral_code;
+        $uplineCode = $user->upline_code;
+        $totalDownline = $user->downlines()->count();
+        $downlines = $user->downlines()->get();
+        $referralLink = $this->generateReferralLink();
+        return view('refferal', [
+            'user' => $user,
+            'referralLink' => $referralLink,
+            'referralCode' => $referralCode,
+            'uplineCode' => $uplineCode,
+            'totalDownline' => $totalDownline,
+            'downlines' => $downlines,
+        ]);
+    }
+
+    private function generateReferralLink()
+    {
+        return route('register', ['ref' => auth()->user()->referral_code]);
+    }
+    
+    /**
      * Handle AJAX requests for dynamic content
      */
     public function getChartData(Request $request)

@@ -8,12 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center">
+<body class="bg-gray-50 min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat" style="background-image: url('{{ asset('images/bg-login.jpg') }}')">
     <div class="max-w-md w-full">
-        <!-- Logo -->
-        <div class="text-center mb-8">
-            <span class="text-3xl font-bold text-orange-500">Atur<span class="text-gray-800">DOit</span></span>
-        </div>
 
         <!-- Login Card -->
         <div class="bg-white rounded-2xl shadow-lg p-8">
@@ -93,7 +89,7 @@
                         <input type="checkbox" id="remember" name="remember" class="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500">
                         <label for="remember" class="ml-2 text-sm text-gray-700">Remember me</label>
                     </div>
-                    <a href="#" class="text-orange-500 hover:text-orange-600 text-sm font-medium">Forgot Password?</a>
+                    <a href="{{ route('password.request') }}" class="text-orange-500 hover:text-orange-600 text-sm font-medium">Forgot Password?</a>
                 </div>
 
                 <div class="mb-6">

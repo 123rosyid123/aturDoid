@@ -4,11 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistrationValidatorController;
+use App\Http\Controllers\UserController;
 
 // Landing Page Routes
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::get('/features', [LandingPageController::class, 'features'])->name('features');
 Route::get('/community', [LandingPageController::class, 'community'])->name('community');
+Route::get('/about', [LandingPageController::class, 'about'])->name('about');
+Route::get('/contactus', [LandingPageController::class, 'contactus'])->name('contactus');
 Route::get('/api/chart-data', [LandingPageController::class, 'getChartData']);
 
 // Authentication Routes
@@ -17,6 +20,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Password Reset Routes
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/reset-password/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 // Google OAuth Routes
 Route::get('/auth/google', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
@@ -37,12 +46,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    
+
     Route::get('/profile', function () {
         return view('profile');
     })->name('profile');
-    
+
     Route::get('/settings', function () {
         return view('settings');
     })->name('settings');
+
+    Route::get('/refferal', [LandingPageController::class, 'refferal'])->name('refferal');
+
+    // User API Routes
+    Route::prefix('api/user')->group(function () {
+        Route::post('/update-upline', [UserController::class, 'updateUplineCode']);
+    });
 });

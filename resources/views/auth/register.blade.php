@@ -40,43 +40,7 @@ select.form-input:focus {
 <div class="flex min-h-screen">
         <!-- Left Section - Chart Background -->
         <div class="hidden md:flex md:w-2/5 bg-black flex-col justify-between relative overflow-hidden">
-            <div class="absolute inset-0 flex items-center justify-center">
-                <!-- Candlestick Chart -->
-                <div class="flex items-end justify-between h-64 space-x-2 px-8">
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-32 bg-red-500 rounded-t"></div>
-                        <div class="w-0.5 h-8 bg-red-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-24 bg-green-500 rounded-t"></div>
-                        <div class="w-0.5 h-12 bg-green-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-40 bg-red-500 rounded-t"></div>
-                        <div class="w-0.5 h-8 bg-red-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-36 bg-green-500 rounded-t"></div>
-                        <div class="w-0.5 h-16 bg-green-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-28 bg-red-500 rounded-t"></div>
-                        <div class="w-0.5 h-10 bg-red-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-44 bg-green-500 rounded-t"></div>
-                        <div class="w-0.5 h-12 bg-green-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-32 bg-green-500 rounded-t"></div>
-                        <div class="w-0.5 h-8 bg-green-500"></div>
-                    </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-8 h-20 bg-red-500 rounded-t"></div>
-                        <div class="w-0.5 h-14 bg-red-500"></div>
-                    </div>
-                </div>
-            </div>
+            <img src="{{ asset('images/signup.png') }}" alt="Chart Background" class="absolute inset-0 w-full h-full object-cover opacity-80">
 
             <!-- Progress Dots -->
             <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
@@ -461,7 +425,7 @@ select.form-input:focus {
                             <input type="text"
                                    id="referral_code"
                                    name="referral_code"
-                                   value="{{ old('referral_code') }}"
+                                   value="{{ old('referral_code', request()->query('ref')) }}"
                                    class="form-input w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Enter Referral Code">
                             <button type="button" id="validateReferralBtn" onclick="validateReferralCode()" class="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -1152,6 +1116,17 @@ select.form-input:focus {
         showStep(1);
         updateProgressDots(1);
         updateProgressDotsLeft(1);
+
+        // Check for referral code in URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        
+        if (refCode) {
+            const referralInput = document.getElementById('referral_code');
+            if (referralInput && !referralInput.value) {
+                referralInput.value = refCode;
+            }
+        }
 
         // Add referral code input listener
         const referralInput = document.getElementById('referral_code');

@@ -346,7 +346,7 @@ class RegistrationValidatorController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Registration completed successfully!',
-            'redirect' => '/dashboard', // or wherever you want to redirect
+            'redirect' => route('landing'),
         ]);
     }
 }
