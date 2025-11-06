@@ -1,5 +1,5 @@
 <nav class="fixed w-full top-0 z-50 bg-white shadow-sm" x-data="{ mobileMenu: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex items-center">
@@ -20,7 +20,8 @@
 
                 <!-- Login Button - Right Side -->
                 <div class="hidden md:flex items-center">
-                    <a href="{{ route('login') }}" class="bg-orange-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">Login</a>
+                    <a href="{{ route('login') }}" class="bg-white text-black border mx-2 px-6 py-2 rounded-lg text-sm font-medium hover:bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] transition-colors">Login</a>
+                    <a href="{{ route('register') }}" class="bg-orange-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] transition-colors">Sign Up</a>
                 </div>
             @else
                 <div class="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
@@ -89,14 +90,15 @@
     <!-- Mobile menu -->
     <div x-show="mobileMenu" x-transition class="md:hidden bg-white border-t">
         @guest
-        <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="{{ route('landing') }}" class="text-gray-{{ request()->routeIs('landing') ? '900' : '600' }} block px-3 py-2 text-base font-medium">Home</a>
-            <a href="{{ route('features') }}" class="text-gray-{{ request()->routeIs('features') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">Features</a>
-            <a href="{{ route('community') }}" class="text-gray-{{ request()->routeIs('community') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">Community</a>
-            <a href="{{ route('about') }}" class="text-gray-{{ request()->routeIs('about') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">About Us</a>
-            <a href="#contact" class="text-gray-600 hover:text-gray-900 block px-3 py-2 text-base font-medium">Contact Us</a>
-            <a href="{{ route('login') }}" class="w-full text-center bg-orange-500 text-white px-3 py-2 rounded-lg text-base font-medium block">Login</a>
-        </div>
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{{ route('landing') }}" class="text-gray-{{ request()->routeIs('landing') ? '900' : '600' }} block px-3 py-2 text-base font-medium">Home</a>
+                <a href="{{ route('features') }}" class="text-gray-{{ request()->routeIs('features') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">Features</a>
+                <a href="{{ route('community') }}" class="text-gray-{{ request()->routeIs('community') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">Community</a>
+                <a href="{{ route('about') }}" class="text-gray-{{ request()->routeIs('about') ? '900' : '600' }} hover:text-gray-900 block px-3 py-2 text-base font-medium">About Us</a>
+                <a href="#contact" class="text-gray-600 hover:text-gray-900 block px-3 py-2 text-base font-medium">Contact Us</a>
+                <a href="{{ route('login') }}" class="w-full text-center bg-white text-black border px-3 py-2 rounded-lg text-base font-medium block">Login</a>
+                <a href="{{ route('register') }}" class="w-full text-center bg-orange-500 text-white px-3 py-2 rounded-lg text-base font-medium block">Sign Up</a>
+            </div>
         @else
         <div class="px-2 pt-2 pb-3 space-y-1">
             <div class="flex items-center space-x-3 px-3 py-2 border-b">
