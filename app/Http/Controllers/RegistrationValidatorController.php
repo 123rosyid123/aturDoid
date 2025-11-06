@@ -14,7 +14,7 @@ use Str;
 class RegistrationValidatorController extends Controller
 {
     /**
-     * Validate Step 1: Account Creation (Email & Password)
+     * Validate Step 1: Email Only
      */
     public function validateStep1(Request $request)
     {
@@ -26,23 +26,12 @@ class RegistrationValidatorController extends Controller
                 'max:255',
                 'unique:users,email',
                 'regex:/^[^\s@]+@[^\s@]+\.[^\s@]+$/'
-            ],
-            'password' => [
-                'required',
-                'string',
-                'min:8',
-                'confirmed',
-                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
             ]
         ], [
             'email.required' => 'Email address is required',
             'email.email' => 'Please enter a valid email address',
             'email.unique' => 'This email address is already registered',
-            'email.regex' => 'Please enter a valid email address',
-            'password.required' => 'Password is required',
-            'password.min' => 'Password must be at least 8 characters long',
-            'password.confirmed' => 'Password confirmation does not match',
-            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+            'email.regex' => 'Please enter a valid email address'
         ]);
 
         if ($validator->fails()) {
@@ -57,16 +46,52 @@ class RegistrationValidatorController extends Controller
             'success' => true,
             'message' => 'Step 1 validation passed',
             'data' => [
-                'email' => $request->email,
+                'email' => $request->email
+            ]
+        ]);
+    }
+
+    /**
+     * Validate Step 2: Password Only
+     */
+    public function validateStep2(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => [
+                'required',
+                'string',
+                'min:8',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ]
+        ], [
+            'password.required' => 'Password is required',
+            'password.min' => 'Password must be at least 8 characters long',
+            'password.confirmed' => 'Password confirmation does not match',
+            'password.regex' => 'Password must contain at least one uppercase letter, one lowercase letter, and one number'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+                'message' => 'Validation failed for step 2'
+            ], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Step 2 validation passed',
+            'data' => [
                 'password_validated' => true
             ]
         ]);
     }
 
     /**
-     * Validate Step 2: Personal Information
+     * Validate Step 3: Personal Information (Profile)
      */
-    public function validateStep2(Request $request)
+    public function validateStep3(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:50|regex:/^[a-zA-Z\s\-]+$/',
@@ -108,17 +133,17 @@ class RegistrationValidatorController extends Controller
             'zip.max' => 'Zip code cannot exceed 20 characters'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-                'message' => 'Validation failed for step 2'
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => $validator->errors(),
+        //         'message' => 'Validation failed for step 3'
+        //     ], 422);
+        // }
 
         return response()->json([
             'success' => true,
-            'message' => 'Step 2 validation passed',
+            'message' => 'Step 3 validation passed',
             'data' => [
                 'personal_info_validated' => true
             ]
@@ -126,9 +151,9 @@ class RegistrationValidatorController extends Controller
     }
 
     /**
-     * Validate Step 3: Profile Additional Information
+     * Validate Step 4: Additional Information
      */
-    public function validateStep3(Request $request)
+    public function validateStep4(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'occupation' => 'required|string|in:student,employee,business_owner,freelancer,professional,unemployed,retired,other',
@@ -143,27 +168,27 @@ class RegistrationValidatorController extends Controller
             'religion.in' => 'Invalid religion selected'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-                'message' => 'Validation failed for step 3'
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => $validator->errors(),
+        //         'message' => 'Validation failed for step 4'
+        //     ], 422);
+        // }
 
         return response()->json([
             'success' => true,
-            'message' => 'Step 3 validation passed',
+            'message' => 'Step 4 validation passed',
             'data' => [
-                'profile_info_validated' => true
+                'additional_info_validated' => true
             ]
         ]);
     }
 
     /**
-     * Validate Step 4: Referral Code & Terms Agreement
+     * Validate Step 5: Referral Code & Terms Agreement
      */
-    public function validateStep4(Request $request)
+    public function validateStep5(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'terms_agreed' => 'required|accepted',
@@ -179,19 +204,19 @@ class RegistrationValidatorController extends Controller
             'referral_skipped.required' => 'Referral skip status is required'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-                'message' => 'Validation failed for step 4'
-            ], 422);
-        }
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'errors' => $validator->errors(),
+        //         'message' => 'Validation failed for step 5'
+        //     ], 422);
+        // }
 
         return response()->json([
             'success' => true,
-            'message' => 'Step 4 validation passed',
+            'message' => 'Step 5 validation passed',
             'data' => [
-                'terms_validated' => true
+                'referral_terms_validated' => true
             ]
         ]);
     }
@@ -219,16 +244,6 @@ class RegistrationValidatorController extends Controller
 
         $referralCode = strtoupper($request->referral_code);
 
-        // Simulate referral code validation
-        // In a real application, you would check against a database
-        $validCodes = [
-            'WELCOME2024',
-            'FRIEND2024',
-            'PARTNER2024',
-            'BONUS2024',
-            'START2024'
-        ];
-
         //check valid code in database
         $validCode = User::where('referral_code', $referralCode)->first();
         if (!$validCode) {
@@ -254,85 +269,96 @@ class RegistrationValidatorController extends Controller
         // Validate all steps data
         $allData = $request->all();
 
-        // Step 1 validation
+        // Step 1 validation (Email)
         $step1Validator = Validator::make($allData, [
-            'email' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|min:8'
+            'email' => 'required|email|unique:users,email|max:255'
         ]);
 
         if ($step1Validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Step 1 data is invalid',
+                'message' => 'Step 1 data is invalid (Email)',
                 'errors' => $step1Validator->errors()
             ], 422);
         }
 
-        // Step 2 validation
+        // Step 2 validation (Password)
         $step2Validator = Validator::make($allData, [
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'phone' => 'required|string|max:20',
-            'title' => 'required|string',
-            'date_of_birth' => 'required|date|before:today',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
-            'zip' => 'required|string|max:20'
+            'password' => 'required|string|min:8'
         ]);
 
         if ($step2Validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Step 2 data is invalid',
+                'message' => 'Step 2 data is invalid (Password)',
                 'errors' => $step2Validator->errors()
             ], 422);
         }
 
-        // Step 3 validation
+        // Step 3 validation (Personal Information)
         $step3Validator = Validator::make($allData, [
-            'occupation' => 'required|string',
-            'marital_status' => 'required|string',
-            'religion' => 'required|string'
+            'first_name' => 'nullable|string|max:50',
+            'last_name' => 'nullable|string|max:50',
+            'phone' => 'nullable|string|max:20',
+            'title' => 'nullable|string',
+            'date_of_birth' => 'nullable|date|before:today',
+            'address' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'zip' => 'nullable|string|max:20'
         ]);
 
         if ($step3Validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Step 3 data is invalid',
+                'message' => 'Step 3 data is invalid (Personal Information)',
                 'errors' => $step3Validator->errors()
             ], 422);
         }
 
-        // Step 4 validation
+        // Step 4 validation (Additional Information)
         $step4Validator = Validator::make($allData, [
-            'terms_agreed' => 'required|accepted'
+            'occupation' => 'nullable|string',
+            'marital_status' => 'nullable|string',
+            'religion' => 'nullable|string'
         ]);
 
         if ($step4Validator->fails()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Step 4 data is invalid',
+                'message' => 'Step 4 data is invalid (Additional Information)',
                 'errors' => $step4Validator->errors()
             ], 422);
         }
-        
+
+        // Step 5 validation (Terms Agreement)
+        $step5Validator = Validator::make($allData, [
+            'terms_agreed' => 'required|accepted'
+        ]);
+
+        if ($step5Validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Step 5 data is invalid (Terms & Referral)',
+                'errors' => $step5Validator->errors()
+            ], 422);
+        }
 
         //create user
         $user = User::create([
             'email' => $step1Validator->validated()['email'],
-            'password' => Hash::make($step1Validator->validated()['password']),
-            'first_name' => $step2Validator->validated()['first_name'],
-            'last_name' => $step2Validator->validated()['last_name'],
-            'phone' => $step2Validator->validated()['phone'],
-            'title' => $step2Validator->validated()['title'],
-            'date_of_birth' => $step2Validator->validated()['date_of_birth'],
-            'address' => $step2Validator->validated()['address'],
-            'city' => $step2Validator->validated()['city'],
-            'zip' => $step2Validator->validated()['zip'],
-            'occupation' => $step3Validator->validated()['occupation'],
-            'marital_status' => $step3Validator->validated()['marital_status'],
-            'religion' => $step3Validator->validated()['religion'],
-            'upline_code' => $allData['referral_code'],
+            'password' => Hash::make($step2Validator->validated()['password']),
+            'first_name' => $step3Validator->validated()['first_name'],
+            'last_name' => $step3Validator->validated()['last_name'],
+            'phone' => $step3Validator->validated()['phone'],
+            'title' => $step3Validator->validated()['title'],
+            'date_of_birth' => $step3Validator->validated()['date_of_birth'],
+            'address' => $step3Validator->validated()['address'],
+            'city' => $step3Validator->validated()['city'],
+            'zip' => $step3Validator->validated()['zip'],
+            'occupation' => $step4Validator->validated()['occupation'],
+            'marital_status' => $step4Validator->validated()['marital_status'],
+            'religion' => $step4Validator->validated()['religion'],
+            'upline_code' => $allData['referral_code'] ?? null,
         ]);
 
         //create referral code

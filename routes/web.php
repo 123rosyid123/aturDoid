@@ -37,6 +37,7 @@ Route::prefix('api/register')->group(function () {
     Route::post('/validate-step-2', [RegistrationValidatorController::class, 'validateStep2']);
     Route::post('/validate-step-3', [RegistrationValidatorController::class, 'validateStep3']);
     Route::post('/validate-step-4', [RegistrationValidatorController::class, 'validateStep4']);
+    Route::post('/validate-step-5', [RegistrationValidatorController::class, 'validateStep5']);
     Route::post('/validate-referral', [RegistrationValidatorController::class, 'validateReferralCode']);
     Route::post('/complete', [RegistrationValidatorController::class, 'completeRegistration']);
 });

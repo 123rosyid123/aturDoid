@@ -201,6 +201,10 @@ class AuthController extends Controller
                 'account_type' => 'personal',
             ]);
 
+            $referralCode = Str::random(10);
+            $newUser->referral_code = $referralCode;
+            $newUser->save();
+
             Auth::login($newUser);
 
             return redirect()->route('landing')->with('success', 'Account created successfully with Google!');
@@ -264,6 +268,7 @@ class AuthController extends Controller
             $response = [
                 'success' => true,
                 'message' => 'We have emailed your password reset link! Please check your inbox.',
+                'email' => $request->email,
             ];
 
             // Only include reset URL in non-production environments for testing
@@ -275,7 +280,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             // Log error but don't expose details to user
             \Log::error('Failed to send password reset email: ' . $e->getMessage());
-            
+
             $response = [
                 'success' => false,
                 'message' => 'Failed to send email. Please try again later or contact support.',
