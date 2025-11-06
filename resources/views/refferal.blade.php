@@ -15,7 +15,7 @@
 <div class="referral-page">
     {{-- Hero Section --}}
     <section id="referral-section" class="w-full bg-gradient-to-b from-[#F78422] to-[#E1291C] overflow-hidden">
-        <div class="container mx-auto px-4 lg:px-8 py-12 lg:py-20 max-w-7xl">
+        <div class="container mx-auto px-4 lg:px-8 py-12 lg:py-20 max-w-[1600px]">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                 {{-- Left Side: Welcome Message --}}
                 <div class="relative bg-white rounded-lg overflow-hidden p-8 lg:p-12 min-h-[400px] lg:min-h-[600px]">
@@ -72,7 +72,7 @@
 
     {{-- Upline Section --}}
     <section class="w-full bg-gradient-to-b from-[#2E5396] to-[#212E5E] bg-opacity-20 overflow-hidden">
-        <div class="container mx-auto px-4 lg:px-8 py-16 lg:py-24 max-w-7xl">
+        <div class="container mx-auto px-4 lg:px-8 py-16 lg:py-24 max-w-[1600px]">
             <div class="max-w-5xl mx-auto text-center space-y-8">
                 <div class="space-y-6">
                     <h2 class="text-4xl lg:text-6xl font-bold text-white">
@@ -88,7 +88,7 @@
                     <p class="text-xl lg:text-2xl text-white">
                         {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Upline Anda:' : 'Masukan Kode Referral Upline Anda:' }}
                     </p>
-                    
+
                     @if(isset($uplineCode) && $uplineCode)
                         {{-- Display existing upline code (read-only) --}}
                         <div class="flex justify-center">
@@ -123,9 +123,9 @@
                                            name="upline_referral_code"
                                            class="w-full pl-10 pr-12 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                            placeholder="Enter Upline Referral Code">
-                                    <button type="button" 
-                                            id="validateUplineBtn" 
-                                            onclick="validateUplineReferralCode()" 
+                                    <button type="button"
+                                            id="validateUplineBtn"
+                                            onclick="validateUplineReferralCode()"
                                             class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                         <i class="fas fa-check-circle text-gray-400 hover:text-green-500 transition-colors"></i>
                                     </button>
@@ -151,8 +151,8 @@
 
                                 <!-- Save Button (shown after validation) -->
                                 <div id="uplineSaveBtn" class="hidden mt-4">
-                                    <button type="button" 
-                                            onclick="saveUplineCode()" 
+                                    <button type="button"
+                                            onclick="saveUplineCode()"
                                             class="w-full px-6 py-3 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white rounded-lg font-semibold hover:shadow-lg transition-all">
                                         <i class="fas fa-save mr-2"></i>
                                         Save Upline Code
@@ -168,7 +168,7 @@
 
     {{-- Downline Section --}}
     <section class="w-full bg-white overflow-hidden py-16">
-        <div class="container mx-auto px-4 lg:px-8 max-w-7xl">
+        <div class="container mx-auto px-4 lg:px-8 max-w-[1600px]">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
                 {{-- Downline List --}}
                 <div class="space-y-8">
@@ -264,7 +264,7 @@
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
                 document.getElementById('uplineSuccessText').textContent = data.message || 'Referral code validated successfully! Click save to confirm.';
-                
+
                 // Show save button
                 document.getElementById('uplineSaveBtn').classList.remove('hidden');
             } else {
@@ -344,7 +344,7 @@
     function showUplineError(message) {
         const errorDiv = document.getElementById('uplineError');
         const errorText = document.getElementById('uplineErrorText');
-        
+
         errorText.textContent = message;
         errorDiv.classList.remove('hidden');
     }
@@ -371,7 +371,7 @@
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-        
+
         try {
             const successful = document.execCommand('copy');
             if (successful) {
@@ -382,7 +382,7 @@
         } catch (err) {
             showNotification('Gagal menyalin teks', 'error');
         }
-        
+
         document.body.removeChild(textArea);
     }
 
@@ -390,7 +390,7 @@
     function sendReferralEmail() {
         const emailInput = document.getElementById('referralEmail');
         const email = emailInput.value.trim();
-        
+
         if (!email) {
             showNotification('Silakan masukkan alamat email', 'error');
             return;

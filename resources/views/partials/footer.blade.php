@@ -1,6 +1,6 @@
 {{-- <footer class="py-12 lg:py-16 w-full" style="background: linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%), linear-gradient(180deg, rgb(46, 83, 150) 0%, rgb(33, 46, 94) 99.98%);"> --}}
 <footer class="py-12 lg:py-16 w-full" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(180deg, rgba(46, 83, 150, 1) 0%, rgba(33, 46, 94, 1) 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-24">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-24">
         <div class="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-12 lg:gap-8">
             <!-- Company Info -->
             <div class="flex flex-col gap-8 lg:gap-10">

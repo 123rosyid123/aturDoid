@@ -5,8 +5,8 @@
 @section('content')
     <!-- Hero Section -->
     <section
-        class="w-full min-h-screen bg-white px-6 sm:px-12 lg:px-24 xl:px-[100px] pb-5 overflow-hidden flex flex-col items-center justify-start">
-        <div class="w-full max-w-7xl flex-1 flex flex-col items-center justify-start gap-8 lg:gap-[35px] py-12 lg:py-30">
+        class="w-full min-h-screen bg-white px-6 sm:px-12 lg:px-24 xl:px-[100px] pb-5 pt-20 lg:pt-0 overflow-hidden flex flex-col items-center justify-start">
+        <div class="w-full max-w-[1600px] flex-1 flex flex-col items-center justify-start gap-8 lg:gap-[35px] py-12 lg:py-30">
             <!-- Hero Title -->
             <h1
                 class="w-full text-center text-black text-3xl sm:text-4xl lg:text-5xl xl:text-[64px] font-bold font-['Roboto'] leading-tight">
@@ -50,8 +50,7 @@
     </section>
 
     <!-- Quote Section - Warren Buffett -->
-    <section
-        class="w-full min-h-[400px] lg:min-h-[600px] relative flex justify-between items-end mt-32 lg:mt-[200px] pt-20 lg:pt-20">
+    <section class="w-full min-h-[400px] lg:min-h-[600px] relative flex justify-between items-end pt-20 lg:pt-20">
         <!-- Background with Gradient -->
         <div
             class="flex-1 h-full min-h-[400px] lg:h-[600px] px-8 sm:px-12 lg:px-32 xl:px-[160px] relative bg-[linear-gradient(180deg,#F78422_0%,#E1291C_96%)] flex justify-end items-center">
@@ -91,7 +90,7 @@
     <!-- Problems & Solutions Section -->
     <section
         class="w-full min-h-[600px] lg:min-h-[800px] px-6 sm:px-12 lg:px-24 xl:px-[100px] relative overflow-hidden flex justify-center items-center mt-32 lg:mt-[200px]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <!-- Left Content -->
                 <div class="order-2 lg:order-1">
@@ -141,7 +140,7 @@
     <section
         class="w-full min-h-screen py-20 px-6 sm:px-12 lg:px-24 xl:px-[100px] bg-white overflow-visible flex flex-col items-center justify-start mt-32 lg:mt-[200px]">
         <!-- Header -->
-        <div class="w-full max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
+        <div class="w-full max-w-[1600px] mx-auto flex flex-col lg:flex-row justify-between items-center gap-8 mb-12">
             <div class="flex flex-col justify-center items-center gap-4 flex-1">
                 <h2
                     class="text-center text-[#2E5396] text-3xl sm:text-4xl lg:text-5xl xl:text-[64px] font-bold font-['Roboto'] leading-tight bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] bg-clip-text text-transparent">
@@ -161,27 +160,25 @@
         </div>
 
         <!-- Features Cards Carousel -->
-        <div class="w-full h-full max-w-7xl mx-auto relative pt-20 pb-8"
-            x-data="{
-                currentSlide: 0,
-                getTotalSlides() {
-                    return window.innerWidth >= 768 ? 2 : 5;
-                },
-                getTranslateValue() {
-                    if (window.innerWidth >= 768) {
-                        return this.currentSlide * 33.333;
-                    } else {
-                        return this.currentSlide * 100;
-                    }
-                }
-            }"
-            x-init="
-                window.addEventListener('resize', () => {
-                    if (currentSlide >= getTotalSlides()) {
-                        currentSlide = getTotalSlides() - 1;
-                    }
-                });
-            ">
+        <div class="w-full h-full max-w-[1600px] mx-auto relative pt-20 pb-8" x-data="{
+                        currentSlide: 0,
+                        getTotalSlides() {
+                            return window.innerWidth >= 768 ? 3 : 5;
+                        },
+                        getTranslateValue() {
+                            if (window.innerWidth >= 768) {
+                                return this.currentSlide * 33.333;
+                            } else {
+                                return this.currentSlide * 100;
+                            }
+                        }
+                    }" x-init="
+                        window.addEventListener('resize', () => {
+                            if (currentSlide >= getTotalSlides()) {
+                                currentSlide = getTotalSlides() - 1;
+                            }
+                        });
+                    ">
 
             <!-- Carousel Container -->
             <div class="overflow-hidden pt-20 pb-4">
@@ -190,19 +187,26 @@
 
                     <!-- Feature Card 1: Smart Financial Tools -->
                     <div class="w-full md:w-1/3 flex-shrink-0 px-4 md:px-4">
-                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                        <div
+                            class="bg-white shadow-lg rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
                             <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
                                 <!-- Icon Circle -->
-                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                <div
+                                    class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fas fa-chart-line text-white text-5xl"></i>
                                 </div>
 
-                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                <h3
+                                    class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
                                     Smart Financial Tools
                                 </h3>
 
-                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                    Catat pemasukan, pengeluaran, aset, dan kewajiban dengan cepat dan akurat. Setiap transaksi otomatis tersusun dalam laporan keuangan lengkap, termasuk arus kas dan neraca pribadi. Tampilan interaktifnya memudahkan Anda memantau kondisi keuangan kapan pun tanpa perlu latar belakang akuntansi.
+                                <p
+                                    class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Catat pemasukan, pengeluaran, aset, dan kewajiban dengan cepat dan akurat. Setiap
+                                    transaksi otomatis tersusun dalam laporan keuangan lengkap, termasuk arus kas dan neraca
+                                    pribadi. Tampilan interaktifnya memudahkan Anda memantau kondisi keuangan kapan pun
+                                    tanpa perlu latar belakang akuntansi.
                                 </p>
                             </div>
                         </div>
@@ -210,19 +214,26 @@
 
                     <!-- Feature Card 2: Edukasi Finansial -->
                     <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                        <div
+                            class="bg-white shadow-lg rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
                             <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
                                 <!-- Icon Circle -->
-                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                <div
+                                    class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fas fa-graduation-cap text-white text-5xl"></i>
                                 </div>
 
-                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                <h3
+                                    class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
                                     Edukasi Finansial
                                 </h3>
 
-                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                    Pelajari pengelolaan keuangan lewat video dan modul singkat yang mudah dipahami. Materinya mencakup dasar-dasar finansial, perencanaan keuangan pribadi, hingga strategi investasi sederhana. Dirancang agar pengguna dapat belajar mandiri dan membangun kebiasaan finansial yang lebih teratur.
+                                <p
+                                    class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Pelajari pengelolaan keuangan lewat video dan modul singkat yang mudah dipahami.
+                                    Materinya mencakup dasar-dasar finansial, perencanaan keuangan pribadi, hingga strategi
+                                    investasi sederhana. Dirancang agar pengguna dapat belajar mandiri dan membangun
+                                    kebiasaan finansial yang lebih teratur.
                                 </p>
                             </div>
                         </div>
@@ -230,19 +241,26 @@
 
                     <!-- Feature Card 3: Sistem Afiliasi -->
                     <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                        <div
+                            class="bg-white shadow-lg rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
                             <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
                                 <!-- Icon Circle -->
-                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                <div
+                                    class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fas fa-users text-white text-5xl"></i>
                                 </div>
 
-                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                <h3
+                                    class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
                                     Sistem Afiliasi
                                 </h3>
 
-                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                    Hasilkan pendapatan tambahan melalui sistem afiliasi tiga level yang transparan dan mudah dijalankan. Bagikan link referral Anda dan dapatkan komisi setiap kali jaringan Anda bertransaksi premium. Model ini membuka peluang penghasilan pasif tanpa perlu menjual produk atau memiliki stok.
+                                <p
+                                    class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Hasilkan pendapatan tambahan melalui sistem afiliasi tiga level yang transparan dan
+                                    mudah dijalankan. Bagikan link referral Anda dan dapatkan komisi setiap kali jaringan
+                                    Anda bertransaksi premium. Model ini membuka peluang penghasilan pasif tanpa perlu
+                                    menjual produk atau memiliki stok.
                                 </p>
                             </div>
                         </div>
@@ -250,19 +268,26 @@
 
                     <!-- Feature Card 4: Platform Advisor Profesional -->
                     <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                        <div
+                            class="bg-white shadow-lg rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
                             <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
                                 <!-- Icon Circle -->
-                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                <div
+                                    class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fas fa-briefcase text-white text-5xl"></i>
                                 </div>
 
-                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                <h3
+                                    class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
                                     Platform Advisor Profesional
                                 </h3>
 
-                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                    Bagi penasehat keuangan bersertifikat, aturDOit menyediakan ruang kerja digital yang lengkap dan efisien. Akses alat profesional seperti analisa keuangan, perhitungan asuransi, penilaian aset, hingga perencanaan pensiun dan warisan. Semua terintegrasi untuk membantu advisor melayani klien dengan profesionalisme tinggi.
+                                <p
+                                    class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    Bagi penasehat keuangan bersertifikat, aturDOit menyediakan ruang kerja digital yang
+                                    lengkap dan efisien. Akses alat profesional seperti analisa keuangan, perhitungan
+                                    asuransi, penilaian aset, hingga perencanaan pensiun dan warisan. Semua terintegrasi
+                                    untuk membantu advisor melayani klien dengan profesionalisme tinggi.
                                 </p>
                             </div>
                         </div>
@@ -270,19 +295,26 @@
 
                     <!-- Feature Card 5: Koneksi Pengguna & Advisor -->
                     <div class="w-full md:w-1/3 flex-shrink-0 px-4">
-                        <div class="bg-white shadow-2xl rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
+                        <div
+                            class="bg-white shadow-lg rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-3xl">
                             <div class="p-8 pt-20 min-h-[500px] flex flex-col gap-6 relative">
                                 <!-- Icon Circle -->
-                                <div class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-2xl">
+                                <div
+                                    class="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-full flex items-center justify-center shadow-lg">
                                     <i class="fas fa-handshake text-white text-5xl"></i>
                                 </div>
 
-                                <h3 class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
+                                <h3
+                                    class="text-center text-gray-900 text-2xl lg:text-3xl font-bold font-['Roboto'] leading-tight">
                                     Koneksi Pengguna & Advisor
                                 </h3>
 
-                                <p class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
-                                    AturDOit mempertemukan pengguna yang membutuhkan bimbingan finansial dengan penasehat keuangan profesional. Pengguna dapat memilih dan menggunakan layanan advisor langsung melalui marketplace, sementara para advisor memperluas jaringan dan membangun reputasi di komunitas finansial digital.
+                                <p
+                                    class="text-center text-gray-700 text-base lg:text-lg font-normal font-['Roboto'] leading-relaxed flex-1 flex items-center justify-center">
+                                    AturDOit mempertemukan pengguna yang membutuhkan bimbingan finansial dengan penasehat
+                                    keuangan profesional. Pengguna dapat memilih dan menggunakan layanan advisor langsung
+                                    melalui marketplace, sementara para advisor memperluas jaringan dan membangun reputasi
+                                    di komunitas finansial digital.
                                 </p>
                             </div>
                         </div>
@@ -304,10 +336,11 @@
 
     <!-- Affiliate Network Section -->
     <section
-        class="w-full min-h-screen overflow-hidden flex justify-center items-center mt-32 lg:mt-[200px] relative px-6 sm:px-12 lg:px-24 xl:px-[100px]">
-        <div class="w-full max-w-7xl flex flex-col lg:flex-row justify-between items-center gap-8 lg:gap-12">
+        class="w-full min-h-screen overflow-hidden flex justify-end items-center mt-32 lg:mt-[0px] relative px-6 sm:px-6 lg:px-0 lg:pr-0">
+        <div
+            class="w-full flex flex-col lg:flex-row justify-between lg:pl-28 xl:pl-32 2xl:pl-50 items-center gap-8 lg:gap-12">
             <!-- Left Side - White Background with Text -->
-            <div class="w-full lg:flex-1 bg-white flex flex-col justify-center items-start py-12 lg:py-0">
+            <div class="w-full lg:flex-1 bg-white flex flex-col justify-center items-start lg:py-0">
                 <div class="w-full flex flex-col justify-center items-start gap-12 lg:gap-16">
                     <div class="w-full flex flex-col justify-start items-start gap-2">
                         <h2
@@ -333,7 +366,7 @@
             <!-- Right Side - Orange Gradient with Image and Incentive Box -->
             <div class="w-full lg:flex-1 relative rounded-2xl p-8 lg:p-12 flex items-center justify-center min-h-[500px]">
                 <!-- Background Image -->
-                <img class="lg:block absolute w-full h-full object-contain rounded-2xl"
+                <img class="lg:block absolute w-full object-contain rounded-2xl"
                     src="{{ asset('images/assets/home/insentif.png') }}" alt="Network Building" />
             </div>
     </section>
@@ -341,7 +374,7 @@
     <!-- CTA Section -->
     <section class="relative py-20 bg-cover bg-center"
         style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url('{{ asset('images/assets/community/element.png') }}'), linear-gradient(180deg, rgba(46, 83, 150, 1) 0%, rgba(33, 46, 94, 1) 100%);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Left - Cashflow Club Logo -->
                 <div class="flex justify-center">

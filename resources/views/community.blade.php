@@ -5,7 +5,7 @@
 @section('content')
     <!-- Hero Section with Cashflow Club -->
     <section class="pt-24 pb-12 bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
             <!-- Headline -->
             <h1 class="text-4xl lg:text-5xl font-bold text-white flex items-center justify-center">
@@ -19,7 +19,7 @@
 
     <!-- Main Content Section -->
     <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
                     Bangun Mindset Finansial yang Cerdas Bersama CCI
@@ -28,7 +28,7 @@
                     Gabung dengan komunitas Cashflow Club Indonesia dan pelajari cara mengelola uang, membangun aset, serta
                     mencapai kebebasan finansial dengan cara yang menyenangkan dan interaktif!
                 </p>
-                <a href="{{ route('register') }}"
+                <a onclick="event.preventDefault(); document.getElementById('join_now').scrollIntoView({ behavior: 'smooth' });"
                     class="inline-block bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] text-white px-8 py-3 rounded-lg text-base font-semibold hover:bg-orange-600 transition-colors">
                     Gabung Sekarang
                 </a>
@@ -38,10 +38,10 @@
 
     <!-- About CCI Section -->
     <section class="bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white">
-        <div class="max-w-7xl mx-auto">
+        <div class=" mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Left Content -->
-                <div class="py-20  px-4 sm:px-6 lg:px-8">
+                <div class="py-20  px-4 sm:px-6 lg:px-20">
                     <h2 class="text-3xl lg:text-4xl font-bold mb-6 italic">
                         Tentang CCI
                     </h2>
@@ -65,33 +65,31 @@
 
     <!-- Main Activities Section -->
     <section class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 text-center mb-12">
                 Aktivitas Utama
             </h2>
 
             <!-- Activities Carousel -->
-            <div class="relative pt-20 pb-8"
-                x-data="{
-                    currentSlide: 0,
-                    getTotalSlides() {
-                        return window.innerWidth >= 768 ? 2 : 4;
-                    },
-                    getTranslateValue() {
-                        if (window.innerWidth >= 768) {
-                            return this.currentSlide * 33.333;
-                        } else {
-                            return this.currentSlide * 100;
+            <div class="relative pt-20 pb-8" x-data="{
+                        currentSlide: 0,
+                        getTotalSlides() {
+                            return window.innerWidth >= 768 ? 2 : 4;
+                        },
+                        getTranslateValue() {
+                            if (window.innerWidth >= 768) {
+                                return this.currentSlide * 33.333;
+                            } else {
+                                return this.currentSlide * 100;
+                            }
                         }
-                    }
-                }"
-                x-init="
-                    window.addEventListener('resize', () => {
-                        if (currentSlide >= getTotalSlides()) {
-                            currentSlide = getTotalSlides() - 1;
-                        }
-                    });
-                ">
+                    }" x-init="
+                        window.addEventListener('resize', () => {
+                            if (currentSlide >= getTotalSlides()) {
+                                currentSlide = getTotalSlides() - 1;
+                            }
+                        });
+                    ">
                 <div class="overflow-hidden py-8">
                     <div class="flex transition-transform duration-500 ease-in-out"
                         :style="`transform: translateX(-${getTranslateValue()}%)`">
@@ -181,42 +179,42 @@
 
     <!-- Benefits Section -->
     <section class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div
                 class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white rounded-3xl p-8 shadow-lg border-4 border-gray-200">
                 <!-- Left Content -->
-                <div class="">
+                <div class="lg:px-8">
                     <h2 class="text-3xl font-bold text-gray-900 mb-6">
                         Manfaat Bergabung
                     </h2>
                     <ul class="space-y-4">
                         <li class="flex items-start">
-                            <div class="bg-orange-100 rounded-full p-2 mr-4 flex-shrink-0">
-                                <i class="fas fa-check text-orange-500"></i>
+                            <div class="p-2 mr-4 flex-shrink-0">
+                                <i class="fas fa-check text-grey"></i>
                             </div>
                             <p class="text-gray-700">
                                 Memahami konsep finansial yang praktis dan langsung dapat diterapkan
                             </p>
                         </li>
                         <li class="flex items-start">
-                            <div class="bg-orange-100 rounded-full p-2 mr-4 flex-shrink-0">
-                                <i class="fas fa-check text-orange-500"></i>
+                            <div class="p-2 mr-4 flex-shrink-0">
+                                <i class="fas fa-check text-grey"></i>
                             </div>
                             <p class="text-gray-700">
                                 Belajar sambil praktek melalui permainan dan simulasi nyata
                             </p>
                         </li>
                         <li class="flex items-start">
-                            <div class="bg-orange-100 rounded-full p-2 mr-4 flex-shrink-0">
-                                <i class="fas fa-check text-orange-500"></i>
+                            <div class="p-2 mr-4 flex-shrink-0">
+                                <i class="fas fa-check text-grey"></i>
                             </div>
                             <p class="text-gray-700">
                                 Jaringan dengan anggota yang memiliki minat serupa—peluang kolaborasi dan dukungan
                             </p>
                         </li>
                         <li class="flex items-start">
-                            <div class="bg-orange-100 rounded-full p-2 mr-4 flex-shrink-0">
-                                <i class="fas fa-check text-orange-500"></i>
+                            <div class="p-2 mr-4 flex-shrink-0">
+                                <i class="fas fa-check text-grey"></i>
                             </div>
                             <p class="text-gray-700">
                                 Akses awal ke event, materi, dan program pengembangan dari aturDOit sebagai alat pendukung
@@ -234,8 +232,10 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="relative py-20 bg-cover bg-center" style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url('{{ asset('images/assets/community/element.png') }}'), linear-gradient(180deg, rgba(46, 83, 150, 1) 0%, rgba(33, 46, 94, 1) 100%);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="relative py-20 bg-cover bg-center"
+        style="background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), url('{{ asset('images/assets/community/element.png') }}'), linear-gradient(180deg, rgba(46, 83, 150, 1) 0%, rgba(33, 46, 94, 1) 100%);"
+        id="join_now">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <!-- Left - Cashflow Club Logo -->
                 <div class="flex justify-center">

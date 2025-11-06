@@ -11,7 +11,7 @@
 <body class="bg-gray-50">
     <!-- Navigation -->
     <nav class="bg-white shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <span class="text-2xl font-bold text-orange-500">Atur<span class="text-gray-800">DOit</span></span>
@@ -30,7 +30,7 @@
     </nav>
 
     <!-- Dashboard Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900 mb-4">Welcome to Your Dashboard!</h1>
             <p class="text-gray-600">This is a basic dashboard. In a real application, this would contain your financial overview, charts, and management tools.</p>

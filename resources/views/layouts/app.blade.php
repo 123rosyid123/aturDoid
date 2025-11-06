@@ -49,6 +49,11 @@
     <!-- Main Content -->
     @yield('content')
 
+    {{-- //section gap with white background --}}
+    <div class="py-4 lg:py-8 bg-white">
+
+    </div>
+
     <!-- Footer -->
     @include('partials.footer')
 

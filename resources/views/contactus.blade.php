@@ -5,7 +5,7 @@
 @section('content')
     <!-- Contact Section -->
     <section class="relative min-h-screen w-full py-16 lg:py-24 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
                 <!-- Left Content -->
                 <div class="space-y-6 bg-center bg-contain bg-no-repeat min-h-[500px] flex flex-col justify-center" style="background-image: url('{{ asset('images/assets/contactus/logo.png') }}');">
