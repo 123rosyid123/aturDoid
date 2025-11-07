@@ -366,7 +366,7 @@
             <!-- Right Side - Orange Gradient with Image and Incentive Box -->
             <div class="w-full lg:flex-1 relative rounded-2xl p-8 lg:p-12 flex items-center justify-center min-h-[500px]">
                 <!-- Background Image -->
-                <img class="lg:block absolute w-full object-contain rounded-2xl"
+                <img class="lg:block absolute w-full object-contain"
                     src="{{ asset('images/assets/home/insentif.png') }}" alt="Network Building" />
             </div>
     </section>

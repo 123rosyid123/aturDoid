@@ -1,0 +1,2 @@
+bg biru bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)]
+bg oren bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]
