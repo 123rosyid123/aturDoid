@@ -593,6 +593,32 @@ select.form-input:focus {
     let currentStep = 1;
     let formData = {};
 
+    // Check if email is verified from session
+    @if(session('verified') && session('email'))
+        formData.email = "{{ session('email') }}";
+        document.getElementById('email').value = "{{ session('email') }}";
+
+        // Show success message
+        const step1Error = document.getElementById('step1Error');
+        const step1ErrorText = document.getElementById('step1ErrorText');
+
+        step1Error.classList.remove('hidden', 'bg-red-50', 'border-red-200');
+        step1Error.classList.add('bg-green-50', 'border-green-200');
+        step1ErrorText.classList.remove('text-red-700');
+        step1ErrorText.classList.add('text-green-700');
+        step1Error.querySelector('i').classList.remove('fa-exclamation-triangle', 'text-red-500');
+        step1Error.querySelector('i').classList.add('fa-check-circle', 'text-green-500');
+        step1ErrorText.textContent = "{{ session('message') }}";
+
+        // Auto proceed to step 2 after 2 seconds
+        setTimeout(() => {
+            currentStep = 2;
+            showStep(2);
+            updateProgressDots(2);
+            updateProgressDotsLeft(2);
+        }, 2000);
+    @endif
+
     function togglePassword(inputId) {
         const input = document.getElementById(inputId);
         const icon = event.currentTarget.querySelector('i');
@@ -655,11 +681,18 @@ select.form-input:focus {
                 // Save step 1 data
                 formData.email = email;
 
-                // Proceed to step 2 (Password)
-                currentStep = 2;
-                showStep(2);
-                updateProgressDots(2);
-                updateProgressDotsLeft(2);
+                // Show success message
+                showError('step1Error', 'step1ErrorText', data.message || 'Email verifikasi telah dikirim! Silakan cek email Anda.');
+                document.getElementById('step1Error').classList.remove('bg-red-50', 'border-red-200');
+                document.getElementById('step1Error').classList.add('bg-green-50', 'border-green-200');
+                document.getElementById('step1ErrorText').classList.remove('text-red-700');
+                document.getElementById('step1ErrorText').classList.add('text-green-700');
+                document.getElementById('step1Error').querySelector('i').classList.remove('fa-exclamation-triangle', 'text-red-500');
+                document.getElementById('step1Error').querySelector('i').classList.add('fa-check-circle', 'text-green-500');
+
+                // Disable form inputs
+                document.getElementById('email').disabled = true;
+                nextBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Email Terkirim';
             } else {
                 // Show errors
                 if (data.errors) {
@@ -668,12 +701,12 @@ select.form-input:focus {
                 } else {
                     showError('step1Error', 'step1ErrorText', data.message || 'Validation failed');
                 }
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = originalText;
             }
         })
         .catch(error => {
             showError('step1Error', 'step1ErrorText', 'An error occurred. Please try again.');
-        })
-        .finally(() => {
             nextBtn.disabled = false;
             nextBtn.innerHTML = originalText;
         });

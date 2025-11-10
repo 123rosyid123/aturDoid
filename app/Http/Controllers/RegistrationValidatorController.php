@@ -3,18 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\EmailVerification;
+use App\Mail\EmailVerificationMail;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\ValidationException;
 use Str;
 
 class RegistrationValidatorController extends Controller
 {
     /**
-     * Validate Step 1: Email Only
+     * Validate Step 1: Email Only and Send Verification Email
      */
     public function validateStep1(Request $request)
     {
@@ -42,9 +45,22 @@ class RegistrationValidatorController extends Controller
             ], 422);
         }
 
+        // Generate verification token
+        $token = EmailVerification::createToken($request->email);
+
+        // Send verification email
+        try {
+            Mail::to($request->email)->send(new EmailVerificationMail($request->email, $token));
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send verification email. Please try again.'
+            ], 500);
+        }
+
         return response()->json([
             'success' => true,
-            'message' => 'Step 1 validation passed',
+            'message' => 'Verification email sent! Please check your email to continue.',
             'data' => [
                 'email' => $request->email
             ]
@@ -373,6 +389,30 @@ class RegistrationValidatorController extends Controller
             'success' => true,
             'message' => 'Registration completed successfully!',
             'redirect' => route('landing'),
+        ]);
+    }
+
+    /**
+     * Verify Email Token
+     */
+    public function verifyEmail($token)
+    {
+        $email = EmailVerification::verifyToken($token);
+
+        if (!$email) {
+            return view('auth.verification-failed', [
+                'message' => 'Link verifikasi tidak valid atau sudah kadaluarsa. Silakan daftar ulang.'
+            ]);
+        }
+
+        // Store verified email in session
+        session(['verified_email' => $email]);
+
+        // Redirect to register page with token to continue to step 2
+        return redirect()->route('register')->with([
+            'verified' => true,
+            'email' => $email,
+            'message' => 'Email berhasil diverifikasi! Silakan lanjutkan pengisian data.'
         ]);
     }
 }
