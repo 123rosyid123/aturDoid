@@ -23,9 +23,7 @@
                 <!-- Right Form -->
                 <div class="w-full">
                     <div class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_96%)] rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl">
-                        <form action="#" method="POST" class="space-y-8">
-                            @csrf
-
+                        <form id="contactForm" class="space-y-8">
                             <!-- Name Field -->
                             <div class="space-y-2">
                                 <label for="name" class="block text-white text-2xl sm:text-3xl font-bold" style="font-family: 'Roboto', sans-serif;">
@@ -75,7 +73,8 @@
 
                             <!-- Submit Button -->
                             <button
-                                type="submit"
+                                type="button"
+                                onclick="sendEmail()"
                                 class="w-full px-8 py-5 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white text-xl sm:text-2xl font-normal rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                                 style="font-family: 'Roboto', sans-serif;"
                             >
@@ -87,4 +86,30 @@
             </div>
         </div>
     </section>
+
+    <script>
+        function sendEmail() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Validate required fields
+            if (!email || !message) {
+                alert('Please fill in all required fields (Email and Message)');
+                return;
+            }
+
+            // Construct email subject and body
+            const subject = encodeURIComponent('Contact Form - AturDOit');
+            const body = encodeURIComponent(
+                `Name: ${name || 'Not provided'}\n` +
+                `Email: ${email}\n\n` +
+                `Message:\n${message}`
+            );
+
+            // Open default email client with mailto
+            window.location.href = `mailto:support@aturdoit.com?subject=${subject}&body=${body}`;
+        }
+    </script>
 @endsection
