@@ -5,6 +5,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistrationValidatorController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ContactController;
 
 // Landing Page Routes
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -12,6 +13,7 @@ Route::get('/features', [LandingPageController::class, 'features'])->name('featu
 Route::get('/community', [LandingPageController::class, 'community'])->name('community');
 Route::get('/about', [LandingPageController::class, 'about'])->name('about');
 Route::get('/contactus', [LandingPageController::class, 'contactus'])->name('contactus');
+Route::post('/contactus', [ContactController::class, 'send'])->name('contact.send');
 Route::get('/api/chart-data', [LandingPageController::class, 'getChartData']);
 
 // Authentication Routes

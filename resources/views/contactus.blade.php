@@ -23,7 +23,25 @@
                 <!-- Right Form -->
                 <div class="w-full">
                     <div class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_96%)] rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl">
-                        <form id="contactForm" class="space-y-8">
+                        <form action="{{ route('contact.send') }}" method="POST" class="space-y-8">
+                            @csrf
+
+                            <!-- Success Message -->
+                            @if(session('success'))
+                                <div class="p-4 bg-green-500/20 border border-green-500 rounded-2xl">
+                                    <p class="text-white text-lg">{{ session('success') }}</p>
+                                </div>
+                            @endif
+
+                            <!-- Error Messages -->
+                            @if($errors->any())
+                                <div class="p-4 bg-red-500/20 border border-red-500 rounded-2xl">
+                                    @foreach($errors->all() as $error)
+                                        <p class="text-white text-lg">{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
+
                             <!-- Name Field -->
                             <div class="space-y-2">
                                 <label for="name" class="block text-white text-2xl sm:text-3xl font-bold" style="font-family: 'Roboto', sans-serif;">
@@ -33,6 +51,7 @@
                                     type="text"
                                     id="name"
                                     name="name"
+                                    value="{{ old('name') }}"
                                     placeholder="Name"
                                     class="w-full px-6 py-4 rounded-2xl border border-black/50 text-gray-800 text-lg sm:text-xl placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all bg-white"
                                     style="font-family: 'Roboto', sans-serif;"
@@ -48,6 +67,7 @@
                                     type="email"
                                     id="email"
                                     name="email"
+                                    value="{{ old('email') }}"
                                     placeholder="Email"
                                     required
                                     class="w-full px-6 py-4 rounded-2xl border border-black/50 text-gray-800 text-lg sm:text-xl placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all bg-white"
@@ -68,13 +88,12 @@
                                     required
                                     class="w-full px-6 py-4 rounded-2xl border border-black/50 text-gray-800 text-lg sm:text-xl placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none bg-white"
                                     style="font-family: 'Roboto', sans-serif;"
-                                ></textarea>
+                                >{{ old('message') }}</textarea>
                             </div>
 
                             <!-- Submit Button -->
                             <button
-                                type="button"
-                                onclick="sendEmail()"
+                                type="submit"
                                 class="w-full px-8 py-5 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white text-xl sm:text-2xl font-normal rounded-2xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
                                 style="font-family: 'Roboto', sans-serif;"
                             >
@@ -86,30 +105,4 @@
             </div>
         </div>
     </section>
-
-    <script>
-        function sendEmail() {
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
-
-            // Validate required fields
-            if (!email || !message) {
-                alert('Please fill in all required fields (Email and Message)');
-                return;
-            }
-
-            // Construct email subject and body
-            const subject = encodeURIComponent('Contact Form - AturDOit');
-            const body = encodeURIComponent(
-                `Name: ${name || 'Not provided'}\n` +
-                `Email: ${email}\n\n` +
-                `Message:\n${message}`
-            );
-
-            // Open default email client with mailto
-            window.location.href = `mailto:support@aturdoit.com?subject=${subject}&body=${body}`;
-        }
-    </script>
 @endsection
