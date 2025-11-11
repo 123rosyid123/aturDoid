@@ -21,8 +21,9 @@ class ContactController extends Controller
         ]);
 
         try {
-            // Send email to support@aturdoit.com
-            Mail::to('support@aturdoit.com')->send(
+            // Send email to support
+            $support_email = config('constant.support_email');
+            Mail::to($support_email)->send(
                 new ContactUsMail(
                     $validated['name'] ?? 'Not provided',
                     $validated['email'],
