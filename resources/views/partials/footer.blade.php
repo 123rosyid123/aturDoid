@@ -15,7 +15,7 @@
                     <p>All rights reserved</p>
                 </div>
 
-                <!-- Social Links -->
+                {{-- <!-- Social Links -->
                 <div class="flex gap-4">
                     <a href="#" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                         <i class="fab fa-instagram text-white text-sm"></i>
@@ -29,7 +29,7 @@
                     <a href="#" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
                         <i class="fab fa-youtube text-white text-sm"></i>
                     </a>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Navigation Columns -->
@@ -48,28 +48,57 @@
                 <div class="flex flex-col gap-6">
                     <h4 class="text-lg lg:text-xl font-semibold text-white leading-7" style="font-family: 'Inter', sans-serif;">Support</h4>
                     <ul class="flex flex-col gap-3 text-sm text-[#F5F7FA] leading-5" style="font-family: 'Inter', sans-serif;">
-                        <li><a href="#" class="hover:text-orange-400 transition-colors">Help center</a></li>
+                        {{-- <li><a href="#" class="hover:text-orange-400 transition-colors">Help center</a></li> --}}
                         <li><a href="#" class="hover:text-orange-400 transition-colors">Terms of service</a></li>
                         <li><a href="#" class="hover:text-orange-400 transition-colors">Legal</a></li>
                         <li><a href="#" class="hover:text-orange-400 transition-colors">Privacy policy</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition-colors">Status</a></li>
+                        {{-- <li><a href="#" class="hover:text-orange-400 transition-colors">Status</a></li> --}}
                     </ul>
                 </div>
 
                 <!-- Newsletter Column -->
                 <div class="flex flex-col gap-6">
                     <h4 class="text-lg lg:text-xl font-semibold text-white leading-7 whitespace-nowrap" style="font-family: 'Inter', sans-serif;">Ikuti Perkembangannya</h4>
-                    <div class="relative w-full sm:w-[255px]">
+
+                    @if(session('success'))
+                        <div class="text-sm text-green-400 bg-green-900/20 px-4 py-2 rounded-lg">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('info'))
+                        <div class="text-sm text-yellow-400 bg-yellow-900/20 px-4 py-2 rounded-lg">
+                            {{ session('info') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="text-sm text-red-400 bg-red-900/20 px-4 py-2 rounded-lg">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if($errors->has('email'))
+                        <div class="text-sm text-red-400 bg-red-900/20 px-4 py-2 rounded-lg">
+                            {{ $errors->first('email') }}
+                        </div>
+                    @endif
+
+                    <form action="{{ route('newsletter.subscribe') }}" method="POST" class="relative w-full sm:w-[255px]">
+                        @csrf
                         <input
                             type="email"
+                            name="email"
                             placeholder="Masukan alamat E-mail Anda"
+                            value="{{ old('email') }}"
                             class="w-full bg-white/20 text-[#d9dbe1] placeholder:text-[#d9dbe1] text-sm leading-5 rounded-lg px-4 py-2 pr-12 focus:outline-none focus:ring-2 focus:ring-orange-500"
                             style="font-family: 'Inter', sans-serif;"
+                            required
                         >
-                        <button type="button" class="absolute top-1/2 right-3 -translate-y-1/2 text-white hover:text-orange-400 transition-colors">
+                        <button type="submit" class="absolute top-1/2 right-3 -translate-y-1/2 text-white hover:text-orange-400 transition-colors">
                             <i class="fas fa-paper-plane text-sm"></i>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>

@@ -32,18 +32,18 @@
             <div class="w-full flex-1 relative flex justify-center items-center gap-4 p-4 min-h-[400px] lg:min-h-[500px]">
                 <!-- Blur Effect Right -->
                 <div
-                    class="absolute right-[10%] lg:right-[15%] top-[20%] w-32 h-48 lg:w-[189px] lg:h-[239px] bg-[linear-gradient(180deg,#F7863D_0%,#E76126_100%)] blur-[150px] opacity-50">
+                    class="absolute right-[10%] lg:right-[15%] top-[20%] w-32 h-48 lg:w-[189px] lg:h-[239px] bg-[linear-gradient(180deg,#F7863D_0%,#E76126_100%)] blur-[150px] opacity-50 z-0">
                 </div>
 
                 <!-- Blur Effect Left -->
                 <div
-                    class="absolute left-[10%] lg:left-[20%] top-[20%] w-32 h-48 lg:w-[187px] lg:h-[239px] bg-[linear-gradient(180deg,#F7863D_0%,#E76126_100%)] rounded-full blur-[150px] opacity-50">
+                    class="absolute left-[10%] lg:left-[20%] top-[20%] w-32 h-48 lg:w-[187px] lg:h-[239px] bg-[linear-gradient(180deg,#F7863D_0%,#E76126_100%)] rounded-full blur-[150px] opacity-50 z-0">
                 </div>
 
                 <!-- Hero Images -->
-                <img class="w-full max-w-[500px] lg:max-w-[600px] h-auto object-contain"
+                <img class="relative z-10 w-full max-w-[500px] lg:max-w-[600px] h-auto object-contain"
                     src="{{ asset('images/assets/home/laptop.png') }}" alt="AturDOit Dashboard" />
-                <img class="hidden sm:block w-auto max-w-[150px] lg:max-w-[180px] h-auto object-contain"
+                <img class="relative z-10 hidden sm:block w-auto max-w-[150px] lg:max-w-[180px] h-auto object-contain"
                     src="{{ asset('images/assets/home/mobile.png') }}" alt="AturDOit Mobile" />
             </div>
         </div>
@@ -126,7 +126,7 @@
                         <p class="text-sm lg:text-base leading-relaxed mb-4">
                             AturDOit menyediakan Smart Financial Tools yang mencatat pemasukan, pengeluaran, aset, dan
                             kewajiban yang secara otomatis akan menyusun laporan keuangan pribadi beserta analisa keuangan
-                            dan rekomendasi dari penasehat keuangan yg bersertifikasi dan ditampilkan dalam dashboard yang
+                            dan rekomendasi dari penasehat keuangan yang bersertifikasi dan ditampilkan dalam dashboard yang
                             mudah dipahami.
                         </p>
 

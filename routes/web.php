@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RegistrationValidatorController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NewsletterController;
 
 // Landing Page Routes
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
@@ -14,6 +15,7 @@ Route::get('/community', [LandingPageController::class, 'community'])->name('com
 Route::get('/about', [LandingPageController::class, 'about'])->name('about');
 Route::get('/contactus', [LandingPageController::class, 'contactus'])->name('contactus');
 Route::post('/contactus', [ContactController::class, 'send'])->name('contact.send');
+Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/api/chart-data', [LandingPageController::class, 'getChartData']);
 
 // Authentication Routes

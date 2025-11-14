@@ -132,7 +132,7 @@
                                                             </button>
                                                         </div>
 
-                                                        <!-- Helper Text -->
+                                                        {{-- <!-- Helper Text -->
                                                         <div class="mt-3 text-center">
                                                             <p class="text-white text-sm">
                                                                 No code?
@@ -140,7 +140,7 @@
                                                                     Skip for now
                                                                 </button>
                                                             </p>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <!-- Loading State -->
                                                         <div id="uplineLoading" class="hidden mt-3 text-center">

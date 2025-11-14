@@ -15,7 +15,7 @@
                     <p class="text-lg lg:text-3xl mb-8 py-4 opacity-90 font-['Roboto']">
                         Akses berbagai alat perencanaan, laporan, dan edukasi finansial yang membantu Anda memahami
                         pengeluaran, mengatur anggaran, dan mengambil keputusan keuangan yang lebih baik, dan mencapai
-                        kemandiriian finansial!
+                        kemandirian finansial!
                     </p>
                 </div>
 
