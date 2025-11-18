@@ -488,18 +488,20 @@ select.form-input:focus {
                             <!-- Referral Code Input -->
                             <div class="mb-6">
                                 <label class="block text-gray-700 text-sm font-medium mb-2">Kode Referal</label>
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-gift text-gray-400"></i>
+                                <div class="flex gap-3">
+                                    <div class="relative flex-1">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <i class="fas fa-gift text-gray-400"></i>
+                                        </div>
+                                        <input type="text"
+                                            id="referral_code"
+                                            name="referral_code"
+                                            value="{{ old('referral_code', request()->query('ref')) }}"
+                                            class="form-input w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                            placeholder="Masukkan Kode Referal"></input>
                                     </div>
-                                    <input type="text"
-                                           id="referral_code"
-                                           name="referral_code"
-                                           value="{{ old('referral_code', request()->query('ref')) }}"
-                                           class="form-input w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                           placeholder="Masukkan Kode Referal">
-                                    <button type="button" id="validateReferralBtn" onclick="validateReferralCode()" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                        <i class="fas fa-check-circle text-gray-400 hover:text-green-500"></i>
+                                    <button type="button" id="validateReferralBtn" onclick="validateReferralCode()" class="text-white bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] rounded-lg px-4 py-3 font-medium hover:opacity-90 transition-opacity whitespace-nowrap">
+                                        Validasi
                                     </button>
                                 </div>
                             </div>
@@ -523,7 +525,6 @@ select.form-input:focus {
                                            name="terms_agreed"
                                            class="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                                     <span class="ml-2 text-sm text-gray-600">
-                                        By using this app, you agree to our
                                         Dengan menggunakan aplikasi ini, Anda menyetujui
                                         <a href="#" onclick="showTerms()" class="text-blue-600 hover:text-blue-800 underline">ketentuan</a> kami.
                                         Kami menjaga data pribadi Anda tetap aman dan hanya menggunakannya untuk menjalankan aplikasi.
@@ -944,10 +945,11 @@ select.form-input:focus {
         .then(data => {
             loadingDiv.classList.add('hidden');
             validateBtn.disabled = false;
-            validateBtn.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-
+            
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
+                validateBtn.classList.remove('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
+                validateBtn.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
                 document.getElementById('step5SuccessText').textContent = data.message || 'Referral code validated successfully!';
                 referralCodeValidated = true;
                 formData.referral_code = referralCode;
@@ -956,12 +958,13 @@ select.form-input:focus {
                 errorDiv.classList.remove('hidden');
                 document.getElementById('step5ErrorText').textContent = data.message || 'Invalid referral code';
                 referralCodeValidated = false;
+                validateBtn.innerHTML = 'Validasi';
             }
         })
         .catch(error => {
             loadingDiv.classList.add('hidden');
             validateBtn.disabled = false;
-            validateBtn.innerHTML = '<i class="fas fa-check-circle text-gray-400 hover:text-green-500"></i>';
+            validateBtn.innerHTML = 'Validasi';
 
             // Show error message
             errorDiv.classList.remove('hidden');
@@ -1334,7 +1337,8 @@ select.form-input:focus {
                 referralCodeSkipped = false;
                 document.getElementById('step5Error').classList.add('hidden');
                 document.getElementById('step5Success').classList.add('hidden');
-                document.getElementById('validateReferralBtn').innerHTML = '<i class="fas fa-check-circle text-gray-400 hover:text-green-500"></i>';
+                document.getElementById('validateReferralBtn').classList.add('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
+                document.getElementById('validateReferralBtn').innerHTML = 'Validasi';
             });
         }
     });
