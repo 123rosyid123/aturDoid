@@ -18,6 +18,11 @@ Route::post('/contactus', [ContactController::class, 'send'])->name('contact.sen
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/api/chart-data', [LandingPageController::class, 'getChartData']);
 
+// Legal Pages Routes
+Route::get('/terms-of-service', [LandingPageController::class, 'termsOfService'])->name('terms.service');
+Route::get('/legal', [LandingPageController::class, 'legal'])->name('legal');
+Route::get('/privacy-policy', [LandingPageController::class, 'privacyPolicy'])->name('privacy.policy');
+
 // Authentication Routes
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);

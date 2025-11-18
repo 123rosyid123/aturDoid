@@ -167,14 +167,14 @@
                                 </div>
                             </section>
 
-                            {{-- Downline Section --}}
+                            {{-- Affiliator Section --}}
                             <section class="w-full bg-white overflow-hidden py-16">
                                 <div class="container mx-auto px-4 lg:px-8 max-w-[1600px]">
                                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-                                        {{-- Downline List --}}
+                                        {{-- Affiliator List --}}
                                         <div class="space-y-8">
                                             <h2 class="text-4xl lg:text-5xl font-bold bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] bg-clip-text text-transparent">
-                                                Direct Downline ({{ $totalDownline ?? 729 }})
+                                                Direct Affiliator ({{ $totalDownline ?? 729 }})
                                             </h2>
 
                                             <div class="max-h-[760px] overflow-y-auto pr-4 space-y-8">
@@ -186,17 +186,17 @@
         ])
                                                 @empty
                                                     @include('partials.empty-downline', [
-            'message' => 'Belum Ada Downline',
+            'message' => 'Belum Ada Affiliator',
             'buttonText' => 'Undang Sekarang'
         ])
                                                 @endforelse
                                             </div>
                                         </div>
 
-                                        {{-- Downline Info Panel --}}
+                                        {{-- Affiliator Info Panel --}}
                                         <div class="bg-white rounded-lg p-6 lg:p-8 space-y-12">
                                             <h3 class="text-4xl lg:text-6xl font-bold bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent">
-                                                Downline
+                                                Affiliator
                                             </h3>
 
                                             <div class="space-y-6 text-lg lg:text-2xl text-black leading-relaxed">
@@ -207,7 +207,7 @@
                                                     pencapaian level keuangan anda
                                                 </p>
                                                 <p>
-                                                    Untuk saat ini, Anda hanya dapat melihat Direct Downline atau Generasi Pertama Anda. Selain itu,
+                                                    Untuk saat ini, Anda hanya dapat melihat Direct Affiliator atau Generasi Pertama Anda. Selain itu,
                                                     Anda juga dapat melihat downline milik generasi pertama Anda.
                                                 </p>
                                             </div>

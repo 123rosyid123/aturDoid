@@ -1,4 +1,4 @@
-{{-- Downline Card Component --}}
+{{-- Affiliator Card Component --}}
 @php
     $statusColor = strtolower($status) === 'active' ? 'text-green-500' : 'text-red-500';
     $statusText = ucfirst($status);
@@ -15,10 +15,10 @@
         </span>
     </div>
 
-    {{-- Downline Count --}}
+    {{-- Affiliator Count --}}
     <div class="flex flex-col items-end gap-4">
         <span class="text-xl lg:text-2xl font-bold text-black">
-            Downline:
+            Affiliator:
         </span>
         <span class="text-xl lg:text-2xl text-black">
             {{ $downlineCount }}

@@ -49,9 +49,9 @@
                     <h4 class="text-lg lg:text-xl font-semibold text-white leading-7" style="font-family: 'Inter', sans-serif;">Support</h4>
                     <ul class="flex flex-col gap-3 text-sm text-[#F5F7FA] leading-5" style="font-family: 'Inter', sans-serif;">
                         {{-- <li><a href="#" class="hover:text-orange-400 transition-colors">Help center</a></li> --}}
-                        <li><a href="#" class="hover:text-orange-400 transition-colors">Terms of service</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition-colors">Legal</a></li>
-                        <li><a href="#" class="hover:text-orange-400 transition-colors">Privacy policy</a></li>
+                        <li><a href="{{ route('terms.service') }}" class="hover:text-orange-400 transition-colors">Terms of service</a></li>
+                        <li><a href="{{ route('legal') }}" class="hover:text-orange-400 transition-colors">Legal</a></li>
+                        <li><a href="{{ route('privacy.policy') }}" class="hover:text-orange-400 transition-colors">Privacy policy</a></li>
                         {{-- <li><a href="#" class="hover:text-orange-400 transition-colors">Status</a></li> --}}
                     </ul>
                 </div>

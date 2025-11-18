@@ -127,6 +127,30 @@ class LandingPageController extends Controller
     }
 
     /**
+     * Display the terms of service page
+     */
+    public function termsOfService()
+    {
+        return view('term_of_service');
+    }
+
+    /**
+     * Display the legal page
+     */
+    public function legal()
+    {
+        return view('legal');
+    }
+
+    /**
+     * Display the privacy policy page
+     */
+    public function privacyPolicy()
+    {
+        return view('privacy_policy');
+    }
+
+    /**
      * Display the referral page
      */
     public function refferal()
