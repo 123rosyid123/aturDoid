@@ -656,6 +656,10 @@ select.form-input:focus {
         // Get form data
         const email = document.getElementById('email').value.trim();
 
+        // Get referral code from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+
         // Clear previous errors
         document.getElementById('step1Error').classList.add('hidden');
 
@@ -665,6 +669,12 @@ select.form-input:focus {
         nextBtn.disabled = true;
         nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Sending verification...';
 
+        // Prepare request body with referral code if present
+        const requestBody = { email: email };
+        if (refCode) {
+            requestBody.ref = refCode;
+        }
+
         // Call validator endpoint
         fetch('/api/register/validate-step-1', {
             method: 'POST',
@@ -672,15 +682,17 @@ select.form-input:focus {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({
-                email: email
-            })
+            body: JSON.stringify(requestBody)
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 // Save step 1 data
                 formData.email = email;
+                // Save referral code if present
+                if (refCode) {
+                    formData.ref = refCode;
+                }
 
                 // Show success message
                 showError('step1Error', 'step1ErrorText', data.message || 'Email verifikasi telah dikirim! Silakan cek email Anda.');

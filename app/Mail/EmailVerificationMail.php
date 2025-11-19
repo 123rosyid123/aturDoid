@@ -18,10 +18,17 @@ class EmailVerificationMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct($email, $token)
+    public function __construct($email, $token, $referralCode = null)
     {
         $this->email = $email;
-        $this->verificationUrl = route('register.verify', ['token' => $token]);
+        
+        // Build verification URL with referral code if present
+        $verificationParams = ['token' => $token];
+        if ($referralCode) {
+            $verificationParams['ref'] = $referralCode;
+        }
+        
+        $this->verificationUrl = route('register.verify', $verificationParams);
     }
 
     /**

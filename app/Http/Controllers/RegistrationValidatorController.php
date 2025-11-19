@@ -45,12 +45,15 @@ class RegistrationValidatorController extends Controller
             ], 422);
         }
 
+        // Get referral code from request (can be from query string or request body)
+        $referralCode = $request->input('ref') ?? $request->query('ref');
+
         // Generate verification token
         $token = EmailVerification::createToken($request->email);
 
-        // Send verification email
+        // Send verification email with referral code if present
         try {
-            Mail::to($request->email)->send(new EmailVerificationMail($request->email, $token));
+            Mail::to($request->email)->send(new EmailVerificationMail($request->email, $token, $referralCode));
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -273,7 +276,7 @@ class RegistrationValidatorController extends Controller
         return response()->json([
             'success' => true,
             'valid' => true,
-            'message' => 'Referral code validated successfully!',
+            'message' => 'Referral code dari ' . $validCode->first_name . ' ' . $validCode->last_name . ' berhasil divalidasi!',
         ]);
     }
 
@@ -395,7 +398,7 @@ class RegistrationValidatorController extends Controller
     /**
      * Verify Email Token
      */
-    public function verifyEmail($token)
+    public function verifyEmail($token, Request $request)
     {
         $email = EmailVerification::verifyToken($token);
 
@@ -408,8 +411,17 @@ class RegistrationValidatorController extends Controller
         // Store verified email in session
         session(['verified_email' => $email]);
 
+        // Get referral code from query parameter if present
+        $referralCode = $request->query('ref');
+
         // Redirect to register page with token to continue to step 2
-        return redirect()->route('register')->with([
+        // Preserve referral code if present
+        $redirectUrl = route('register');
+        if ($referralCode) {
+            $redirectUrl .= '?ref=' . urlencode($referralCode);
+        }
+
+        return redirect($redirectUrl)->with([
             'verified' => true,
             'email' => $email,
             'message' => 'Email berhasil diverifikasi! Silakan lanjutkan pengisian data.'
