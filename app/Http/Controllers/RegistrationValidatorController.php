@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use Str;
 
@@ -381,7 +382,7 @@ class RegistrationValidatorController extends Controller
         ]);
 
         //create referral code
-        $referralCode = Str::random(10);
+        $referralCode = $this->generateReferralCode();
         $user->referral_code = $referralCode;
         $user->save();
 
@@ -393,6 +394,60 @@ class RegistrationValidatorController extends Controller
             'message' => 'Registration completed successfully!',
             'redirect' => route('landing'),
         ]);
+    }
+
+    /**
+     * Generate Referral Code with format AD + 8 digit number
+     * Format: AD00000001, AD00000002, etc.
+     * Sequential based on registration order (user id)
+     */
+    private function generateReferralCode(): string
+    {
+        // Use database lock to prevent race condition
+        DB::beginTransaction();
+        try {
+            // Count total users with AD prefix referral code to get next sequential number
+            // This ensures sequential numbering based on registration order
+            $count = User::where('referral_code', 'like', 'AD%')
+                ->lockForUpdate()
+                ->count();
+
+            $nextNumber = $count + 1;
+
+            // Format with 8 digits with leading zeros
+            $referralCode = 'AD' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+
+            // Double check uniqueness (in case of any edge case or deleted users)
+            $exists = User::where('referral_code', $referralCode)->exists();
+            if ($exists) {
+                // If exists, find the maximum number from existing codes
+                $maxNumber = 0;
+                $usersWithAD = User::where('referral_code', 'like', 'AD%')
+                    ->select('referral_code')
+                    ->get();
+
+                foreach ($usersWithAD as $user) {
+                    if (preg_match('/^AD(\d{8})$/', $user->referral_code, $matches)) {
+                        $number = (int) $matches[1];
+                        if ($number > $maxNumber) {
+                            $maxNumber = $number;
+                        }
+                    }
+                }
+
+                $nextNumber = $maxNumber + 1;
+                $referralCode = 'AD' . str_pad($nextNumber, 8, '0', STR_PAD_LEFT);
+            }
+
+            DB::commit();
+            return $referralCode;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // Fallback: use current timestamp-based number if something goes wrong
+            // This ensures we still get a unique code
+            $fallbackNumber = (int) substr(time(), -8); // Last 8 digits of timestamp
+            return 'AD' . str_pad($fallbackNumber, 8, '0', STR_PAD_LEFT);
+        }
     }
 
     /**
