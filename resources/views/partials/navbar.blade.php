@@ -67,7 +67,7 @@
                             </a> --}}
                             <a href="{{ route('profile') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-user mr-2 text-gray-400"></i>
-                                Profile
+                                My Profile
                             </a>
                             {{-- <a href="{{ route('settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-cog mr-2 text-gray-400"></i>
@@ -139,7 +139,7 @@
             </a> --}}
             <a href="{{ route('profile') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                 <i class="fas fa-user mr-2 text-gray-400"></i>
-                Profile
+                My Profile
             </a>
             {{-- <a href="{{ route('settings') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                 <i class="fas fa-cog mr-2 text-gray-400"></i>
