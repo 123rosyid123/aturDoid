@@ -159,7 +159,21 @@ class LandingPageController extends Controller
         $referralCode = $user->referral_code;
         $uplineCode = $user->upline_code;
         $totalDownline = $user->downlines()->count();
-        $downlines = $user->downlines()->get();
+        
+        // Get downlines with upline_created_at from user_upline_log
+        $downlines = $user->downlines()->get()->map(function($downline) use ($user) {
+            // Get the latest log entry for this downline with current user as upline
+            $latestLog = \App\Models\UserUplineLog::where('user_id', $downline->id)
+                ->where('upline_user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+            
+            // Add upline_created_at attribute
+            $downline->upline_created_at = $latestLog ? $latestLog->created_at : $downline->created_at;
+            
+            return $downline;
+        });
+        
         $referralLink = $this->generateReferralLink();
         return view('refferal', [
             'user' => $user,

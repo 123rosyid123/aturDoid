@@ -87,7 +87,7 @@
 
                                         <div class="space-y-4">
                                             <p class="text-xl lg:text-2xl text-white">
-                                                {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Affiliator Anda:' : 'Masukan Kode Referral Affiliator Anda:' }}
+                                                {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Anda:' : 'Masukan Kode Referral Anda:' }}
                                             </p>
 
                                             @if(isset($uplineCode) && $uplineCode)
@@ -183,9 +183,15 @@
 
                                             <div class="max-h-[760px] overflow-y-auto pr-4 space-y-8">
                                                 @forelse($downlines ?? [] as $downline)
+                                                    @php
+                                                        $affiliatedDate = isset($downline->upline_created_at) && $downline->upline_created_at 
+                                                            ? $downline->upline_created_at->format('d M Y') 
+                                                            : '-';
+                                                    @endphp
                                                     @include('partials.downline-card', [
             'name' => $downline['first_name'] . ' ' . $downline['last_name'],
             'status' => $downline['status'],
+            'affiliatedOn' => $affiliatedDate,
             'downlineCount' => $downline->downlines()->count()
         ])
                                                 @empty

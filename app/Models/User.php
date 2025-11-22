@@ -94,6 +94,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all upline logs for this user (as the user who set upline)
+     */
+    public function uplineLogs()
+    {
+        return $this->hasMany(UserUplineLog::class, 'user_id');
+    }
+
+    /**
+     * Get upline logs where this user is the upline (as the upline user)
+     */
+    public function asUplineLogs()
+    {
+        return $this->hasMany(UserUplineLog::class, 'upline_user_id');
+    }
+
+    /**
      * Check if user is active.
      */
     public function isActive(): bool
