@@ -37,7 +37,17 @@
                     <!-- User Profile Dropdown -->
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center space-x-2 text-gray-700 hover:text-orange-500 transition-all">
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) }}&background=orange&color=fff&size=32" alt="User Avatar" class="w-8 h-8 rounded-full">
+                            @php
+                                $navAvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) . '&background=orange&color=fff&size=32';
+                                if (Auth::user()->avatar) {
+                                    if (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL)) {
+                                        $navAvatarUrl = Auth::user()->avatar;
+                                    } else {
+                                        $navAvatarUrl = url('/avatars/' . basename(Auth::user()->avatar));
+                                    }
+                                }
+                            @endphp
+                            <img src="{{ $navAvatarUrl }}" alt="User Avatar" class="w-8 h-8 rounded-full object-cover">
                             <span class="text-sm font-medium">{{ Auth::user()->first_name }}</span>
                             <i class="fas fa-chevron-down text-xs"></i>
                         </button>
@@ -54,12 +64,12 @@
                             {{-- <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-tachometer-alt mr-2 text-gray-400"></i>
                                 Dashboard
-                            </a>
+                            </a> --}}
                             <a href="{{ route('profile') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-user mr-2 text-gray-400"></i>
                                 Profile
                             </a>
-                            <a href="{{ route('settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            {{-- <a href="{{ route('settings') }}" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
                                 <i class="fas fa-cog mr-2 text-gray-400"></i>
                                 Settings
                             </a> --}}
@@ -102,7 +112,17 @@
         @else
         <div class="px-2 pt-2 pb-3 space-y-1">
             <div class="flex items-center space-x-3 px-3 py-2 border-b">
-                <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) }}&background=orange&color=fff&size=40" alt="User Avatar" class="w-10 h-10 rounded-full">
+                @php
+                    $mobileAvatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) . '&background=orange&color=fff&size=40';
+                    if (Auth::user()->avatar) {
+                        if (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL)) {
+                            $mobileAvatarUrl = Auth::user()->avatar;
+                        } else {
+                            $mobileAvatarUrl = url('/avatars/' . basename(Auth::user()->avatar));
+                        }
+                    }
+                @endphp
+                <img src="{{ $mobileAvatarUrl }}" alt="User Avatar" class="w-10 h-10 rounded-full object-cover">
                 <div>
                     <div class="text-sm font-medium text-gray-900">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
                     <div class="text-xs text-gray-500">{{ Auth::user()->email }}</div>

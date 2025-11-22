@@ -6,9 +6,72 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+    /**
+     * Display the user's profile page
+     */
+    public function showProfile()
+    {
+        return view('profile');
+    }
+
+    /**
+     * Update the user's profile information
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'nullable|string|max:255',
+            'last_name' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:20',
+            'date_of_birth' => 'nullable|date|before:today',
+            'gender' => 'nullable|in:male,female',
+            'country' => 'nullable|string|max:255',
+            'occupation' => 'nullable|string|max:255',
+            'avatar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048', // Max 2MB
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Handle avatar upload
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists and is a local file (not a URL from Google)
+            if ($user->avatar && !filter_var($user->avatar, FILTER_VALIDATE_URL)) {
+                // Only delete if it's a local file path, not a Google avatar URL
+                if (Storage::disk('public')->exists($user->avatar)) {
+                    Storage::disk('public')->delete($user->avatar);
+                }
+            }
+
+            // Store new avatar
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
+        }
+
+        // Update user profile
+        $user->first_name = $request->input('first_name', $user->first_name);
+        $user->last_name = $request->input('last_name', $user->last_name);
+        $user->phone = $request->input('phone', $user->phone);
+        $user->date_of_birth = $request->input('date_of_birth', $user->date_of_birth);
+        $user->gender = $request->input('gender', $user->gender);
+        $user->country = $request->input('country', $user->country);
+        $user->occupation = $request->input('occupation', $user->occupation);
+
+        $user->save();
+
+        return redirect()->route('profile')->with('success', 'Profile updated successfully!');
+    }
+
     /**
      * Update user's upline code
      */

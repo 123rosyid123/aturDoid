@@ -52,15 +52,28 @@ Route::prefix('api/register')->group(function () {
     Route::post('/complete', [RegistrationValidatorController::class, 'completeRegistration']);
 });
 
+// Avatar Route (Public - untuk serve file avatar)
+Route::get('/avatars/{filename}', function ($filename) {
+    $path = storage_path('app/public/avatars/' . $filename);
+    
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    
+    $file = file_get_contents($path);
+    $type = mime_content_type($path);
+    
+    return response($file, 200)->header('Content-Type', $type);
+})->name('avatar.show');
+
 // Protected Routes (for future dashboard)
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    Route::get('/profile', function () {
-        return view('profile');
-    })->name('profile');
+    Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
+    Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
 
     Route::get('/settings', function () {
         return view('settings');

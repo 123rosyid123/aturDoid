@@ -34,6 +34,8 @@ class User extends Authenticatable
         'city',
         'zip',
         'date_of_birth',
+        'gender',
+        'country',
         'marital_status',
         'occupation',
         'religion',
