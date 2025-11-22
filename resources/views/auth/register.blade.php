@@ -49,7 +49,6 @@ select.form-input:focus {
                     <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
                     <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
                     <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
-                    <div class="w-2 h-2 bg-gray-600 rounded-full"></div>
                 </div>
             </div>
 
@@ -82,11 +81,6 @@ select.form-input:focus {
                                 <div id="line3" class="w-4 sm:w-8 h-px bg-gray-300"></div>
                                 <div class="flex flex-col items-center">
                                     <div id="step4Circle" class="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold">4</div>
-                                    <span class="mt-1 text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">Status</span>
-                                </div>
-                                <div id="line4" class="w-4 sm:w-8 h-px bg-gray-300"></div>
-                                <div class="flex flex-col items-center">
-                                    <div id="step5Circle" class="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold">5</div>
                                     <span class="mt-1 text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">Refferal</span>
                                 </div>
                             </div>
@@ -308,16 +302,16 @@ select.form-input:focus {
                                            value="{{ old('phone') }}"
                                            required
                                            class="form-input flex-1 px-3 py-3 border-t border-r border-b border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                           placeholder="Phone Number">
+                                           placeholder="123456789">
                                 </div>
                             </div>
 
-                            <!-- Title and Date of Birth -->
+                            <!-- Gender and Job -->
                             <div class="grid grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label class="block text-gray-700 text-sm font-medium mb-2">Jenis Kelamin</label>
-                                    <select id="title"
-                                            name="title"
+                                    <select id="gender"
+                                            name="gender"
                                             required
                                             class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
                                         <option value="">Pilih Jenis Kelamin</option>
@@ -326,50 +320,43 @@ select.form-input:focus {
                                     </select>
                                 </div>
                                 <div>
-                                    <label class="block text-gray-700 text-sm font-medium mb-2">Tanggal Kelahiran</label>
-                                    <input type="date"
-                                           id="date_of_birth"
-                                           name="date_of_birth"
-                                           value="{{ old('date_of_birth') }}"
-                                           required
-                                           class="form-input w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                                    <label class="block text-gray-700 text-sm font-medium mb-2">Pekerjaan</label>
+                                    <select id="occupation"
+                                            name="occupation"
+                                            required
+                                            class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                        <option value="">Pilih Pekerjaan</option>
+                                        <option value="student">Mahasiswa</option>
+                                        <option value="employee">Karyawan</option>
+                                        <option value="business_owner">Pemilik Bisnis</option>
+                                        <option value="freelancer">Freelancer</option>
+                                        <option value="professional">Profesional</option>
+                                        <option value="unemployed">Pengangguran</option>
+                                        <option value="retired">Pensiunan</option>
+                                        <option value="other">Lainnya</option>
+                                    </select>
                                 </div>
                             </div>
 
-                            <!-- Address -->
-                            <div class="mb-4">
-                                <label class="block text-gray-700 text-sm font-medium mb-2">Alamat Tempat Tinggal</label>
-                                <input type="text"
-                                       id="address"
-                                       name="address"
-                                       value="{{ old('address') }}"
-                                       required
-                                       class="form-input w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                       placeholder="Address Line 1">
-                            </div>
-
-                            <!-- City and Zip -->
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-medium mb-2">Kota</label>
-                                    <input type="text"
-                                           id="city"
-                                           name="city"
-                                           value="{{ old('city') }}"
-                                           required
-                                           class="form-input w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                           placeholder="City">
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-medium mb-2">Kode Pos</label>
-                                    <input type="text"
-                                           id="zip"
-                                           name="zip"
-                                           value="{{ old('zip') }}"
-                                           required
-                                           class="form-input w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                           placeholder="Zip">
-                                </div>
+                            <!-- Country -->
+                            <div class="mb-6">
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Negara</label>
+                                <select id="country"
+                                        name="country"
+                                        required
+                                        class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                    <option value="">Pilih Negara</option>
+                                    <option value="indonesia">Indonesia</option>
+                                    <option value="malaysia">Malaysia</option>
+                                    <option value="singapore">Singapore</option>
+                                    <option value="thailand">Thailand</option>
+                                    <option value="philippines">Philippines</option>
+                                    <option value="vietnam">Vietnam</option>
+                                    <option value="united States">United States</option>
+                                    <option value="united kingdom">United Kingdom</option>
+                                    <option value="australia">Australia</option>
+                                    <option value="other">Lainnya</option>
+                                </select>
                             </div>
 
                             <!-- Navigation Buttons -->
@@ -385,12 +372,12 @@ select.form-input:focus {
                             </div>
                         </div>
 
-                        <!-- Step 4: Profile Additional Information -->
+                        <!-- Step 4: Referral Code -->
                         <div id="step4" class="wizard-step hidden">
                             <!-- Header -->
                             <div class="text-center mb-8">
-                                <h2 class="text-2xl font-bold text-gray-900 mb-2">Lengkapi Informasi Anda</h2>
-                                <p class="text-gray-600">Langkah terakhir untuk melengkapi profil anda!</p>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-2">Masukkan Kode Referal</h2>
+                                <p class="text-gray-600">Punya kode referal? masukkan kode tersebut di kolom dibawah untuk mendapatkan keuntungannya!</p>
                             </div>
 
                             <!-- Error Message (Dynamic) -->
@@ -399,90 +386,10 @@ select.form-input:focus {
                                 <span class="text-red-700 text-sm" id="step4ErrorText"></span>
                             </div>
 
-                            <!-- Occupation -->
-                            <div class="mb-6">
-                                <label class="block text-gray-700 text-sm font-medium mb-2">Pekerjaan</label>
-                                <select id="occupation"
-                                        name="occupation"
-                                        required
-                                        class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                    <option value="">Pilih Pekerjaan</option>
-                                    <option value="student">Mahasiswa</option>
-                                    <option value="employee">Karyawan</option>
-                                    <option value="business_owner">Pemilik Bisnis</option>
-                                    <option value="freelancer">Freelancer</option>
-                                    <option value="professional">Profesional</option>
-                                    <option value="unemployed">Pengangguran</option>
-                                    <option value="retired">Pensiunan</option>
-                                    <option value="other">Lainnya</option>
-                                </select>
-                            </div>
-
-                            <!-- Marital Status and Religion -->
-                            <div class="grid grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-medium mb-2">Status Pernikahan</label>
-                                    <select id="marital_status"
-                                            name="marital_status"
-                                            required
-                                            class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                        <option value="">Pilih Status</option>
-                                        <option value="single">Belum Menikah</option>
-                                        <option value="married">Menikah</option>
-                                        <option value="divorced">Bercerai</option>
-                                        <option value="widowed">Duda/Janda</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-gray-700 text-sm font-medium mb-2">Agama</label>
-                                    <select id="religion"
-                                            name="religion"
-                                            required
-                                            class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                        <option value="">Pilih Agama</option>
-                                        <option value="islam">Islam</option>
-                                        <option value="christianity">Kristen</option>
-                                        <option value="catholicism">Katolik</option>
-                                        <option value="hinduism">Hindu</option>
-                                        <option value="buddhism">Buddha</option>
-                                        <option value="confucianism">Konghucu</option>
-                                        <option value="other">Lainnya</option>
-                                        <option value="none">Tidak Ada</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Navigation Buttons -->
-                            <div class="flex justify-between items-center">
-                                <button type="button" onclick="goToStep3()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                    <i class="fas fa-arrow-left mr-2"></i>
-                                    Balik
-                                </button>
-                                <button type="button" onclick="goToStep5()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                    Lanjut
-                                    <i class="fas fa-arrow-right ml-2"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Step 5: Referral Code -->
-                        <div id="step5" class="wizard-step hidden">
-                            <!-- Header -->
-                            <div class="text-center mb-8">
-                                <h2 class="text-2xl font-bold text-gray-900 mb-2">Masukkan Kode Referal</h2>
-                                <p class="text-gray-600">Punya kode referal? masukkan kode tersebut di kolom dibawah untuk mendapatkan keuntungannya!</p>
-                            </div>
-
-                            <!-- Error Message (Dynamic) -->
-                            <div id="step5Error" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
-                                <i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>
-                                <span class="text-red-700 text-sm" id="step5ErrorText"></span>
-                            </div>
-
                             <!-- Success Message (Dynamic) -->
-                            <div id="step5Success" class="hidden mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
+                            <div id="step4Success" class="hidden mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
                                 <i class="fas fa-check-circle text-green-500 mr-2"></i>
-                                <span class="text-green-700 text-sm" id="step5SuccessText"></span>
+                                <span class="text-green-700 text-sm" id="step4SuccessText"></span>
                             </div>
 
                             <!-- Referral Code Input -->
@@ -542,7 +449,7 @@ select.form-input:focus {
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-between items-center">
-                                <button type="button" onclick="goToStep4()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                <button type="button" onclick="goToStep3()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                                     <i class="fas fa-arrow-left mr-2"></i>
                                     Balik
                                 </button>
@@ -785,13 +692,14 @@ select.form-input:focus {
         // Get form data from step 3 (Profile)
         const firstName = document.getElementById('first_name').value.trim();
         const lastName = document.getElementById('last_name').value.trim();
-        const phone = document.getElementById('phone').value.trim();
+        const phoneNumber = document.getElementById('phone').value.trim();
         const countryCode = document.getElementById('country_code').value;
-        const title = document.getElementById('title').value;
-        const dob = document.getElementById('date_of_birth').value;
-        const address = document.getElementById('address').value.trim();
-        const city = document.getElementById('city').value.trim();
-        const zip = document.getElementById('zip').value.trim();
+        const gender = document.getElementById('gender').value;
+        const occupation = document.getElementById('occupation').value;
+        const country = document.getElementById('country').value;
+
+        // Combine country code with phone number
+        const fullPhone = countryCode + phoneNumber;
 
         const nextBtn = event.target;
         const originalText = nextBtn.innerHTML;
@@ -812,30 +720,24 @@ select.form-input:focus {
             body: JSON.stringify({
                 first_name: firstName,
                 last_name: lastName,
-                phone: phone,
-                country_code: countryCode,
-                title: title,
-                date_of_birth: dob,
-                address: address,
-                city: city,
-                zip: zip
+                phone: fullPhone,
+                gender: gender,
+                occupation: occupation,
+                country: country
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Save step 3 data
+                // Save step 3 data with full phone number
                 formData.first_name = firstName;
                 formData.last_name = lastName;
-                formData.phone = phone;
-                formData.country_code = countryCode;
-                formData.title = title;
-                formData.date_of_birth = dob;
-                formData.address = address;
-                formData.city = city;
-                formData.zip = zip;
+                formData.phone = fullPhone;
+                formData.gender = gender;
+                formData.occupation = occupation;
+                formData.country = country;
 
-                // Proceed to step 4 (Additional Info)
+                // Proceed to step 4 (Referral)
                 currentStep = 4;
                 showStep(4);
                 updateProgressDots(4);
@@ -859,74 +761,14 @@ select.form-input:focus {
         });
     }
 
-    function goToStep5() {
-        // Get step 4 data (Additional Info)
-        const occupation = document.getElementById('occupation').value;
-        const maritalStatus = document.getElementById('marital_status').value;
-        const religion = document.getElementById('religion').value;
-
-        const nextBtn = event.target;
-        const originalText = nextBtn.innerHTML;
-
-        // Clear previous errors
-        hideError('step4Error');
-
-        nextBtn.disabled = true;
-        nextBtn.innerHTML = '<svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
-
-        // Validate step 4 (Additional Info)
-        fetch('/api/register/validate-step-4', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                occupation: occupation,
-                marital_status: maritalStatus,
-                religion: religion
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Save step 4 data
-                formData.occupation = occupation;
-                formData.marital_status = maritalStatus;
-                formData.religion = religion;
-
-                // Proceed to step 5 (Referral)
-                currentStep = 5;
-                showStep(5);
-                updateProgressDots(5);
-                updateProgressDotsLeft(5);
-            } else {
-                // Show errors
-                if (data.errors) {
-                    let errorMessages = Object.values(data.errors).flat();
-                    showError('step4Error', 'step4ErrorText', errorMessages[0]);
-                } else {
-                    showError('step4Error', 'step4ErrorText', data.message || 'Validation failed');
-                }
-            }
-        })
-        .catch(error => {
-            showError('step4Error', 'step4ErrorText', 'An error occurred. Please try again.');
-        })
-        .finally(() => {
-            nextBtn.disabled = false;
-            nextBtn.innerHTML = originalText;
-        });
-    }
-
-    // Step 5 Functions (Referral)
+    // Step 4 Functions (Referral)
     let referralCodeValidated = false;
     let referralCodeSkipped = false;
 
     function validateReferralCode() {
         const referralCode = document.getElementById('referral_code').value.trim();
-        const errorDiv = document.getElementById('step5Error');
-        const successDiv = document.getElementById('step5Success');
+        const errorDiv = document.getElementById('step4Error');
+        const successDiv = document.getElementById('step4Success');
         const loadingDiv = document.getElementById('referralLoading');
         const validateBtn = document.getElementById('validateReferralBtn');
 
@@ -935,7 +777,7 @@ select.form-input:focus {
         successDiv.classList.add('hidden');
 
         if (!referralCode) {
-            showError('step5Error', 'step5ErrorText', 'Please enter a referral code');
+            showError('step4Error', 'step4ErrorText', 'Please enter a referral code');
             return;
         }
 
@@ -962,13 +804,13 @@ select.form-input:focus {
                 successDiv.classList.remove('hidden');
                 validateBtn.classList.remove('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
                 validateBtn.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-                document.getElementById('step5SuccessText').textContent = data.message || 'Referral code validated successfully!';
+                document.getElementById('step4SuccessText').textContent = data.message || 'Referral code validated successfully!';
                 referralCodeValidated = true;
                 formData.referral_code = referralCode;
                 formData.referral_data = data.referral_data || { validated: true };
             } else {
                 errorDiv.classList.remove('hidden');
-                document.getElementById('step5ErrorText').textContent = data.message || 'Invalid referral code';
+                document.getElementById('step4ErrorText').textContent = data.message || 'Invalid referral code';
                 referralCodeValidated = false;
                 validateBtn.innerHTML = 'Validasi';
             }
@@ -980,14 +822,14 @@ select.form-input:focus {
 
             // Show error message
             errorDiv.classList.remove('hidden');
-            document.getElementById('step5ErrorText').textContent = 'Failed to validate referral code. Please try again.';
+            document.getElementById('step4ErrorText').textContent = 'Failed to validate referral code. Please try again.';
             referralCodeValidated = false;
         });
     }
 
     function skipReferralCode() {
-        const errorDiv = document.getElementById('step5Error');
-        const successDiv = document.getElementById('step5Success');
+        const errorDiv = document.getElementById('step4Error');
+        const successDiv = document.getElementById('step4Success');
 
         // Clear previous messages
         errorDiv.classList.add('hidden');
@@ -998,7 +840,7 @@ select.form-input:focus {
 
         // Show skip confirmation
         successDiv.classList.remove('hidden');
-        document.getElementById('step5SuccessText').textContent = 'Referral code skipped. You will be part of the owner\'s team.';
+        document.getElementById('step4SuccessText').textContent = 'Referral code skipped. You will be part of the owner\'s team.';
 
         referralCodeSkipped = true;
         referralCodeValidated = false;
@@ -1015,13 +857,13 @@ select.form-input:focus {
     function completeRegistration() {
         // Validate terms agreement
         const termsAgreed = document.getElementById('terms_agreed').checked;
-        const errorDiv = document.getElementById('step5Error');
+        const errorDiv = document.getElementById('step4Error');
 
         // Clear previous errors
         errorDiv.classList.add('hidden');
 
         if (!termsAgreed) {
-            showError('step5Error', 'step5ErrorText', 'You must agree to the terms and conditions to continue');
+            showError('step4Error', 'step4ErrorText', 'You must agree to the terms and conditions to continue');
             return;
         }
 
@@ -1029,18 +871,18 @@ select.form-input:focus {
         const referralCode = document.getElementById('referral_code').value.trim();
 
         if (referralCode && !referralCodeValidated && !referralCodeSkipped) {
-            showError('step5Error', 'step5ErrorText', 'Please validate your referral code or skip it');
+            showError('step4Error', 'step4ErrorText', 'Please validate your referral code or skip it');
             return;
         }
 
-        // Save step 5 data (Referral)
+        // Save step 4 data (Referral)
         formData.terms_agreed = termsAgreed;
         formData.referral_code = referralCode || null;
         formData.referral_validated = referralCodeValidated;
         formData.referral_skipped = referralCodeSkipped;
 
-        // Validate step 5 before submission
-        fetch('/api/register/validate-step-5', {
+        // Validate step 4 before submission
+        fetch('/api/register/validate-step-4', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -1056,20 +898,20 @@ select.form-input:focus {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                // Step 5 validated, now submit complete registration
+                // Step 4 validated, now submit complete registration
                 submitCompleteRegistration();
             } else {
-                // Show step 5 errors
+                // Show step 4 errors
                 if (data.errors) {
                     let errorMessages = Object.values(data.errors).flat();
-                    showError('step5Error', 'step5ErrorText', errorMessages[0]);
+                    showError('step4Error', 'step4ErrorText', errorMessages[0]);
                 } else {
-                    showError('step5Error', 'step5ErrorText', data.message || 'Validation failed');
+                    showError('step4Error', 'step4ErrorText', data.message || 'Validation failed');
                 }
             }
         })
         .catch(error => {
-            showError('step5Error', 'step5ErrorText', 'An error occurred. Please try again.');
+            showError('step4Error', 'step4ErrorText', 'An error occurred. Please try again.');
         });
     }
 
@@ -1094,7 +936,7 @@ select.form-input:focus {
         .then(data => {
             if (data.success) {
                 // Hide all error messages
-                hideError('step5Error');
+                hideError('step4Error');
 
                 // Show done step instead of redirect
                 showStep('done');
@@ -1108,14 +950,14 @@ select.form-input:focus {
                 // Show errors
                 if (data.errors) {
                     let errorMessages = Object.values(data.errors).flat();
-                    showError('step5Error', 'step5ErrorText', errorMessages[0]);
+                    showError('step4Error', 'step4ErrorText', errorMessages[0]);
                 } else {
-                    showError('step5Error', 'step5ErrorText', data.message || 'Registration failed. Please try again.');
+                    showError('step4Error', 'step4ErrorText', data.message || 'Registration failed. Please try again.');
                 }
             }
         })
         .catch(error => {
-            showError('step5Error', 'step5ErrorText', 'An error occurred. Please try again.');
+            showError('step4Error', 'step4ErrorText', 'An error occurred. Please try again.');
         })
         .finally(() => {
             submitBtn.disabled = false;
@@ -1136,7 +978,7 @@ select.form-input:focus {
 
     function updateProgressDots(stepNumber) {
         // Update step circles
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 4; i++) {
             const circle = document.getElementById('step' + i + 'Circle');
             const line = document.getElementById('line' + (i - 1));
 
@@ -1173,67 +1015,6 @@ select.form-input:focus {
         });
     }
 
-    function submitRegistration() {
-        // Validate step 2
-        const firstName = document.getElementById('first_name').value.trim();
-        const lastName = document.getElementById('last_name').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const title = document.getElementById('title').value;
-        const dob = document.getElementById('date_of_birth').value;
-        const address = document.getElementById('address').value.trim();
-        const city = document.getElementById('city').value.trim();
-        const zip = document.getElementById('zip').value.trim();
-
-        // Clear previous errors
-        document.getElementById('step2Error').classList.add('hidden');
-
-        if (!firstName || !lastName) {
-            showError('step2Error', 'step2ErrorText', 'Please enter both first and last name');
-            return;
-        }
-
-        if (!phone) {
-            showError('step2Error', 'step2ErrorText', 'Please enter your phone number');
-            return;
-        }
-
-        if (!title) {
-            showError('step2Error', 'step2ErrorText', 'Please select a title');
-            return;
-        }
-
-        if (!dob) {
-            showError('step2Error', 'step2ErrorText', 'Please enter your date of birth');
-            return;
-        }
-
-        if (!address) {
-            showError('step2Error', 'step2ErrorText', 'Please enter your address');
-            return;
-        }
-
-        if (!city || !zip) {
-            showError('step2Error', 'step2ErrorText', 'Please enter both city and zip code');
-            return;
-        }
-
-        // Collect all form data
-        const allFormData = {
-            ...formData,
-            first_name: firstName,
-            last_name: lastName,
-            phone: phone,
-            country_code: document.getElementById('country_code').value,
-            title: title,
-            date_of_birth: dob,
-            address: address,
-            city: city,
-            zip: zip
-        };
-
-        // Submit to server
-        submitToServer(allFormData);
-    }
 
     function submitToServer(data) {
         // Find the appropriate submit button based on current step
@@ -1347,8 +1128,8 @@ select.form-input:focus {
                 // Reset validation states when user types
                 referralCodeValidated = false;
                 referralCodeSkipped = false;
-                document.getElementById('step5Error').classList.add('hidden');
-                document.getElementById('step5Success').classList.add('hidden');
+                document.getElementById('step4Error').classList.add('hidden');
+                document.getElementById('step4Success').classList.add('hidden');
                 document.getElementById('validateReferralBtn').classList.add('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
                 document.getElementById('validateReferralBtn').innerHTML = 'Validasi';
             });

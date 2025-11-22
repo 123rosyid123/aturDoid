@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('refferal') }}" class="bg-orange-500 text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">Invite</a>
+                    <a href="{{ route('refferal') }}" class="bg-gradient-to-b from-[#F78422] to-[#E1291C]  text-white px-6 py-2 rounded-lg text-sm font-medium hover:bg-orange-600 transition-colors">Invite</a>
                 </div>
             @endguest
 
@@ -136,16 +136,16 @@
             {{-- <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                 <i class="fas fa-tachometer-alt mr-2 text-gray-400"></i>
                 Dashboard
-            </a>
+            </a> --}}
             <a href="{{ route('profile') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                 <i class="fas fa-user mr-2 text-gray-400"></i>
                 Profile
             </a>
-            <a href="{{ route('settings') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
+            {{-- <a href="{{ route('settings') }}" class="flex items-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50">
                 <i class="fas fa-cog mr-2 text-gray-400"></i>
                 Settings
             </a> --}}
-            <a href="{{ route('refferal') }}" class="w-full bg-orange-500 text-white px-3 py-2 rounded-lg text-base font-medium hover:bg-orange-600 transition-colors text-center block">Invite</a>
+            <a href="{{ route('refferal') }}" class="w-full bg-gradient-to-b from-[#F78422] to-[#E1291C]  text-white px-3 py-2 rounded-lg text-base font-medium hover:bg-orange-600 transition-colors text-center block">Invite</a>
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="flex items-center w-full px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 text-left">

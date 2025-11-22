@@ -90,7 +90,7 @@
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <div class="px-8 py-6 border-b border-gray-200">
                 <h1 class="text-3xl font-bold text-gray-900">Personal Information</h1>
-                <p class="mt-1 text-sm text-gray-600">Update your personal details and profile picture</p>
+                {{-- <p class="mt-1 text-sm text-gray-600">Update your personal details and profile picture</p> --}}
             </div>
 
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" class="px-8 py-6">
@@ -123,7 +123,7 @@
                             </div>
                         </div>
                     </div>
-                    <p class="text-center mt-2 text-sm text-gray-500">Click the edit icon to upload a new avatar</p>
+                    {{-- <p class="text-center mt-2 text-sm text-gray-500">Click the edit icon to upload a new avatar</p> --}}
                 </div>
 
                 <!-- Form Fields -->
@@ -150,7 +150,7 @@
                                placeholder="Masukkan nama terakhir">
                     </div>
 
-                    <!-- Email (Read Only) -->
+                    {{-- <!-- Email (Read Only) -->
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email</label>
                         <input type="email" 
@@ -159,20 +159,62 @@
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 font-semibold cursor-not-allowed"
                                readonly>
                         <p class="mt-1 text-xs text-gray-500">Email tidak dapat diubah</p>
-                    </div>
+                    </div> --}}
 
                     <!-- Phone Number -->
                     <div>
                         <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">Nomor Telepon</label>
-                        <input type="text" 
-                               id="phone" 
-                               name="phone" 
-                               value="{{ old('phone', Auth::user()->phone) }}"
-                               class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
-                               placeholder="08123456789">
+                        @php
+                            $userPhone = old('phone', Auth::user()->phone ?? '');
+                            $countryCode = '+62';
+                            $phoneNumber = '';
+                            
+                            // Extract country code and phone number
+                            if (!empty($userPhone) && str_starts_with($userPhone, '+')) {
+                                // Try to match common country codes
+                                if (str_starts_with($userPhone, '+62')) {
+                                    $countryCode = '+62';
+                                    $phoneNumber = substr($userPhone, 3);
+                                } elseif (str_starts_with($userPhone, '+370')) {
+                                    $countryCode = '+370';
+                                    $phoneNumber = substr($userPhone, 4);
+                                } elseif (str_starts_with($userPhone, '+1')) {
+                                    $countryCode = '+1';
+                                    $phoneNumber = substr($userPhone, 2);
+                                } else {
+                                    // Default: assume first 3-4 characters are country code
+                                    preg_match('/^(\+\d{1,4})(.*)$/', $userPhone, $matches);
+                                    if (isset($matches[1]) && isset($matches[2])) {
+                                        $countryCode = $matches[1];
+                                        $phoneNumber = $matches[2];
+                                    } else {
+                                        $phoneNumber = $userPhone;
+                                    }
+                                }
+                            } else {
+                                $phoneNumber = $userPhone;
+                            }
+                        @endphp
+                        <div class="flex" id="phone-wrapper">
+                            <select id="country_code_profile" 
+                                    data-country-code
+                                    class="appearance-none px-4 py-4 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-semibold">
+                                <option value="+62" {{ $countryCode == '+62' ? 'selected' : '' }}>🇮🇩 +62</option>
+                                <option value="+370" {{ $countryCode == '+370' ? 'selected' : '' }}>🇱🇹 +370</option>
+                                <option value="+1" {{ $countryCode == '+1' ? 'selected' : '' }}>🇺🇸 +1</option>
+                            </select>
+                            <input type="tel" 
+                                   id="phone_number_input" 
+                                   data-phone-number
+                                   value="{{ $phoneNumber }}"
+                                   class="flex-1 px-6 py-4 border-t border-r border-b border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
+                                   placeholder="123456789">
+                        </div>
+                        <!-- Hidden field that will be sent to backend -->
+                        <input type="hidden" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}">
                     </div>
 
-                    <!-- Date of Birth -->
+                    {{-- <!-- Date of Birth -->
                     <div>
                         <label for="date_of_birth" class="block text-sm font-bold text-gray-700 mb-2">Tanggal Lahir</label>
                         <input type="date" 
@@ -180,7 +222,7 @@
                                name="date_of_birth" 
                                value="{{ old('date_of_birth', Auth::user()->date_of_birth ? (is_object(Auth::user()->date_of_birth) ? Auth::user()->date_of_birth->format('Y-m-d') : Auth::user()->date_of_birth) : '') }}"
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
-                    </div>
+                    </div> --}}
 
                     <!-- Gender -->
                     <div>
@@ -189,8 +231,8 @@
                                 name="gender"
                                 class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
                             <option value="">Pilih Jenis Kelamin</option>
-                            <option value="male" {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="female" {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : '' }}>Perempuan</option>
+                            <option value="laki-laki" {{ old('gender', Auth::user()->gender) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="perempuan" {{ old('gender', Auth::user()->gender) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                     </div>
 
@@ -215,12 +257,20 @@
                     <!-- Occupation -->
                     <div>
                         <label for="occupation" class="block text-sm font-bold text-gray-700 mb-2">Pekerjaan</label>
-                        <input type="text" 
-                               id="occupation" 
-                               name="occupation" 
-                               value="{{ old('occupation', Auth::user()->occupation) }}"
-                               class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
-                               placeholder="Masukkan pekerjaan">
+                        <select id="occupation"
+                            name="occupation"
+                            required
+                            class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
+                           <option value="" {{ old('occupation', Auth::user()->occupation) == '' ? 'selected' : '' }}>Pilih Pekerjaan</option>
+                           <option value="student" {{ old('occupation', Auth::user()->occupation) == 'student' ? 'selected' : '' }}>Mahasiswa</option>
+                           <option value="employee" {{ old('occupation', Auth::user()->occupation) == 'employee' ? 'selected' : '' }}>Karyawan</option>
+                           <option value="business_owner" {{ old('occupation', Auth::user()->occupation) == 'business_owner' ? 'selected' : '' }}>Pemilik Bisnis</option>
+                           <option value="freelancer" {{ old('occupation', Auth::user()->occupation) == 'freelancer' ? 'selected' : '' }}>Freelancer</option>
+                           <option value="professional" {{ old('occupation', Auth::user()->occupation) == 'professional' ? 'selected' : '' }}>Profesional</option>
+                           <option value="unemployed">Pengangguran</option>
+                           <option value="retired" {{ old('occupation', Auth::user()->occupation) == 'retired' ? 'selected' : '' }}>Pensiunan</option>
+                           <option value="other" {{ old('occupation', Auth::user()->occupation) == 'other' ? 'selected' : '' }} >Lainnya</option>
+                       </select>
                     </div>
                 </div>
 
@@ -228,7 +278,7 @@
                 <div class="mt-8 flex justify-center">
                     <button type="submit" 
                             class="px-12 py-4 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white text-xl font-medium rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
-                        <i class="fas fa-save mr-2"></i>Save Changes
+                        Save
                     </button>
                 </div>
             </form>
@@ -250,5 +300,49 @@
             reader.readAsDataURL(e.target.files[0]);
         }
     });
+
+    // Combine country code and phone number before form submission
+    const profileForm = document.querySelector('form');
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            const countryCodeSelect = document.querySelector('[data-country-code]');
+            const phoneNumberInput = document.querySelector('[data-phone-number]');
+            const phoneHiddenField = document.getElementById('phone');
+            
+            if (countryCodeSelect && phoneNumberInput && phoneHiddenField) {
+                const countryCode = countryCodeSelect.value;
+                const phoneNumber = phoneNumberInput.value.trim();
+                
+                // Combine country code with phone number
+                if (phoneNumber) {
+                    phoneHiddenField.value = countryCode + phoneNumber;
+                    console.log('Phone number set to:', phoneHiddenField.value);
+                } else {
+                    phoneHiddenField.value = '';
+                }
+            }
+        });
+        
+        // Also update on input change for real-time feedback
+        const phoneNumberInput = document.querySelector('[data-phone-number]');
+        const countryCodeSelect = document.querySelector('[data-country-code]');
+        
+        if (phoneNumberInput && countryCodeSelect) {
+            const updatePhone = function() {
+                const phoneHiddenField = document.getElementById('phone');
+                const countryCode = countryCodeSelect.value;
+                const phoneNumber = phoneNumberInput.value.trim();
+                
+                if (phoneNumber) {
+                    phoneHiddenField.value = countryCode + phoneNumber;
+                } else {
+                    phoneHiddenField.value = '';
+                }
+            };
+            
+            phoneNumberInput.addEventListener('input', updatePhone);
+            countryCodeSelect.addEventListener('change', updatePhone);
+        }
+    }
 </script>
 @endpush

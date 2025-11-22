@@ -29,9 +29,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'nullable|string|max:255',
             'last_name' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:30',
             'date_of_birth' => 'nullable|date|before:today',
-            'gender' => 'nullable|in:male,female',
+            'gender' => 'nullable|in:laki-laki,perempuan',
             'country' => 'nullable|string|max:255',
             'occupation' => 'nullable|string|max:255',
             'avatar' => 'nullable|image|mimes:jpeg,jpg,png|max:2048', // Max 2MB
