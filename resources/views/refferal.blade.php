@@ -80,12 +80,11 @@
                                                 Gabung dengan Jaringan Finansial Anda
                                             </h2>
                                             <p class="text-xl lg:text-2xl text-white leading-relaxed max-w-4xl mx-auto">
-                                                Masukkan kode referral untuk terhubung dengan upline dan kembangkan peluang penghasilan bersama
-                                                sistem afiliasi aturDOit.
+                                                Masukkan kode referral untuk terhubung dengan affiliator dan kembangkan peluang penghasilan bersama sistem afiliasi aturDOit.
                                             </p>
                                         </div>
 
-                                        <div class="space-y-4">
+                                        <div class="space-y-4 py-6 lg:py-12">
                                             <p class="text-xl lg:text-2xl text-white">
                                                 {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Anda:' : 'Masukan Kode Referral Anda:' }}
                                             </p>
@@ -181,7 +180,7 @@
                                                 Direct Affiliator ({{ $totalDownline ?? 729 }})
                                             </h2>
 
-                                            <div class="max-h-[760px] overflow-y-auto pr-4 space-y-8">
+                                            <div class="max-h-[760px] overflow-y-auto p-4 space-y-8">
                                                 @forelse($downlines ?? [] as $downline)
                                                     @php
                                                         $affiliatedDate = isset($downline->upline_created_at) && $downline->upline_created_at 
@@ -189,16 +188,16 @@
                                                             : '-';
                                                     @endphp
                                                     @include('partials.downline-card', [
-            'name' => $downline['first_name'] . ' ' . $downline['last_name'],
-            'status' => $downline['status'],
-            'affiliatedOn' => $affiliatedDate,
-            'downlineCount' => $downline->downlines()->count()
-        ])
+                                                        'name' => $downline['first_name'] . ' ' . $downline['last_name'],
+                                                        'status' => $downline['status'],
+                                                        'affiliatedOn' => $affiliatedDate,
+                                                        'downlineCount' => $downline->downlines()->count()
+                                                    ])
                                                 @empty
                                                     @include('partials.empty-downline', [
-            'message' => 'Belum Ada Affiliator',
-            'buttonText' => 'Undang Sekarang'
-        ])
+                                                        'message' => 'Belum Ada Affiliator',
+                                                        'buttonText' => 'Undang Sekarang'
+                                                    ])
                                                 @endforelse
                                             </div>
                                         </div>
@@ -211,14 +210,10 @@
 
                                             <div class="space-y-6 text-lg lg:text-2xl text-black leading-relaxed">
                                                 <p>
-                                                    AturDOit menyediakan sistem afiliasi dengan struktur hingga 3 generasi. Pengguna premium dapat
-                                                    memperoleh insentif dari referral langsung dan tidak langsung, tanpa harus menjual produk atau
-                                                    melakukan reselling. Disamping itu akan terdapat tambahan bonus/insentif yang didasarkan dari
-                                                    pencapaian level keuangan anda
+                                                    AturDOit menyediakan sistem afiliasi dengan struktur hingga 3 generasi. Pengguna premium dapat memperoleh insentif dari referral langsung dan tidak langsung, tanpa harus menjual produk atau melakukan reselling. Disamping itu akan terdapat tambahan bonus/insentif yang didasarkan dari pencapaian level keuangan anda
                                                 </p>
                                                 <p>
-                                                    Untuk saat ini, Anda hanya dapat melihat Direct Affiliator atau Generasi Pertama Anda. Selain itu,
-                                                    Anda juga dapat melihat downline milik generasi pertama Anda.
+                                                    Untuk saat ini, Anda hanya dapat melihat Referral langsung / Generasi Pertama Anda
                                                 </p>
                                             </div>
                                         </div>
