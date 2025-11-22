@@ -412,6 +412,15 @@ select.form-input:focus {
                                     </button>
                                 </div>
                             </div>
+                            <!-- Affiliator Info Section (Hidden by default, shown after validation) -->
+                            <div id="affiliatorInfo" class="hidden mb-6">
+                                <div class="p-4 bg-white rounded-lg border border-gray-300 shadow-md">
+                                    <div class="text-center">
+                                        <span class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent font-bold text-base">Nama Affiliator: </span>
+                                        <span id="affiliatorName" class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent text-base">-</span>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- Helper Text -->
                             <div class="mb-6 text-center">
@@ -771,10 +780,12 @@ select.form-input:focus {
         const successDiv = document.getElementById('step4Success');
         const loadingDiv = document.getElementById('referralLoading');
         const validateBtn = document.getElementById('validateReferralBtn');
+        const affiliatorInfo = document.getElementById('affiliatorInfo');
 
         // Clear previous messages
         errorDiv.classList.add('hidden');
         successDiv.classList.add('hidden');
+        affiliatorInfo.classList.add('hidden');
 
         if (!referralCode) {
             showError('step4Error', 'step4ErrorText', 'Please enter a referral code');
@@ -802,9 +813,17 @@ select.form-input:focus {
             
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
-                validateBtn.classList.remove('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
-                validateBtn.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
                 document.getElementById('step4SuccessText').textContent = data.message || 'Referral code validated successfully!';
+                
+                // Show affiliator info section
+                affiliatorInfo.classList.remove('hidden');
+                document.getElementById('affiliatorName').textContent = data.data?.affiliator_name || 'Unknown';
+                
+                // Change button to success state
+                validateBtn.classList.remove('bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]');
+                validateBtn.classList.add('bg-green-500');
+                validateBtn.innerHTML = '<i class="fas fa-check-circle"></i>';
+                
                 referralCodeValidated = true;
                 formData.referral_code = referralCode;
                 formData.referral_data = data.referral_data || { validated: true };
@@ -812,6 +831,7 @@ select.form-input:focus {
                 errorDiv.classList.remove('hidden');
                 document.getElementById('step4ErrorText').textContent = data.message || 'Invalid referral code';
                 referralCodeValidated = false;
+                affiliatorInfo.classList.add('hidden');
                 validateBtn.innerHTML = 'Validasi';
             }
         })
@@ -824,6 +844,7 @@ select.form-input:focus {
             errorDiv.classList.remove('hidden');
             document.getElementById('step4ErrorText').textContent = 'Failed to validate referral code. Please try again.';
             referralCodeValidated = false;
+            affiliatorInfo.classList.add('hidden');
         });
     }
 
@@ -1128,10 +1149,19 @@ select.form-input:focus {
                 // Reset validation states when user types
                 referralCodeValidated = false;
                 referralCodeSkipped = false;
+                
+                const validateBtn = document.getElementById('validateReferralBtn');
+                const affiliatorInfo = document.getElementById('affiliatorInfo');
+                
+                // Hide messages and affiliator info
                 document.getElementById('step4Error').classList.add('hidden');
                 document.getElementById('step4Success').classList.add('hidden');
-                document.getElementById('validateReferralBtn').classList.add('text-white', 'bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]', 'rounded-lg', 'px-4', 'py-2');
-                document.getElementById('validateReferralBtn').innerHTML = 'Validasi';
+                affiliatorInfo.classList.add('hidden');
+                
+                // Reset button to default state
+                validateBtn.classList.remove('bg-green-500');
+                validateBtn.classList.add('bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]');
+                validateBtn.innerHTML = 'Validasi';
             });
         }
     });

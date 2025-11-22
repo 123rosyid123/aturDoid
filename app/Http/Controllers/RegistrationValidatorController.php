@@ -227,7 +227,10 @@ class RegistrationValidatorController extends Controller
         return response()->json([
             'success' => true,
             'valid' => true,
-            'message' => 'Referral code dari ' . $validCode->first_name . ' ' . $validCode->last_name . ' berhasil divalidasi!',
+            'message' => 'Referral code berhasil divalidasi!',
+            'data' => [
+                'affiliator_name' => $validCode->first_name . ' ' . $validCode->last_name,
+            ]
         ]);
     }
 

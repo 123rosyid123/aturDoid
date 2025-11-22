@@ -87,7 +87,7 @@
 
                                         <div class="space-y-4">
                                             <p class="text-xl lg:text-2xl text-white">
-                                                {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Upline Anda:' : 'Masukan Kode Referral Upline Anda:' }}
+                                                {{ isset($uplineCode) && $uplineCode ? 'Kode Referral Affiliator Anda:' : 'Masukan Kode Referral Affiliator Anda:' }}
                                             </p>
 
                                             @if(isset($uplineCode) && $uplineCode)
@@ -115,32 +115,45 @@
                                                             <span class="text-green-700 text-sm" id="uplineSuccessText"></span>
                                                         </div>
 
-                                                        <div class="relative">
-                                                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                                                <i class="fas fa-gift text-gray-400"></i>
+                                                        <div class="flex gap-3">
+                                                            <div class="relative flex-1">
+                                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                                    <i class="fas fa-gift text-gray-400"></i>
+                                                                </div>
+                                                                <input type="text"
+                                                                       id="upline_referral_code"
+                                                                       name="upline_referral_code"
+                                                                       class="w-full pl-10 pr-3 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-gray-700"
+                                                                       placeholder="Masukkan Kode Referal">
                                                             </div>
-                                                            <input type="text"
-                                                                   id="upline_referral_code"
-                                                                   name="upline_referral_code"
-                                                                   class="w-full pl-10 pr-12 py-3 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                                                   placeholder="Enter Upline Referral Code">
                                                             <button type="button"
                                                                     id="validateUplineBtn"
                                                                     onclick="validateUplineReferralCode()"
-                                                                    class="absolute inset-y-0 right-0 pr-3 flex items-center">
-                                                                <i class="fas fa-check-circle text-gray-400 hover:text-green-500 transition-colors"></i>
+                                                                    class="text-white bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-lg px-4 py-3 font-medium hover:opacity-90 transition-opacity whitespace-nowrap">
+                                                                Validasi
                                                             </button>
                                                         </div>
-
-                                                        {{-- <!-- Helper Text -->
-                                                        <div class="mt-3 text-center">
-                                                            <p class="text-white text-sm">
-                                                                No code?
-                                                                <button type="button" onclick="skipUplineCode()" class="text-orange-400 hover:text-orange-300 font-medium underline">
-                                                                    Skip for now
+                                                        <!-- Affiliator Info Section (Hidden by default, shown after validation) -->
+                                                        <div id="affiliatorInfo" class="hidden mt-4 w-full shadow-md">
+                                                            <div class="flex flex-col sm:flex-row items-stretch gap-4">
+                                                                <!-- Save Button -->
+                                                                <button type="button"
+                                                                        onclick="saveUplineCodeFromAffiliate()"
+                                                                        class="flex-1 px-6 py-4 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white rounded-lg border border-black/50 shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-3 font-bold text-base">
+                                                                    <i class="fas fa-save w-6 h-6 flex items-center justify-center"></i>
+                                                                    <span>Save Referral Code</span>
                                                                 </button>
-                                                            </p>
-                                                        </div> --}}
+                                                                
+                                                                <!-- Affiliator Name Display -->
+                                                                <div class="px-6 py-4 bg-gradient-to-b from-[#2E5396] to-[#212E5E] rounded-lg border border-black/50 shadow-md flex items-center justify-center">
+                                                                    <div class="text-center">
+                                                                        <span class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent font-bold text-base">Nama Affiliator: </span>
+                                                                        <span id="affiliatorName" class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent text-base">-</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
 
                                                         <!-- Loading State -->
                                                         <div id="uplineLoading" class="hidden mt-3 text-center">
@@ -150,15 +163,6 @@
                                                             </div>
                                                         </div>
 
-                                                        <!-- Save Button (shown after validation) -->
-                                                        <div id="uplineSaveBtn" class="hidden mt-4">
-                                                            <button type="button"
-                                                                    onclick="saveUplineCode()"
-                                                                    class="w-full px-6 py-3 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white rounded-lg font-semibold hover:shadow-lg transition-all">
-                                                                <i class="fas fa-save mr-2"></i>
-                                                                Save Upline Code
-                                                            </button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             @endif
@@ -225,6 +229,9 @@
         document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
     }
 
+    // Store validated referral data globally
+    let validatedReferralData = null;
+
     // Validate upline referral code
     function validateUplineReferralCode() {
         const referralCode = document.getElementById('upline_referral_code').value.trim();
@@ -232,10 +239,12 @@
         const successDiv = document.getElementById('uplineSuccess');
         const loadingDiv = document.getElementById('uplineLoading');
         const validateBtn = document.getElementById('validateUplineBtn');
+        const affiliatorInfo = document.getElementById('affiliatorInfo');
 
         // Clear previous messages
         errorDiv.classList.add('hidden');
         successDiv.classList.add('hidden');
+        affiliatorInfo.classList.add('hidden');
 
         if (!referralCode) {
             showUplineError('Please enter a referral code');
@@ -245,7 +254,7 @@
         // Show loading state
         loadingDiv.classList.remove('hidden');
         validateBtn.disabled = true;
-        validateBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-gray-400"></i>';
+        validateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
         // Call referral validation endpoint
         fetch('/api/register/validate-referral', {
@@ -260,36 +269,55 @@
         .then(data => {
             loadingDiv.classList.add('hidden');
             validateBtn.disabled = false;
-            validateBtn.innerHTML = '<i class="fas fa-check-circle text-green-500"></i>';
-
+            
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
                 document.getElementById('uplineSuccessText').textContent = data.message || 'Referral code validated successfully! Click save to confirm.';
 
-                // Show save button
-                document.getElementById('uplineSaveBtn').classList.remove('hidden');
+                // Store validated data
+                validatedReferralData = {
+                    code: referralCode,
+                    affiliatorName: data.data?.affiliator_name || 'Unknown'
+                };
+
+                // Show affiliator info section
+                affiliatorInfo.classList.remove('hidden');
+                document.getElementById('affiliatorName').textContent = validatedReferralData.affiliatorName;
+                
+                // Change button to success state
+                validateBtn.classList.remove('bg-gradient-to-b', 'from-[#F78422]', 'to-[#E1291C]');
+                validateBtn.classList.add('bg-green-500');
+                validateBtn.innerHTML = '<i class="fas fa-check-circle"></i>';
             } else {
                 showUplineError(data.message || 'Invalid referral code');
-                document.getElementById('uplineSaveBtn').classList.add('hidden');
+                affiliatorInfo.classList.add('hidden');
+                validatedReferralData = null;
+                validateBtn.innerHTML = 'Validasi';
             }
         })
         .catch(error => {
             loadingDiv.classList.add('hidden');
             validateBtn.disabled = false;
-            validateBtn.innerHTML = '<i class="fas fa-check-circle text-gray-400 hover:text-green-500"></i>';
+            validateBtn.innerHTML = 'Validasi';
             showUplineError('Failed to validate referral code. Please try again.');
+            affiliatorInfo.classList.add('hidden');
+            validatedReferralData = null;
         });
     }
 
-    // Save upline code
-    function saveUplineCode() {
-        const referralCode = document.getElementById('upline_referral_code').value.trim();
-        const saveBtn = document.querySelector('#uplineSaveBtn button');
+    // Save upline code from new affiliator info button
+    function saveUplineCodeFromAffiliate() {
+        if (!validatedReferralData) {
+            showUplineError('Please validate referral code first');
+            return;
+        }
+
+        const saveBtn = event.target.closest('button');
         const originalText = saveBtn.innerHTML;
 
         // Show loading state
         saveBtn.disabled = true;
-        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Saving...';
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Menyimpan...';
 
         // Submit to server
         fetch('/api/user/update-upline', {
@@ -298,24 +326,24 @@
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
-            body: JSON.stringify({ upline_code: referralCode })
+            body: JSON.stringify({ upline_code: validatedReferralData.code })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                showNotification('Upline code saved successfully!', 'success');
+                showNotification('Kode upline berhasil disimpan!', 'success');
                 // Reload page to show updated upline code
                 setTimeout(() => {
                     location.reload();
                 }, 1500);
             } else {
-                showUplineError(data.message || 'Failed to save upline code');
+                showUplineError(data.message || 'Gagal menyimpan kode upline');
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = originalText;
             }
         })
         .catch(error => {
-            showUplineError('An error occurred. Please try again.');
+            showUplineError('Terjadi kesalahan. Silakan coba lagi.');
             saveBtn.disabled = false;
             saveBtn.innerHTML = originalText;
         });
@@ -447,5 +475,32 @@
             }, 300);
         }, 3000);
     }
+
+    // Add referral code input listener to reset validation state
+    document.addEventListener('DOMContentLoaded', function() {
+        const uplineReferralInput = document.getElementById('upline_referral_code');
+        const validateBtn = document.getElementById('validateUplineBtn');
+        const affiliatorInfo = document.getElementById('affiliatorInfo');
+        const successDiv = document.getElementById('uplineSuccess');
+        const errorDiv = document.getElementById('uplineError');
+
+        if (uplineReferralInput && validateBtn) {
+            uplineReferralInput.addEventListener('input', function() {
+                // Reset validation states when user types
+                validatedReferralData = null;
+                
+                // Hide success/error messages
+                if (successDiv) successDiv.classList.add('hidden');
+                if (errorDiv) errorDiv.classList.add('hidden');
+                if (affiliatorInfo) affiliatorInfo.classList.add('hidden');
+                
+                // Reset button to original state
+                validateBtn.disabled = false;
+                validateBtn.classList.remove('bg-green-500');
+                validateBtn.classList.add('bg-gradient-to-b', 'from-[#F78422]', 'to-[#E1291C]');
+                validateBtn.innerHTML = 'Validasi';
+            });
+        }
+    });
 </script>
 @endpush
