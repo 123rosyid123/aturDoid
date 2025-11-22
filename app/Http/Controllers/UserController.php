@@ -128,6 +128,17 @@ class UserController extends Controller
         $user->upline_code = $uplineCode;
         $user->save();
 
+        // Log upline code update
+        \App\Models\UserUplineLog::create([
+            'user_id' => $user->id,
+            'upline_user_id' => $uplineUser->id,
+            'referral_code' => $uplineCode,
+            'action' => 'update',
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'notes' => 'User manually updated upline code from referral page'
+        ]);
+
         return response()->json([
             'success' => true,
             'message' => 'Upline code saved successfully!',

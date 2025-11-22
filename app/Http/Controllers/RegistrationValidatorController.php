@@ -317,6 +317,21 @@ class RegistrationValidatorController extends Controller
         $user->referral_code = $referralCode;
         $user->save();
 
+        // Log upline code usage if user registered with referral code
+        if (!empty($allData['referral_code'])) {
+            $uplineUser = User::where('referral_code', $allData['referral_code'])->first();
+            
+            \App\Models\UserUplineLog::create([
+                'user_id' => $user->id,
+                'upline_user_id' => $uplineUser ? $uplineUser->id : null,
+                'referral_code' => $allData['referral_code'],
+                'action' => 'register',
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'notes' => 'User registered with referral code'
+            ]);
+        }
+
         Auth::login($user);
 
         // If all validations pass, return success
