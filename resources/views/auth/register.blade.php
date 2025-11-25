@@ -558,8 +558,17 @@ select.form-input:focus {
         googleBtn.disabled = true;
         googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Connecting to Google...';
 
-        // Redirect to Google OAuth
-        window.location.href = '/auth/google';
+        // Get referral code from URL parameter if present
+        const urlParams = new URLSearchParams(window.location.search);
+        const refCode = urlParams.get('ref');
+        
+        // Redirect to Google OAuth with referral code if present
+        let googleAuthUrl = '/auth/google';
+        if (refCode) {
+            googleAuthUrl += '?ref=' + encodeURIComponent(refCode);
+        }
+        
+        window.location.href = googleAuthUrl;
     }
 
     function goToStep1() {

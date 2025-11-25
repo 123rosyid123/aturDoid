@@ -148,8 +148,21 @@ class AuthController extends Controller
     /**
      * Redirect to Google OAuth
      */
-    public function redirectToGoogle()
+    public function redirectToGoogle(Request $request)
     {
+        // Store referral code in session if present
+        // Session is isolated per user via unique session ID, so multiple concurrent users are safe
+        if ($request->has('ref')) {
+            $refCode = $request->input('ref');
+            // Validate referral code format before storing
+            if (preg_match('/^[A-Z0-9\-]+$/i', $refCode)) {
+                session([
+                    'google_oauth_ref' => $refCode,
+                    'google_oauth_ref_time' => now()->timestamp // Add timestamp for validation
+                ]);
+            }
+        }
+        
         return Socialite::driver('google')->redirect();
     }
 
@@ -201,9 +214,41 @@ class AuthController extends Controller
                 'account_type' => 'personal',
             ]);
 
-            $referralCode = Str::random(10);
-            $newUser->referral_code = $referralCode;
+            $newUser->referral_code = RegistrationValidatorController::generateReferralCode();
             $newUser->save();
+
+            // Check for referral code from session (passed from register page)
+            // Session is isolated per user, so concurrent registrations are safe
+            $referralCodeFromSession = session('google_oauth_ref');
+            $referralCodeTimestamp = session('google_oauth_ref_time');
+            
+            if ($referralCodeFromSession) {
+                // Validate session timestamp (expire after 30 minutes to prevent stale sessions)
+                $isValidSession = $referralCodeTimestamp && (now()->timestamp - $referralCodeTimestamp) < 1800;
+                
+                if ($isValidSession) {
+                    $upline = User::where('referral_code', $referralCodeFromSession)->first();
+                    if ($upline && $upline->id !== $newUser->id) {
+                        // Prevent user from using their own referral code
+                        $newUser->upline_code = $upline->referral_code;
+                        $newUser->save();
+                        
+                        // Log upline code usage
+                        \App\Models\UserUplineLog::create([
+                            'user_id' => $newUser->id,
+                            'upline_user_id' => $upline->id,
+                            'referral_code' => $referralCodeFromSession,
+                            'action' => 'register',
+                            'ip_address' => $request->ip(),
+                            'user_agent' => $request->userAgent(),
+                            'notes' => 'User registered with Google OAuth using referral code'
+                        ]);
+                    }
+                }
+                
+                // Always clear session after use (even if validation failed)
+                session()->forget(['google_oauth_ref', 'google_oauth_ref_time']);
+            }
 
             Auth::login($newUser);
 

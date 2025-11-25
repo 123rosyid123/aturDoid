@@ -313,8 +313,7 @@ class RegistrationValidatorController extends Controller
         ]);
 
         //create referral code
-        $referralCode = $this->generateReferralCode();
-        $user->referral_code = $referralCode;
+        $user->referral_code = RegistrationValidatorController::generateReferralCode();
         $user->save();
 
         // Log upline code usage if user registered with referral code
@@ -347,7 +346,7 @@ class RegistrationValidatorController extends Controller
      * Format: AD00001, AD00002, ... AD99999, AD100000, etc.
      * Sequential based on registration order, minimum 5 digits but can be more
      */
-    private function generateReferralCode(): string
+    public static function generateReferralCode(): string
     {
         DB::beginTransaction();
         try {
