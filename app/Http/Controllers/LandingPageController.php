@@ -175,11 +175,13 @@ class LandingPageController extends Controller
         });
         
         $referralLink = $this->generateReferralLink();
+        $uplineName = $user->upline ? $user->upline->first_name . ' ' . $user->upline->last_name : 'Tidak ada upline';
         return view('refferal', [
             'user' => $user,
             'referralLink' => $referralLink,
             'referralCode' => $referralCode,
             'uplineCode' => $uplineCode,
+            'uplineName' => $uplineName,
             'totalDownline' => $totalDownline,
             'downlines' => $downlines,
         ]);
@@ -188,6 +190,52 @@ class LandingPageController extends Controller
     private function generateReferralLink()
     {
         return route('register', ['ref' => auth()->user()->referral_code]);
+    }
+
+    /**
+     * Send referral invitation email
+     */
+    public function sendReferralInvitation(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255'
+        ], [
+            'email.required' => 'Email address is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.max' => 'Email address cannot exceed 255 characters'
+        ]);
+
+        $user = auth()->user();
+        
+        if (!$user->referral_code) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You do not have a referral code yet. Please contact support.'
+            ], 400);
+        }
+
+        $recipientEmail = $request->input('email');
+        $inviterName = trim($user->first_name . ' ' . $user->last_name) ?: 'Seorang teman';
+
+        try {
+            \Mail::to($recipientEmail)->send(new \App\Mail\ReferralInvitationMail(
+                $recipientEmail,
+                $user->referral_code,
+                $inviterName
+            ));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Invitation email sent successfully to ' . $recipientEmail
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Failed to send referral invitation email: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send invitation email. Please try again later.'
+            ], 500);
+        }
     }
     
     /**

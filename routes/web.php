@@ -79,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
     })->name('settings');
 
     Route::get('/refferal', [LandingPageController::class, 'refferal'])->name('refferal');
+    Route::post('/refferal/send-invitation', [LandingPageController::class, 'sendReferralInvitation'])->name('refferal.send-invitation');
 
     // User API Routes
     Route::prefix('api/user')->group(function () {

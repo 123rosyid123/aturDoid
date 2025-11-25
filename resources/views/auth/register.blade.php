@@ -699,8 +699,6 @@ select.form-input:focus {
         })
         .catch(error => {
             showError('step2Error', 'step2ErrorText', 'An error occurred. Please try again.');
-        })
-        .finally(() => {
             nextBtn.disabled = false;
             nextBtn.innerHTML = originalText;
         });
@@ -1136,14 +1134,59 @@ select.form-input:focus {
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
-        showStep(1);
-        updateProgressDots(1);
-        updateProgressDotsLeft(1);
-
-        // Check for referral code in URL parameter
+        // Check for referral code and email in URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const refCode = urlParams.get('ref');
+        const emailParam = urlParams.get('email');
 
+        // Check if user is already verified (from session)
+        @if(session('verified') && session('email'))
+            // User is verified, go directly to step 2
+            formData.email = "{{ session('email') }}";
+            document.getElementById('email').value = "{{ session('email') }}";
+
+            // Show success message
+            const step1Error = document.getElementById('step1Error');
+            const step1ErrorText = document.getElementById('step1ErrorText');
+
+            step1Error.classList.remove('hidden', 'bg-red-50', 'border-red-200');
+            step1Error.classList.add('bg-green-50', 'border-green-200');
+            step1ErrorText.classList.remove('text-red-700');
+            step1ErrorText.classList.add('text-green-700');
+            step1Error.querySelector('i').classList.remove('fa-exclamation-triangle', 'text-red-500');
+            step1Error.querySelector('i').classList.add('fa-check-circle', 'text-green-500');
+            step1ErrorText.textContent = "{{ session('message') }}";
+
+            // Go directly to step 2
+            currentStep = 2;
+            showStep(2);
+            updateProgressDots(2);
+            updateProgressDotsLeft(2);
+        @elseif(request()->has('ref') && request()->has('email'))
+            // User came from invitation link with ref and email parameters
+            // Email is already verified, go directly to step 2
+            const email = "{{ request('email') }}";
+            formData.email = email;
+            
+            // Set email in step 1 input (for reference, but user won't see step 1)
+            const emailInput = document.getElementById('email');
+            if (emailInput) {
+                emailInput.value = email;
+            }
+
+            // Go directly to step 2 (email is already verified via invitation)
+            currentStep = 2;
+            showStep(2);
+            updateProgressDots(2);
+            updateProgressDotsLeft(2);
+        @else
+            // User not verified yet, start from step 1
+            showStep(1);
+            updateProgressDots(1);
+            updateProgressDotsLeft(1);
+        @endif
+
+        // Set referral code in input if present
         if (refCode) {
             const referralInput = document.getElementById('referral_code');
             if (referralInput && !referralInput.value) {

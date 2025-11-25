@@ -98,6 +98,20 @@
                                                         </p>
                                                     </div>
                                                 </div>
+                                                <!-- Affiliator Name Display -->
+                                                <div class="flex justify-center">
+                                                    <div class="w-full max-w-2xl px-4 py-3 bg-gradient-to-b from-[#2E5396] to-[#212E5E] rounded-lg border border-black/50 shadow-md flex justify-center">
+                                                        <div class="flex justify-between w-full items-center">
+                                                            <div>
+                                                                <span class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent font-bold text-base">Nama Affiliator: </span>
+                                                                <span class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent text-base">{{ $uplineName }}</span>
+                                                            </div>
+                                                            <div>
+                                                                <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @else
                                                 {{-- Input field for entering upline code --}}
                                                 <div class="flex justify-center">
@@ -434,12 +448,38 @@
         // Show loading state
         showNotification('Mengirim invitation...', 'info');
 
-        // TODO: Replace with actual API call
-        // For now, just simulate success
-        setTimeout(() => {
-            showNotification('Invitation berhasil dikirim ke ' + email, 'success');
-            emailInput.value = '';
-        }, 1000);
+        // Disable button during request
+        const sendButton = emailInput.closest('.flex').querySelector('button');
+        sendButton.disabled = true;
+
+        // Send invitation email via API
+        fetch('{{ route("refferal.send-invitation") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                email: email
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showNotification('Invitation berhasil dikirim ke ' + email, 'success');
+                emailInput.value = '';
+            } else {
+                showNotification(data.message || 'Gagal mengirim invitation. Silakan coba lagi.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Terjadi kesalahan saat mengirim invitation. Silakan coba lagi.', 'error');
+        })
+        .finally(() => {
+            // Re-enable button
+            sendButton.disabled = false;
+        });
     }
 
     // Validate email format
