@@ -252,7 +252,7 @@ class AuthController extends Controller
 
             Auth::login($newUser);
 
-            return redirect()->route('landing')->with('success', 'Account created successfully with Google!');
+            return redirect()->route('profile')->with('success', 'Account created successfully with Google!');
         } catch (\Exception $e) {
             \Log::error('Google OAuth Error: ' . $e->getMessage());
             return redirect()->route('login')->with('error', 'Failed to login with Google. Please try again.');
