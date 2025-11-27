@@ -205,7 +205,7 @@
                                                         'name' => $downline['first_name'] . ' ' . $downline['last_name'],
                                                         'status' => $downline['status'],
                                                         'affiliatedOn' => $affiliatedDate,
-                                                        'downlineCount' => $downline->downlines()->count()
+                                                        'downlineCount' => $downline['total_downline']
                                                     ])
                                                 @empty
                                                     @include('partials.empty-downline', [

@@ -158,7 +158,7 @@ class LandingPageController extends Controller
         $user = auth()->user();
         $referralCode = $user->referral_code;
         $uplineCode = $user->upline_code;
-        $totalDownline = $this->getTotalDownlinesRecursive($user);
+        $totalDownline = $user->downlines()->count();
         
         // Get downlines with upline_created_at from user_upline_log
         $downlines = $user->downlines()->get()->map(function($downline) use ($user) {
@@ -170,12 +170,13 @@ class LandingPageController extends Controller
             
             // Add upline_created_at attribute
             $downline->upline_created_at = $latestLog ? $latestLog->created_at : $downline->created_at;
-            
+            $downline->total_downline = $this->getTotalDownlinesRecursive($downline, [], 2);
             return $downline;
         });
         
         $referralLink = $this->generateReferralLink();
         $uplineName = $user->upline ? $user->upline->first_name . ' ' . $user->upline->last_name : 'Tidak ada upline';
+        // dd($downlines);
         return view('refferal', [
             'user' => $user,
             'referralLink' => $referralLink,
@@ -190,15 +191,31 @@ class LandingPageController extends Controller
     /**
      * Recursively count all downlines until the last level
      */
-    private function getTotalDownlinesRecursive($user)
+    public function getTotalDownlinesRecursive($user, $visited = [], $maxDepth = 100)
     {
+        // Prevent infinite recursion
+        if (isset($visited[$user->id]) || $maxDepth <= 0) {
+            return 0;
+        }
+        
+        $visited[$user->id] = true;
         $count = 0;
         $directDownlines = $user->downlines()->get();
-        
+
+        // print_r("<br> directDownlines: ");
+        // print_r($directDownlines->count());
+        // print_r("<br>");
         foreach ($directDownlines as $downline) {
             $count++; // Count the direct downline
-            $count += $this->getTotalDownlinesRecursive($downline); // Recursively count their downlines
+            $count += $this->getTotalDownlinesRecursive($downline, $visited, $maxDepth - 1); // Recursively count their downlines
         }
+
+        // print_r("<br> user: ");
+        // print_r($user->id);
+        // print_r("<br> count: ");
+        // print_r($count);
+        // print_r("<br>");
+
         
         return $count;
     }
