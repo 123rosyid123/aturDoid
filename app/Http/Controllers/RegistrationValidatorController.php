@@ -224,6 +224,29 @@ class RegistrationValidatorController extends Controller
             ], 422);
         }
 
+        // check refferal code bukan berasal dari downline recursive user
+        if (Auth::check()) {
+            $currentUser = Auth::user();
+            
+            // Check if the referral code owner is a downline (recursive) of current user
+            if ($this->isDownlineRecursive($currentUser, $validCode)) {
+                return response()->json([
+                    'success' => false,
+                    'valid' => false,
+                    'message' => 'You cannot use referral code from your downline. Please use a referral code from someone who is not in your network.',
+                ], 422);
+            }
+            
+            // Check if user is trying to use their own referral code
+            if ($currentUser->id === $validCode->id) {
+                return response()->json([
+                    'success' => false,
+                    'valid' => false,
+                    'message' => 'You cannot use your own referral code.',
+                ], 422);
+            }
+        }
+
         return response()->json([
             'success' => true,
             'valid' => true,
@@ -232,6 +255,38 @@ class RegistrationValidatorController extends Controller
                 'affiliator_name' => $validCode->first_name . ' ' . $validCode->last_name,
             ]
         ]);
+    }
+
+    /**
+     * Check if a user is a downline (recursive) of another user
+     * 
+     * @param User $uplineUser The potential upline user
+     * @param User $downlineUser The potential downline user
+     * @return bool True if downlineUser is a downline (any level) of uplineUser
+     */
+    private function isDownlineRecursive($uplineUser, $downlineUser)
+    {
+        // If same user, return false (not a downline)
+        if ($uplineUser->id === $downlineUser->id) {
+            return false;
+        }
+
+        // Get all direct downlines of uplineUser
+        $directDownlines = $uplineUser->downlines()->get();
+        
+        foreach ($directDownlines as $directDownline) {
+            // Check if this direct downline is the target user
+            if ($directDownline->id === $downlineUser->id) {
+                return true;
+            }
+            
+            // Recursively check if target user is a downline of this direct downline
+            if ($this->isDownlineRecursive($directDownline, $downlineUser)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     /**

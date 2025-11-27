@@ -158,7 +158,7 @@ class LandingPageController extends Controller
         $user = auth()->user();
         $referralCode = $user->referral_code;
         $uplineCode = $user->upline_code;
-        $totalDownline = $user->downlines()->count();
+        $totalDownline = $this->getTotalDownlinesRecursive($user);
         
         // Get downlines with upline_created_at from user_upline_log
         $downlines = $user->downlines()->get()->map(function($downline) use ($user) {
@@ -185,6 +185,22 @@ class LandingPageController extends Controller
             'totalDownline' => $totalDownline,
             'downlines' => $downlines,
         ]);
+    }
+
+    /**
+     * Recursively count all downlines until the last level
+     */
+    private function getTotalDownlinesRecursive($user)
+    {
+        $count = 0;
+        $directDownlines = $user->downlines()->get();
+        
+        foreach ($directDownlines as $downline) {
+            $count++; // Count the direct downline
+            $count += $this->getTotalDownlinesRecursive($downline); // Recursively count their downlines
+        }
+        
+        return $count;
     }
 
     private function generateReferralLink()
