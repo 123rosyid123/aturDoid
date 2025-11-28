@@ -81,7 +81,7 @@ select.form-input:focus {
                                 <div id="line3" class="w-4 sm:w-8 h-px bg-gray-300"></div>
                                 <div class="flex flex-col items-center">
                                     <div id="step4Circle" class="w-6 h-6 sm:w-8 sm:h-8 bg-gray-200 text-gray-500 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold">4</div>
-                                    <span class="mt-1 text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">Refferal</span>
+                                    <span class="mt-1 text-[10px] sm:text-xs text-gray-500 whitespace-nowrap">Referral</span>
                                 </div>
                             </div>
                         </div>
@@ -290,11 +290,26 @@ select.form-input:focus {
                             <!-- Phone Number -->
                             <div class="mb-4">
                                 <label class="block text-gray-700 text-sm font-medium mb-2">Nomor Telepon</label>
+                                @php
+                                    // Load countries from JSON file
+                                    $countriesJson = file_get_contents(public_path('countries.json'));
+                                    $countries = json_decode($countriesJson, true);
+                                    
+                                    // Sort countries alphabetically by name for display
+                                    usort($countries, function($a, $b) {
+                                        return strcmp($a['name'], $b['name']);
+                                    });
+                                    
+                                    // Get selected country code from old input
+                                    $selectedCountryCode = old('country_code', '+62');
+                                @endphp
                                 <div class="flex">
                                     <select id="country_code" name="country_code" class="appearance-none px-3 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                        <option value="+62">🇮🇩 +62</option>
-                                        <option value="+370">🇱🇹 +370</option>
-                                        <option value="+1">🇺🇸 +1</option>
+                                        @foreach($countries as $country)
+                                            <option value="{{ $country['dial_code'] }}" {{ $selectedCountryCode == $country['dial_code'] ? 'selected' : '' }}>
+                                                {{ $country['flag'] }} {{ $country['dial_code'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                     <input type="tel"
                                            id="phone"

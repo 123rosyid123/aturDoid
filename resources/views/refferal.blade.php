@@ -229,6 +229,9 @@
                                                 <p>
                                                     Untuk saat ini, Anda hanya dapat melihat Referral langsung / Generasi Pertama Anda
                                                 </p>
+                                                <p>
+                                                    Angka yang ditampilkan pada bagian Direct Affiliator menunjukkan total hubungan afiliasi hingga dua tingkat di bawah pengguna, karena tingkat tersebut merupakan generasi ketiga dalam struktur afiliasi Anda.
+                                                </p>
                                             </div>
                                         </div>
                                     </div>

@@ -169,20 +169,31 @@
                             $countryCode = '+62';
                             $phoneNumber = '';
                             
+                            // Load countries from JSON file
+                            $countriesJson = file_get_contents(public_path('countries.json'));
+                            $countries = json_decode($countriesJson, true);
+                            
                             // Extract country code and phone number
                             if (!empty($userPhone) && str_starts_with($userPhone, '+')) {
-                                // Try to match common country codes
-                                if (str_starts_with($userPhone, '+62')) {
-                                    $countryCode = '+62';
-                                    $phoneNumber = substr($userPhone, 3);
-                                } elseif (str_starts_with($userPhone, '+370')) {
-                                    $countryCode = '+370';
-                                    $phoneNumber = substr($userPhone, 4);
-                                } elseif (str_starts_with($userPhone, '+1')) {
-                                    $countryCode = '+1';
-                                    $phoneNumber = substr($userPhone, 2);
-                                } else {
-                                    // Default: assume first 3-4 characters are country code
+                                // Try to match country codes from JSON (check longest codes first)
+                                $matched = false;
+                                // Sort countries by dial_code length (longest first) to match longer codes first
+                                usort($countries, function($a, $b) {
+                                    return strlen($b['dial_code']) - strlen($a['dial_code']);
+                                });
+                                
+                                foreach ($countries as $country) {
+                                    $dialCode = $country['dial_code'];
+                                    if (str_starts_with($userPhone, $dialCode)) {
+                                        $countryCode = $dialCode;
+                                        $phoneNumber = substr($userPhone, strlen($dialCode));
+                                        $matched = true;
+                                        break;
+                                    }
+                                }
+                                
+                                // Fallback: extract country code using regex
+                                if (!$matched) {
                                     preg_match('/^(\+\d{1,4})(.*)$/', $userPhone, $matches);
                                     if (isset($matches[1]) && isset($matches[2])) {
                                         $countryCode = $matches[1];
@@ -194,14 +205,21 @@
                             } else {
                                 $phoneNumber = $userPhone;
                             }
+                            
+                            // Sort countries alphabetically by name for display
+                            usort($countries, function($a, $b) {
+                                return strcmp($a['name'], $b['name']);
+                            });
                         @endphp
                         <div class="flex" id="phone-wrapper">
                             <select id="country_code_profile" 
                                     data-country-code
                                     class="appearance-none px-4 py-4 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-semibold">
-                                <option value="+62" {{ $countryCode == '+62' ? 'selected' : '' }}>🇮🇩 +62</option>
-                                <option value="+370" {{ $countryCode == '+370' ? 'selected' : '' }}>🇱🇹 +370</option>
-                                <option value="+1" {{ $countryCode == '+1' ? 'selected' : '' }}>🇺🇸 +1</option>
+                                @foreach($countries as $country)
+                                    <option value="{{ $country['dial_code'] }}" {{ $countryCode == $country['dial_code'] ? 'selected' : '' }}>
+                                        {{ $country['flag'] }} {{ $country['dial_code'] }}
+                                    </option>
+                                @endforeach
                             </select>
                             <input type="tel" 
                                    id="phone_number_input" 
@@ -267,7 +285,7 @@
                            <option value="business_owner" {{ old('occupation', Auth::user()->occupation) == 'business_owner' ? 'selected' : '' }}>Pemilik Bisnis</option>
                            <option value="freelancer" {{ old('occupation', Auth::user()->occupation) == 'freelancer' ? 'selected' : '' }}>Freelancer</option>
                            <option value="professional" {{ old('occupation', Auth::user()->occupation) == 'professional' ? 'selected' : '' }}>Profesional</option>
-                           <option value="unemployed">Pengangguran</option>
+                           <option value="unemployed" {{ old('occupation', Auth::user()->occupation) == 'unemployed' ? 'selected' : '' }}>Pengangguran</option>
                            <option value="retired" {{ old('occupation', Auth::user()->occupation) == 'retired' ? 'selected' : '' }}>Pensiunan</option>
                            <option value="other" {{ old('occupation', Auth::user()->occupation) == 'other' ? 'selected' : '' }} >Lainnya</option>
                        </select>
