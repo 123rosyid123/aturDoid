@@ -292,6 +292,19 @@
                     </div>
                 </div>
 
+                <!-- Password Section -->
+                <div class="mt-8 pt-8">
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-bold text-gray-900">Kata Sandi</h2>
+                    </div>
+                    <div class="flex">
+                        <a href="{{ route('password.change') }}" 
+                        class="px-8 py-4 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white text-lg font-medium rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
+                            Ubah Kata Sandi
+                        </a>
+                    </div>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="mt-8 flex justify-center">
                     <button type="submit" 

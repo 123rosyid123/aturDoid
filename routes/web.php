@@ -73,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [UserController::class, 'updateProfile'])->name('profile.update');
+    
+    Route::get('/change-password', [UserController::class, 'showChangePassword'])->name('password.change');
+    Route::post('/change-password', [UserController::class, 'updatePassword'])->name('password.change.update');
 
     Route::get('/settings', function () {
         return view('settings');

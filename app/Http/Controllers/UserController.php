@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -147,5 +148,51 @@ class UserController extends Controller
                 'upline_name' => $uplineUser->first_name . ' ' . $uplineUser->last_name
             ]
         ]);
+    }
+
+    /**
+     * Display the change password page
+     */
+    public function showChangePassword()
+    {
+        return view('change_password');
+    }
+
+    /**
+     * Update the user's password
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = Auth::user();
+
+        // Validation rules
+        $validator = Validator::make($request->all(), [
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ], [
+            'current_password.required' => 'Kata sandi lama wajib diisi.',
+            'new_password.required' => 'Kata sandi baru wajib diisi.',
+            'new_password.min' => 'Kata sandi baru minimal 8 karakter.',
+            'new_password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Verify current password
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return redirect()->back()
+                ->withErrors(['current_password' => 'Kata sandi lama tidak benar.'])
+                ->withInput();
+        }
+
+        // Update password
+        $user->password = Hash::make($request->input('new_password'));
+        $user->save();
+
+        return redirect()->route('password.change')->with('success', 'Kata sandi berhasil diubah!');
     }
 }
