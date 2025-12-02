@@ -206,7 +206,7 @@ class AuthController extends Controller
                 'last_name' => $googleUser->user['family_name'] ?? '',
                 'google_id' => $googleUser->getId(),
                 'avatar' => $googleUser->getAvatar(),
-                'password' => Hash::make(uniqid()), // Random password
+                'password' => null,
                 'email_verified_at' => now(),
                 'is_verified' => true,
                 'phone' => null,
