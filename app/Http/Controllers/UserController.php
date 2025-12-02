@@ -155,7 +155,10 @@ class UserController extends Controller
      */
     public function showChangePassword()
     {
-        return view('change_password');
+        $user = Auth::user();
+        $hasPassword = !empty($user->password);
+        
+        return view('change_password', compact('hasPassword'));
     }
 
     /**
@@ -164,17 +167,26 @@ class UserController extends Controller
     public function updatePassword(Request $request)
     {
         $user = Auth::user();
+        $hasPassword = !empty($user->password);
 
-        // Validation rules
-        $validator = Validator::make($request->all(), [
-            'current_password' => 'required|string',
+        // Validation rules - current_password only required if user already has password
+        $rules = [
             'new_password' => 'required|string|min:8|confirmed',
-        ], [
-            'current_password.required' => 'Kata sandi lama wajib diisi.',
+        ];
+        
+        $messages = [
             'new_password.required' => 'Kata sandi baru wajib diisi.',
             'new_password.min' => 'Kata sandi baru minimal 8 karakter.',
             'new_password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
-        ]);
+        ];
+
+        // If user already has password, require current_password
+        if ($hasPassword) {
+            $rules['current_password'] = 'required|string';
+            $messages['current_password.required'] = 'Kata sandi lama wajib diisi.';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails()) {
             return redirect()->back()
@@ -182,11 +194,13 @@ class UserController extends Controller
                 ->withInput();
         }
 
-        // Verify current password
-        if (!Hash::check($request->input('current_password'), $user->password)) {
-            return redirect()->back()
-                ->withErrors(['current_password' => 'Kata sandi lama tidak benar.'])
-                ->withInput();
+        // Verify current password only if user already has password
+        if ($hasPassword) {
+            if (!Hash::check($request->input('current_password'), $user->password)) {
+                return redirect()->back()
+                    ->withErrors(['current_password' => 'Kata sandi lama tidak benar.'])
+                    ->withInput();
+            }
         }
 
         // Update password

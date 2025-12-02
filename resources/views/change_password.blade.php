@@ -68,7 +68,11 @@
                     
                     <!-- Subtitle -->
                     <p class="text-xl md:text-2xl font-bold text-[#606778] text-center px-6">
-                        Silakan masukkan kata sandi Anda di bawah ini.
+                        @if($hasPassword)
+                            Silakan masukkan kata sandi Anda di bawah ini.
+                        @else
+                            Silakan buat kata sandi baru untuk akun Anda.
+                        @endif
                     </p>
                 </div>
 
@@ -76,7 +80,8 @@
                 <form action="{{ route('password.change.update') }}" method="POST" class="flex flex-col gap-5">
                     @csrf
 
-                    <!-- Current Password Field -->
+                    <!-- Current Password Field - Only show if user has existing password -->
+                    @if($hasPassword)
                     <div class="flex flex-col gap-2">
                         <label for="current_password" class="text-[#4D5959] text-lg font-bold">
                             Kata Sandi Lama
@@ -102,6 +107,7 @@
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    @endif
 
                     <!-- New Password Field -->
                     <div class="flex flex-col gap-2">
