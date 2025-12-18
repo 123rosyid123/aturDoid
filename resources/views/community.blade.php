@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Hero Section with Cashflow Club -->
-    <section class="pt-24 pb-12 bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]">
+    <section class="relative pt-24 pb-12 bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]">
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
             <!-- Headline -->
@@ -14,6 +14,15 @@
                     class="h-20 lg:h-80 inline-block">
                 <span>now!</span>
             </h1>
+        </div>
+
+        <!-- Instagram Button -->
+        <div class="absolute bottom-8 right-8">
+            <a href="https://www.instagram.com/cci_club?igsh=dnRkMjdlaThjbTNu" 
+               target="_blank"
+               class="inline-block">
+                <i class="fab fa-instagram text-lg md:text-2xl inline-block bg-white rounded-full p-3 shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300" style="color: #E4405F;"></i>
+            </a>
         </div>
     </section>
 
@@ -57,7 +66,7 @@
                 </div>
 
                 <!-- Right Image -->
-                <img src="{{ asset('images/assets/community/cci.jpg') }}" alt="Cashflow Club"
+                <img src="{{ asset('images/assets/community/cci.png') }}" alt="Cashflow Club"
                     class="h-full w-full object-cover">
             </div>
         </div>
@@ -74,11 +83,11 @@
             <div class="relative pt-20 pb-8" x-data="{
                         currentSlide: 0,
                         getTotalSlides() {
-                            return window.innerWidth >= 768 ? 2 : 4;
+                            return window.innerWidth >= 768 ? 2 : 6;
                         },
                         getTranslateValue() {
                             if (window.innerWidth >= 768) {
-                                return this.currentSlide * 33.333;
+                                return this.currentSlide * 100;
                             } else {
                                 return this.currentSlide * 100;
                             }
@@ -99,14 +108,14 @@
                                 <div
                                     class="aspect-square bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center">
                                     {{-- <i class="fas fa-dice text-orange-500 text-6xl"></i> --}}
-                                    <img src="{{ asset('images/assets/community/mabar.jpg') }}" alt="Cashflow Club"
+                                    <img src="{{ asset('images/assets/community/main_bareng.jpg') }}" alt="Cashflow Club"
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Board Game</h3>
-                                    <p class="text-gray-600 text-sm">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Main Bareng</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
                                         Belajar financial literacy melalui permainan board game interaktif
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -120,10 +129,10 @@
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Offline Gathering</h3>
-                                    <p class="text-gray-600 text-sm">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Gathering</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
                                         Pertemuan rutin untuk networking dan berbagi pengalaman
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -133,14 +142,14 @@
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                                 <div
                                     class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                                    <img src="{{ asset('images/assets/community/seminar.jpg') }}" alt="Cashflow Club"
+                                    <img src="{{ asset('images/assets/community/workshop.jpg') }}" alt="Cashflow Club"
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Financial Seminar</h3>
-                                    <p class="text-gray-600 text-sm">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Workshop</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
                                         Seminar dan workshop dengan para ahli keuangan
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -150,14 +159,48 @@
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                                 <div
                                     class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                                    <img src="{{ asset('images/assets/community/mabar2.jpg') }}" alt="Cashflow Club"
+                                    <img src="{{ asset('images/assets/community/BoardGame.jpg') }}" alt="Cashflow Club"
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div class="p-6 text-center">
-                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Game with Staff</h3>
-                                    <p class="text-gray-600 text-sm">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Board Game</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
                                         Main bareng sambil belajar keuangan
-                                    </p>
+                                    </p> --}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity 5: Offline Gathering -->
+                        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                                <div
+                                    class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                                    <img src="{{ asset('images/assets/community/OfflineGathering.jpg') }}" alt="Cashflow Club"
+                                        class="h-full w-full object-cover">
+                                </div>
+                                <div class="p-6 text-center">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Offline Gathering</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
+                                        Main bareng sambil belajar keuangan
+                                    </p> --}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Activity 6: Financial Seminar -->
+                        <div class="w-full md:w-1/3 flex-shrink-0 px-4">
+                            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                                <div
+                                    class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                                    <img src="{{ asset('images/assets/community/ FinancialSeminars.jpg') }}" alt="Cashflow Club"
+                                        class="h-full w-full object-cover">
+                                </div>
+                                <div class="p-6 text-center">
+                                    <h3 class="text-xl font-bold text-gray-900 mb-2">Financial Seminar</h3>
+                                    {{-- <p class="text-gray-600 text-sm">
+                                        Main bareng sambil belajar keuangan
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -230,6 +273,19 @@
             </div>
         </div>
     </section>
+
+    <!-- Instansi Organisasi CCI Section -->
+    <div class="w-full h-full px-24 md:px-32 py-8 bg-white overflow-hidden flex flex-col justify-start items-center gap-8">
+        <h2 class="text-center flex flex-col text-black text-4xl md:text-5xl font-semibold leading-[57.60px] break-words">
+            Instansi Organisasi CCI
+        </h2>
+        <div class="w-full h-[124px] flex justify-center items-center gap-14 md:gap-56">
+            <img class="w-[336px] h-full object-contain" src={{ asset('images/assets/community/SIOEN_Marunda_1.png') }} alt="CCI Organization" />
+            <img class="flex-1 h-[119.30px] object-contain" src={{ asset('images/assets/community/univ.png') }} alt="CCI Organization" />
+            <img class="w-[243px] h-[86px] object-contain" src={{ asset('images/assets/community/Vision.png') }} alt="CCI Organization" />
+            <img class="w-[212px] h-[124px] object-contain" src={{ asset('images/assets/community/SenAd.png') }} alt="CCI Organization" />
+        </div>
+    </div>
 
     <!-- CTA Section -->
     <section class="relative py-20 bg-cover bg-center"

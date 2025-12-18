@@ -346,13 +346,15 @@
                         <h2
                             class="w-full text-3xl sm:text-4xl lg:text-5xl xl:text-[50px] font-bold font-['Roboto'] leading-tight">
                             <span
-                                class="bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] bg-clip-text text-transparent">Bangun
-                                Jaringan dan </span><br>
+                                class="bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] bg-clip-text text-transparent">Atur Duit dan </span><br>
                             <span
-                                class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent">Dapatkan
-                                Penghasilan</span>
+                                class="bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)] bg-clip-text text-transparent">Dapat Duit</span>
                         </h2>
                     </div>
+                    <p
+                        class="w-full text-black text-lg sm:text-xl lg:text-2xl font-normal font-['Roboto'] leading-relaxed lg:leading-8">
+                        AturDOit memungkinkan Anda mengatur keuangan sambil berpotensi mendapatkan penghasilan tambahan melalui sistem afiliasi
+                    </p>
                     <p
                         class="w-full text-black text-lg sm:text-xl lg:text-2xl font-normal font-['Roboto'] leading-relaxed lg:leading-8">
                         AturDOit menyediakan sistem afiliasi dengan struktur hingga 3 generasi. <br>Pengguna premium dapat
