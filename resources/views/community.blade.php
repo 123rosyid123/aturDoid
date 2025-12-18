@@ -193,7 +193,7 @@
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                                 <div
                                     class="aspect-square bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
-                                    <img src="{{ asset('images/assets/community/ FinancialSeminars.jpg') }}" alt="Cashflow Club"
+                                    <img src="{{ asset('images/assets/community/FinancialSeminars.jpg') }}" alt="Cashflow Club"
                                         class="h-full w-full object-cover">
                                 </div>
                                 <div class="p-6 text-center">
