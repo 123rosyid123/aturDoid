@@ -279,11 +279,19 @@
         <h2 class="text-center flex flex-col text-black text-4xl md:text-5xl font-semibold leading-[57.60px] break-words">
             Instansi Organisasi CCI
         </h2>
-        <div class="w-full h-[124px] flex justify-center items-center gap-14 md:gap-56">
-            <img class="w-[336px] h-full object-contain" src={{ asset('images/assets/community/SIOEN_Marunda_1.png') }} alt="CCI Organization" />
-            <img class="flex-1 h-[119.30px] object-contain" src={{ asset('images/assets/community/univ.png') }} alt="CCI Organization" />
-            <img class="w-[243px] h-[86px] object-contain" src={{ asset('images/assets/community/Vision.png') }} alt="CCI Organization" />
-            <img class="w-[212px] h-[124px] object-contain" src={{ asset('images/assets/community/SenAd.png') }} alt="CCI Organization" />
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-14 place-items-center">
+            <div class="w-full max-w-[336px] md:max-w-full lg:max-w-[336px] flex items-center justify-center">
+                <img class="w-full h-auto md:h-24 lg:h-[124px] object-contain" src={{ asset('images/assets/community/SIOEN_Marunda_1.png') }} alt="CCI Organization" />
+            </div>
+            <div class="w-full max-w-[257px] md:max-w-full lg:max-w-[257px] flex items-center justify-center">
+                <img class="w-full h-auto md:h-24 lg:h-[119px] object-contain" src={{ asset('images/assets/community/univ.png') }} alt="CCI Organization" />
+            </div>
+            <div class="w-full max-w-[243px] md:max-w-full lg:max-w-[243px] flex items-center justify-center">
+                <img class="w-full h-auto md:h-20 lg:h-[86px] object-contain" src={{ asset('images/assets/community/Vision.png') }} alt="CCI Organization" />
+            </div>
+            <div class="w-full max-w-[212px] md:max-w-full lg:max-w-[212px] flex items-center justify-center">
+                <img class="w-full h-auto md:h-24 lg:h-[124px] object-contain" src={{ asset('images/assets/community/SenAd.png') }} alt="CCI Organization" />
+            </div>
         </div>
     </div>
 
