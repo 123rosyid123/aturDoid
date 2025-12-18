@@ -8,7 +8,7 @@
     {{-- User Info --}}
     <div class="flex flex-col gap-2">
         <h4 class="text-2xl lg:text-3xl font-bold text-black">
-            {{ $name }}
+            {{ $name }} <span class="text-sm text-gray-500">({{ $referralCode }})</span>
         </h4>
         <div class="flex items-center gap-3">
             <span class="{{ $statusColor }} text-xl lg:text-2xl">

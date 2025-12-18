@@ -191,7 +191,7 @@
                                         {{-- Affiliator List --}}
                                         <div class="space-y-8">
                                             <h2 class="text-4xl lg:text-5xl font-bold bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] bg-clip-text text-transparent">
-                                                Direct Affiliator ({{ $totalDownline ?? 729 }})
+                                                Direct Affiliator ({{ $totalDownline ?? 0 }})
                                             </h2>
 
                                             <div class="max-h-[760px] overflow-y-auto p-4 space-y-8">
@@ -205,7 +205,8 @@
                                                         'name' => $downline['first_name'] . ' ' . $downline['last_name'],
                                                         'status' => $downline['status'],
                                                         'affiliatedOn' => $affiliatedDate,
-                                                        'downlineCount' => $downline['total_downline']
+                                                        'downlineCount' => $downline['total_downline'],
+                                                        'referralCode' => $downline['referral_code']
                                                     ])
                                                 @empty
                                                     @include('partials.empty-downline', [
