@@ -83,11 +83,11 @@
             <div class="relative pt-20 pb-8" x-data="{
                         currentSlide: 0,
                         getTotalSlides() {
-                            return window.innerWidth >= 768 ? 2 : 6;
+                            return window.innerWidth >= 768 ? 2 : 3;
                         },
                         getTranslateValue() {
                             if (window.innerWidth >= 768) {
-                                return this.currentSlide * 100;
+                                return this.currentSlide * 0;
                             } else {
                                 return this.currentSlide * 100;
                             }
@@ -154,7 +154,7 @@
                             </div>
                         </div>
 
-                        <!-- Activity 4: Mabar -->
+                        {{-- <!-- Activity 4: Mabar -->
                         <div class="w-full md:w-1/3 flex-shrink-0 px-4">
                             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                                 <div
@@ -164,9 +164,9 @@
                                 </div>
                                 <div class="p-6 text-center">
                                     <h3 class="text-xl font-bold text-gray-900 mb-2">Board Game</h3>
-                                    {{-- <p class="text-gray-600 text-sm">
+                                    <p class="text-gray-600 text-sm">
                                         Main bareng sambil belajar keuangan
-                                    </p> --}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -181,9 +181,9 @@
                                 </div>
                                 <div class="p-6 text-center">
                                     <h3 class="text-xl font-bold text-gray-900 mb-2">Offline Gathering</h3>
-                                    {{-- <p class="text-gray-600 text-sm">
+                                    <p class="text-gray-600 text-sm">
                                         Main bareng sambil belajar keuangan
-                                    </p> --}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -198,12 +198,12 @@
                                 </div>
                                 <div class="p-6 text-center">
                                     <h3 class="text-xl font-bold text-gray-900 mb-2">Financial Seminar</h3>
-                                    {{-- <p class="text-gray-600 text-sm">
+                                    <p class="text-gray-600 text-sm">
                                         Main bareng sambil belajar keuangan
-                                    </p> --}}
+                                    </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
