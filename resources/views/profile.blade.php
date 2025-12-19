@@ -107,6 +107,27 @@
         top: 0 !important;
         right: 12px !important;
     }
+
+    /* Select2 height matching for occupation dropdown */
+    #occupation + .select2-container .select2-selection--single {
+        height: auto !important;
+        padding: 16px 40px 16px 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    #occupation + .select2-container .select2-selection__rendered {
+        line-height: 1.5 !important;
+        padding: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #occupation + .select2-container .select2-selection__arrow {
+        height: 100% !important;
+        top: 0 !important;
+        right: 12px !important;
+    }
 </style>
 @endpush
 
@@ -358,19 +379,140 @@
                     <!-- Occupation -->
                     <div>
                         <label for="occupation" class="block text-sm font-bold text-gray-700 mb-2">Pekerjaan</label>
+                        @php
+                            // List of occupations
+                            $occupations = [
+                                'Pelajar',
+                                'Mahasiswa',
+                                'Karyawan',
+                                'Pegawai',
+                                'Pegawai Negeri',
+                                'Wirausaha',
+                                'Pengusaha',
+                                'Freelancer',
+                                'Profesional',
+                                'Konsultan',
+                                'Manajer',
+                                'Supervisor',
+                                'Direktur',
+                                'Eksekutif',
+                                'Administrator',
+                                'Akuntan',
+                                'Keuangan',
+                                'Auditor',
+                                'Analis',
+                                'Data Analyst',
+                                'Software Developer',
+                                'Web Developer',
+                                'Mobile Developer',
+                                'UI/UX Designer',
+                                'Graphic Designer',
+                                'Product Manager',
+                                'Project Manager',
+                                'IT Support',
+                                'System Administrator',
+                                'Network Engineer',
+                                'Digital Marketer',
+                                'Marketing',
+                                'Brand Strategist',
+                                'Content Creator',
+                                'Copywriter',
+                                'Social Media Specialist',
+                                'SEO Specialist',
+                                'Performance Marketer',
+                                'Sales',
+                                'Business Development',
+                                'Customer Service',
+                                'Account Manager',
+                                'Public Relations',
+                                'Komunikasi',
+                                'Media Planner',
+                                'Guru',
+                                'Dosen',
+                                'Pengajar',
+                                'Trainer',
+                                'Mentor',
+                                'Peneliti',
+                                'Akademisi',
+                                'Psikolog',
+                                'Konselor',
+                                'Terapis',
+                                'Dokter',
+                                'Perawat',
+                                'Apoteker',
+                                'Tenaga Medis',
+                                'Bidan',
+                                'Teknisi',
+                                'Operator',
+                                'Quality Control',
+                                'Maintenance',
+                                'Engineer',
+                                'Arsitek',
+                                'Desainer Interior',
+                                'Surveyor',
+                                'Kontraktor',
+                                'Drafter',
+                                'Logistik',
+                                'Supply Chain',
+                                'Procurement',
+                                'Gudang',
+                                'Kurir',
+                                'HR',
+                                'Recruiter',
+                                'Talent Acquisition',
+                                'Legal',
+                                'Paralegal',
+                                'Notaris',
+                                'Pengacara',
+                                'Compliance',
+                                'Risk Analyst',
+                                'Sekretaris',
+                                'Administrasi',
+                                'Office Staff',
+                                'General Affairs',
+                                'Operasional',
+                                'Back Office',
+                                'Event Organizer',
+                                'Hospitality',
+                                'Hotelier',
+                                'Travel Consultant',
+                                'Tour Guide',
+                                'Ibu Rumah Tangga',
+                                'Pencari Kerja',
+                                'Pensiunan',
+                                'Relawan',
+                                'Lainnya'
+                            ];
+                            
+                            // Map old values to new values for backward compatibility
+                            $occupationMapping = [
+                                'student' => 'Mahasiswa',
+                                'employee' => 'Karyawan',
+                                'business_owner' => 'Pengusaha',
+                                'freelancer' => 'Freelancer',
+                                'professional' => 'Profesional',
+                                'unemployed' => 'Pencari Kerja',
+                                'retired' => 'Pensiunan',
+                                'other' => 'Lainnya'
+                            ];
+                            
+                            $selectedOccupation = old('occupation', Auth::user()->occupation ?? '');
+                            
+                            // Map old value to new value if exists
+                            if (!empty($selectedOccupation) && isset($occupationMapping[strtolower($selectedOccupation)])) {
+                                $selectedOccupation = $occupationMapping[strtolower($selectedOccupation)];
+                            }
+                        @endphp
                         <select id="occupation"
                             name="occupation"
                             required
-                            class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
-                           <option value="" {{ old('occupation', Auth::user()->occupation) == '' ? 'selected' : '' }}>Pilih Pekerjaan</option>
-                           <option value="student" {{ old('occupation', Auth::user()->occupation) == 'student' ? 'selected' : '' }}>Mahasiswa</option>
-                           <option value="employee" {{ old('occupation', Auth::user()->occupation) == 'employee' ? 'selected' : '' }}>Karyawan</option>
-                           <option value="business_owner" {{ old('occupation', Auth::user()->occupation) == 'business_owner' ? 'selected' : '' }}>Pemilik Bisnis</option>
-                           <option value="freelancer" {{ old('occupation', Auth::user()->occupation) == 'freelancer' ? 'selected' : '' }}>Freelancer</option>
-                           <option value="professional" {{ old('occupation', Auth::user()->occupation) == 'professional' ? 'selected' : '' }}>Profesional</option>
-                           <option value="unemployed" {{ old('occupation', Auth::user()->occupation) == 'unemployed' ? 'selected' : '' }}>Pengangguran</option>
-                           <option value="retired" {{ old('occupation', Auth::user()->occupation) == 'retired' ? 'selected' : '' }}>Pensiunan</option>
-                           <option value="other" {{ old('occupation', Auth::user()->occupation) == 'other' ? 'selected' : '' }} >Lainnya</option>
+                            class="form-select w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
+                           <option value="">Pilih Pekerjaan</option>
+                           @foreach($occupations as $occupation)
+                               <option value="{{ $occupation }}" {{ $selectedOccupation == $occupation ? 'selected' : '' }}>
+                                   {{ $occupation }}
+                               </option>
+                           @endforeach
                        </select>
                     </div>
                 </div>
@@ -464,6 +606,29 @@
                 }
                 var $country = $(country.element);
                 return $('<span>' + $country.text() + '</span>');
+            }
+        });
+
+        // Initialize Select2 for occupation dropdown
+        $('#occupation').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: 'Pilih Pekerjaan',
+            allowClear: true,
+            minimumResultsForSearch: 0,
+            templateResult: function(occupation) {
+                if (!occupation.id) {
+                    return occupation.text;
+                }
+                var $occupation = $(occupation.element);
+                return $('<span>' + $occupation.text() + '</span>');
+            },
+            templateSelection: function(occupation) {
+                if (!occupation.id) {
+                    return occupation.text;
+                }
+                var $occupation = $(occupation.element);
+                return $('<span>' + $occupation.text() + '</span>');
             }
         });
     });
