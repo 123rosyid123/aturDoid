@@ -3,6 +3,9 @@
 @section('title', 'Profile - AturDOit')
 
 @push('styles')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 <style>
     .avatar-upload {
         position: relative;
@@ -61,6 +64,48 @@
         background-size: cover;
         background-repeat: no-repeat;
         background-position: center;
+    }
+
+    /* Select2 height matching phone input */
+    #country_code_profile + .select2-container .select2-selection--single {
+        height: auto !important;
+        padding: 16px 40px 16px 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    #country_code_profile + .select2-container .select2-selection__rendered {
+        line-height: 1.5 !important;
+        padding: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #country_code_profile + .select2-container .select2-selection__arrow {
+        height: 100% !important;
+        top: 0 !important;
+        right: 12px !important;
+    }
+
+    /* Select2 height matching for country dropdown */
+    #country + .select2-container .select2-selection--single {
+        height: auto !important;
+        padding: 16px 40px 16px 16px !important;
+        line-height: 1.5 !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    #country + .select2-container .select2-selection__rendered {
+        line-height: 1.5 !important;
+        padding: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    #country + .select2-container .select2-selection__arrow {
+        height: 100% !important;
+        top: 0 !important;
+        right: 12px !important;
     }
 </style>
 @endpush
@@ -214,10 +259,11 @@
                         <div class="flex" id="phone-wrapper">
                             <select id="country_code_profile" 
                                     data-country-code
-                                    class="appearance-none px-4 py-4 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-semibold">
+                                    class="form-select px-4 py-4 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-semibold"
+                                    style="min-width: 150px; max-width: 200px;">
                                 @foreach($countries as $country)
                                     <option value="{{ $country['dial_code'] }}" {{ $countryCode == $country['dial_code'] ? 'selected' : '' }}>
-                                        {{ $country['flag'] }} {{ $country['dial_code'] }}
+                                        {{ $country['flag'] }} {{ $country['name'] }} ({{ $country['dial_code'] }})
                                     </option>
                                 @endforeach
                             </select>
@@ -257,18 +303,55 @@
                     <!-- Country -->
                     <div>
                         <label for="country" class="block text-sm font-bold text-gray-700 mb-2">Negara</label>
+                        @php
+                            // Load countries from JSON file for country dropdown
+                            $countriesForSelect = json_decode(file_get_contents(public_path('countries.json')), true);
+                            
+                            // Sort countries alphabetically by name
+                            usort($countriesForSelect, function($a, $b) {
+                                return strcmp($a['name'], $b['name']);
+                            });
+                            
+                            // Get selected country - try to match by code first, then by name
+                            $selectedCountry = old('country', Auth::user()->country ?? '');
+                            $selectedCountryCode = '';
+                            
+                            // Map old country values to country codes
+                            $countryMapping = [
+                                'indonesia' => 'ID',
+                                'malaysia' => 'MY',
+                                'singapore' => 'SG',
+                                'thailand' => 'TH',
+                                'philippines' => 'PH',
+                                'vietnam' => 'VN',
+                                'brunei' => 'BN',
+                                'other' => ''
+                            ];
+                            
+                            if (!empty($selectedCountry)) {
+                                // Check if it's an old value that needs mapping
+                                if (isset($countryMapping[strtolower($selectedCountry)])) {
+                                    $selectedCountryCode = $countryMapping[strtolower($selectedCountry)];
+                                } else {
+                                    // Try to find by code directly
+                                    foreach ($countriesForSelect as $country) {
+                                        if (strtolower($country['code']) === strtolower($selectedCountry)) {
+                                            $selectedCountryCode = $country['code'];
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        @endphp
                         <select id="country" 
                                 name="country"
-                                class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
+                                class="form-select w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
                             <option value="">Pilih Negara</option>
-                            <option value="indonesia" {{ old('country', Auth::user()->country) == 'indonesia' ? 'selected' : '' }}>Indonesia</option>
-                            <option value="malaysia" {{ old('country', Auth::user()->country) == 'malaysia' ? 'selected' : '' }}>Malaysia</option>
-                            <option value="singapore" {{ old('country', Auth::user()->country) == 'singapore' ? 'selected' : '' }}>Singapore</option>
-                            <option value="thailand" {{ old('country', Auth::user()->country) == 'thailand' ? 'selected' : '' }}>Thailand</option>
-                            <option value="philippines" {{ old('country', Auth::user()->country) == 'philippines' ? 'selected' : '' }}>Philippines</option>
-                            <option value="vietnam" {{ old('country', Auth::user()->country) == 'vietnam' ? 'selected' : '' }}>Vietnam</option>
-                            <option value="brunei" {{ old('country', Auth::user()->country) == 'brunei' ? 'selected' : '' }}>Brunei</option>
-                            <option value="other" {{ old('country', Auth::user()->country) == 'other' ? 'selected' : '' }}>Lainnya</option>
+                            @foreach($countriesForSelect as $country)
+                                <option value="{{ $country['code'] }}" {{ $selectedCountryCode == $country['code'] ? 'selected' : '' }}>
+                                    {{ $country['flag'] }} {{ $country['name'] }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -319,7 +402,90 @@
 @endsection
 
 @push('scripts')
+<!-- jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    // Initialize Select2 for country code dropdown
+    $(document).ready(function() {
+        $('#country_code_profile').select2({
+            theme: 'bootstrap-5',
+            width: 'auto',
+            placeholder: 'Select country code',
+            allowClear: false,
+            minimumResultsForSearch: 0,
+            templateResult: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                return $('<span>' + $country.text() + '</span>');
+            },
+            templateSelection: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                var fullText = $country.text();
+                // Extract flag and dial code (format: "🇮🇩 Indonesia (+62)" -> "🇮🇩 +62")
+                var match = fullText.match(/^([^\s]+)\s+.+?\s+\(([^)]+)\)$/);
+                if (match) {
+                    var flag = match[1];
+                    var dialCode = match[2];
+                    return $('<span>' + flag + ' ' + dialCode + '</span>');
+                }
+                return $('<span>' + fullText + '</span>');
+            }
+        });
+
+        // Update phone number when country code changes (Select2 compatible)
+        $('#country_code_profile').on('select2:select', function() {
+            updatePhoneNumber();
+        });
+
+        // Initialize Select2 for country dropdown
+        $('#country').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: 'Pilih Negara',
+            allowClear: true,
+            minimumResultsForSearch: 0,
+            templateResult: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                return $('<span>' + $country.text() + '</span>');
+            },
+            templateSelection: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                return $('<span>' + $country.text() + '</span>');
+            }
+        });
+    });
+
+    // Function to update phone number
+    function updatePhoneNumber() {
+        const phoneHiddenField = document.getElementById('phone');
+        const countryCodeSelect = document.getElementById('country_code_profile');
+        const phoneNumberInput = document.querySelector('[data-phone-number]');
+        
+        if (phoneHiddenField && countryCodeSelect && phoneNumberInput) {
+            const countryCode = countryCodeSelect.value;
+            const phoneNumber = phoneNumberInput.value.trim();
+            
+            if (phoneNumber) {
+                phoneHiddenField.value = countryCode + phoneNumber;
+            } else {
+                phoneHiddenField.value = '';
+            }
+        }
+    }
+
     // Avatar Preview - Vanilla JavaScript
     document.getElementById('avatarUpload').addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
@@ -356,23 +522,9 @@
         
         // Also update on input change for real-time feedback
         const phoneNumberInput = document.querySelector('[data-phone-number]');
-        const countryCodeSelect = document.querySelector('[data-country-code]');
         
-        if (phoneNumberInput && countryCodeSelect) {
-            const updatePhone = function() {
-                const phoneHiddenField = document.getElementById('phone');
-                const countryCode = countryCodeSelect.value;
-                const phoneNumber = phoneNumberInput.value.trim();
-                
-                if (phoneNumber) {
-                    phoneHiddenField.value = countryCode + phoneNumber;
-                } else {
-                    phoneHiddenField.value = '';
-                }
-            };
-            
-            phoneNumberInput.addEventListener('input', updatePhone);
-            countryCodeSelect.addEventListener('change', updatePhone);
+        if (phoneNumberInput) {
+            phoneNumberInput.addEventListener('input', updatePhoneNumber);
         }
     }
 </script>
