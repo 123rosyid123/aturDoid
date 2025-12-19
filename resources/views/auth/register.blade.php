@@ -3,6 +3,9 @@
 @section('title', 'Register - AturDOit')
 
 @push('styles')
+<!-- Select2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
 <style>
 .form-input {
     transition: all 0.3s ease;
@@ -32,6 +35,27 @@ select.form-input:focus {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
     20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Select2 height matching phone input */
+#country_code + .select2-container .select2-selection--single {
+    height: auto !important;
+    padding: 12px 40px 12px 12px !important;
+    line-height: 1.5 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+#country_code + .select2-container .select2-selection__rendered {
+    line-height: 1.5 !important;
+    padding: 0 !important;
+    padding-right: 0 !important;
+}
+
+#country_code + .select2-container .select2-selection__arrow {
+    height: 100% !important;
+    top: 0 !important;
+    right: 12px !important;
 }
 </style>
 @endpush
@@ -304,10 +328,10 @@ select.form-input:focus {
                                     $selectedCountryCode = old('country_code', '+62');
                                 @endphp
                                 <div class="flex">
-                                    <select id="country_code" name="country_code" class="appearance-none px-3 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
+                                    <select id="country_code" name="country_code" class="form-select px-3 py-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white" style="min-width: 150px; max-width: 200px;">
                                         @foreach($countries as $country)
                                             <option value="{{ $country['dial_code'] }}" {{ $selectedCountryCode == $country['dial_code'] ? 'selected' : '' }}>
-                                                {{ $country['flag'] }} {{ $country['dial_code'] }}
+                                                {{ $country['flag'] }} {{ $country['name'] }} ({{ $country['dial_code'] }})
                                             </option>
                                         @endforeach
                                     </select>
@@ -521,7 +545,44 @@ select.form-input:focus {
 @endsection
 
 @push('scripts')
+<!-- jQuery (required for Select2) -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    // Initialize Select2 for country code dropdown
+    $(document).ready(function() {
+        $('#country_code').select2({
+            theme: 'bootstrap-5',
+            width: 'auto',
+            placeholder: 'Select country code',
+            allowClear: false,
+            minimumResultsForSearch: 0,
+            templateResult: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                return $('<span>' + $country.text() + '</span>');
+            },
+            templateSelection: function(country) {
+                if (!country.id) {
+                    return country.text;
+                }
+                var $country = $(country.element);
+                var fullText = $country.text();
+                // Extract flag and dial code (format: "🇮🇩 Indonesia (+62)" -> "🇮🇩 +62")
+                var match = fullText.match(/^([^\s]+)\s+.+?\s+\(([^)]+)\)$/);
+                if (match) {
+                    var flag = match[1];
+                    var dialCode = match[2];
+                    return $('<span>' + flag + ' ' + dialCode + '</span>');
+                }
+                return $('<span>' + fullText + '</span>');
+            }
+        });
+    });
+
     let currentStep = 1;
     let formData = {};
 
