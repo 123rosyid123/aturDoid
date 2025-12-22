@@ -274,10 +274,10 @@
         </div>
     </section>
 
-    <!-- Instansi Organisasi CCI Section -->
+    <!-- Mitra yang Berpartisipasi dalam Komunitas CCI Section -->
     <div class="w-full h-full px-24 md:px-32 py-8 bg-white overflow-hidden flex flex-col justify-start items-center gap-8">
         <h2 class="text-center flex flex-col text-black text-4xl md:text-5xl font-semibold leading-[57.60px] break-words">
-            Instansi Organisasi CCI
+            Mitra yang Berpartisipasi dalam Komunitas CCI
         </h2>
         <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-14 place-items-center">
             <div class="w-full max-w-[336px] md:max-w-full lg:max-w-[336px] flex items-center justify-center">

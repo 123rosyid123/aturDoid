@@ -161,7 +161,7 @@ class LandingPageController extends Controller
         $totalDownline = $user->downlines()->count();
         
         // Get downlines with upline_created_at from user_upline_log
-        $downlines = $user->downlines()->get()->map(function($downline) use ($user) {
+        $downlines = $user->downlines()->orderBy('created_at', 'desc')->get()->map(function($downline) use ($user) {
             // Get the latest log entry for this downline with current user as upline
             $latestLog = \App\Models\UserUplineLog::where('user_id', $downline->id)
                 ->where('upline_user_id', $user->id)
