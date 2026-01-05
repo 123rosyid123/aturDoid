@@ -207,12 +207,33 @@ select.form-input:focus {
                                     </div>
                                     <input type="password" id="password" name="password" required
                                         class="form-input w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Masukkan password anda disini">
+                                        placeholder="Masukkan password anda disini"
+                                        oninput="validatePasswordStrength()">
 
                                     <button type="button" onclick="togglePassword('password')"
                                         class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                         <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                                     </button>
+                                </div>
+
+                                <!-- Password Requirements -->
+                                <div id="passwordRequirements" class="mt-3 space-y-2 text-sm">
+                                    <div id="req-length" class="flex items-center text-gray-500">
+                                        <i class="fas fa-circle text-xs mr-2"></i>
+                                        <span>Minimal 8 karakter</span>
+                                    </div>
+                                    <div id="req-lowercase" class="flex items-center text-gray-500">
+                                        <i class="fas fa-circle text-xs mr-2"></i>
+                                        <span>Minimal 1 huruf kecil (a-z)</span>
+                                    </div>
+                                    <div id="req-uppercase" class="flex items-center text-gray-500">
+                                        <i class="fas fa-circle text-xs mr-2"></i>
+                                        <span>Minimal 1 huruf besar (A-Z)</span>
+                                    </div>
+                                    <div id="req-number" class="flex items-center text-gray-500">
+                                        <i class="fas fa-circle text-xs mr-2"></i>
+                                        <span>Minimal 1 angka (0-9)</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -225,11 +246,24 @@ select.form-input:focus {
                                     </div>
                                     <input type="password" id="password_confirmation" name="password_confirmation" required
                                         class="form-input w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        placeholder="Masukkan ulang password anda disini">
+                                        placeholder="Masukkan ulang password anda disini"
+                                        oninput="validatePasswordMatch()">
                                     <button type="button" onclick="togglePassword('password_confirmation')"
                                         class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                         <i class="fas fa-eye text-gray-400 hover:text-gray-600"></i>
                                     </button>
+                                </div>
+
+                                <!-- Password Match Indicator -->
+                                <div id="passwordMatch" class="hidden mt-2 text-sm">
+                                    <div id="match-success" class="hidden flex items-center text-green-600">
+                                        <i class="fas fa-check-circle mr-2"></i>
+                                        <span>Password cocok</span>
+                                    </div>
+                                    <div id="match-error" class="hidden flex items-center text-red-600">
+                                        <i class="fas fa-times-circle mr-2"></i>
+                                        <span>Password tidak cocok</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -318,12 +352,12 @@ select.form-input:focus {
                                     // Load countries from JSON file
                                     $countriesJson = file_get_contents(public_path('countries.json'));
                                     $countries = json_decode($countriesJson, true);
-                                    
+
                                     // Sort countries alphabetically by name for display
                                     usort($countries, function($a, $b) {
                                         return strcmp($a['name'], $b['name']);
                                     });
-                                    
+
                                     // Get selected country code from old input
                                     $selectedCountryCode = old('country_code', '+62');
                                 @endphp
@@ -513,7 +547,7 @@ select.form-input:focus {
                             <!-- Header -->
                             <div class="text-center mb-8">
                                 <h2 class="text-2xl font-bold text-gray-900 mb-2">Berhasil! Akunmu siap digunakan! 🎉</h2>
-                                <p class="text-gray-600">Kamu sudah siap! Selamat datang — yuk mulai!</p>
+                                <p class="text-gray-600">Kamu sudah siap! Selamat datang — yuk mulai atur duit kamu !!!</p>
                             </div>
 
                             {{-- icon check besar dengan border circle rounded berwarna hijau --}}
@@ -586,6 +620,85 @@ select.form-input:focus {
     let currentStep = 1;
     let formData = {};
 
+    // Password validation regex (same as backend)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+
+    /**
+     * Validate password strength in real-time
+     */
+    function validatePasswordStrength() {
+        const password = document.getElementById('password').value;
+
+        // Check minimum length (8 characters)
+        const hasLength = password.length >= 8;
+        updateRequirement('req-length', hasLength);
+
+        // Check lowercase letter
+        const hasLowercase = /[a-z]/.test(password);
+        updateRequirement('req-lowercase', hasLowercase);
+
+        // Check uppercase letter
+        const hasUppercase = /[A-Z]/.test(password);
+        updateRequirement('req-uppercase', hasUppercase);
+
+        // Check number
+        const hasNumber = /\d/.test(password);
+        updateRequirement('req-number', hasNumber);
+
+        // Return overall validity
+        return hasLength && hasLowercase && hasUppercase && hasNumber;
+    }
+
+    /**
+     * Update individual requirement indicator
+     */
+    function updateRequirement(elementId, isMet) {
+        const element = document.getElementById(elementId);
+        const icon = element.querySelector('i');
+        const text = element.querySelector('span');
+
+        if (isMet) {
+            element.classList.remove('text-gray-500');
+            element.classList.add('text-green-600');
+            icon.classList.remove('fa-circle');
+            icon.classList.add('fa-check-circle');
+        } else {
+            element.classList.remove('text-green-600');
+            element.classList.add('text-gray-500');
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-circle');
+        }
+    }
+
+    /**
+     * Validate password match
+     */
+    function validatePasswordMatch() {
+        const password = document.getElementById('password').value;
+        const passwordConfirmation = document.getElementById('password_confirmation').value;
+        const matchContainer = document.getElementById('passwordMatch');
+        const matchSuccess = document.getElementById('match-success');
+        const matchError = document.getElementById('match-error');
+
+        // Only show if confirmation field has value
+        if (passwordConfirmation.length > 0) {
+            matchContainer.classList.remove('hidden');
+
+            if (password === passwordConfirmation) {
+                matchSuccess.classList.remove('hidden');
+                matchError.classList.add('hidden');
+                return true;
+            } else {
+                matchSuccess.classList.add('hidden');
+                matchError.classList.remove('hidden');
+                return false;
+            }
+        } else {
+            matchContainer.classList.add('hidden');
+        }
+        return false;
+    }
+
     // Check if email is verified from session
     @if(session('verified') && session('email'))
         formData.email = "{{ session('email') }}";
@@ -637,13 +750,13 @@ select.form-input:focus {
         // Get referral code from URL parameter if present
         const urlParams = new URLSearchParams(window.location.search);
         const refCode = urlParams.get('ref');
-        
+
         // Redirect to Google OAuth with referral code if present
         let googleAuthUrl = '/auth/google';
         if (refCode) {
             googleAuthUrl += '?ref=' + encodeURIComponent(refCode);
         }
-        
+
         window.location.href = googleAuthUrl;
     }
 
@@ -736,6 +849,30 @@ select.form-input:focus {
 
         // Clear previous errors
         hideError('step2Error');
+
+        // Frontend validation
+        if (password.length === 0 || passwordConfirmation.length === 0) {
+            showError('step2Error', 'step2ErrorText', 'Password dan konfirmasi password wajib diisi');
+            return;
+        }
+
+        // Validate password strength with regex
+        if (!passwordRegex.test(password)) {
+            showError('step2Error', 'step2ErrorText', 'Password harus minimal 8 karakter, mengandung huruf besar, huruf kecil, dan angka');
+            return;
+        }
+
+        // Validate minimum length
+        if (password.length < 8) {
+            showError('step2Error', 'step2ErrorText', 'Password minimal 8 karakter');
+            return;
+        }
+
+        // Validate password match
+        if (password !== passwordConfirmation) {
+            showError('step2Error', 'step2ErrorText', 'Password dan konfirmasi password tidak cocok');
+            return;
+        }
 
         nextBtn.disabled = true;
         nextBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Validating...';
@@ -893,20 +1030,20 @@ select.form-input:focus {
         .then(data => {
             loadingDiv.classList.add('hidden');
             validateBtn.disabled = false;
-            
+
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
                 document.getElementById('step4SuccessText').textContent = data.message || 'Referral code validated successfully!';
-                
+
                 // Show affiliator info section
                 affiliatorInfo.classList.remove('hidden');
                 document.getElementById('affiliatorName').textContent = data.data?.affiliator_name || 'Unknown';
-                
+
                 // Change button to success state
                 validateBtn.classList.remove('bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]');
                 validateBtn.classList.add('bg-green-500');
                 validateBtn.innerHTML = '<i class="fas fa-check-circle"></i>';
-                
+
                 referralCodeValidated = true;
                 formData.referral_code = referralCode;
                 formData.referral_data = data.referral_data || { validated: true };
@@ -1243,7 +1380,7 @@ select.form-input:focus {
             // Email is already verified, go directly to step 2
             const email = "{{ request('email') }}";
             formData.email = email;
-            
+
             // Set email in step 1 input (for reference, but user won't see step 1)
             const emailInput = document.getElementById('email');
             if (emailInput) {
@@ -1277,15 +1414,15 @@ select.form-input:focus {
                 // Reset validation states when user types
                 referralCodeValidated = false;
                 referralCodeSkipped = false;
-                
+
                 const validateBtn = document.getElementById('validateReferralBtn');
                 const affiliatorInfo = document.getElementById('affiliatorInfo');
-                
+
                 // Hide messages and affiliator info
                 document.getElementById('step4Error').classList.add('hidden');
                 document.getElementById('step4Success').classList.add('hidden');
                 affiliatorInfo.classList.add('hidden');
-                
+
                 // Reset button to default state
                 validateBtn.classList.remove('bg-green-500');
                 validateBtn.classList.add('bg-[linear-gradient(180deg,#F78422_0%,#E1291C_100%)]');
