@@ -715,8 +715,15 @@ select.form-input:focus {
             if (emailInput) emailInput.value = savedFormData.email;
         }
 
-        // Step 2: Password (don't restore for security)
-        // Passwords are intentionally not restored from localStorage
+        // Step 2: Password
+        if (savedFormData.password) {
+            const passwordInput = document.getElementById('password');
+            if (passwordInput) passwordInput.value = savedFormData.password;
+        }
+        if (savedFormData.password_confirmation) {
+            const passwordConfirmationInput = document.getElementById('password_confirmation');
+            if (passwordConfirmationInput) passwordConfirmationInput.value = savedFormData.password_confirmation;
+        }
 
         // Step 3: Profile
         if (savedFormData.first_name) {
@@ -1066,6 +1073,7 @@ select.form-input:focus {
             if (data.success) {
                 // Save step 2 data
                 formData.password = password;
+                formData.password_confirmation = passwordConfirmation;
 
                 // Save to localStorage
                 saveToLocalStorage();
