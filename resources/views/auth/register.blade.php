@@ -1086,9 +1086,9 @@ select.form-input:focus {
                 } else {
                     showError('step2Error', 'step2ErrorText', data.message || 'Validation failed');
                 }
-                nextBtn.disabled = false;
-                nextBtn.innerHTML = originalText;
             }
+            nextBtn.disabled = false;
+            nextBtn.innerHTML = originalText;
         })
         .catch(error => {
             showError('step2Error', 'step2ErrorText', 'An error occurred. Please try again.');
@@ -1191,7 +1191,7 @@ select.form-input:focus {
         affiliatorInfo.classList.add('hidden');
 
         if (!referralCode) {
-            showError('step4Error', 'step4ErrorText', 'Please enter a referral code');
+            showError('step4Error', 'step4ErrorText', 'Silakan masukkan kode referensi');
             return;
         }
 
@@ -1216,7 +1216,7 @@ select.form-input:focus {
 
             if (data.success && data.valid) {
                 successDiv.classList.remove('hidden');
-                document.getElementById('step4SuccessText').textContent = data.message || 'Referral code validated successfully!';
+                document.getElementById('step4SuccessText').textContent = data.message || 'Kode referensi berhasil divalidasi!';
 
                 // Show affiliator info section
                 affiliatorInfo.classList.remove('hidden');
@@ -1235,7 +1235,7 @@ select.form-input:focus {
                 saveToLocalStorage();
             } else {
                 errorDiv.classList.remove('hidden');
-                document.getElementById('step4ErrorText').textContent = data.message || 'Invalid referral code';
+                document.getElementById('step4ErrorText').textContent = data.message || 'Kode referensi tidak valid';
                 referralCodeValidated = false;
                 affiliatorInfo.classList.add('hidden');
                 validateBtn.innerHTML = 'Validasi';
@@ -1248,7 +1248,7 @@ select.form-input:focus {
 
             // Show error message
             errorDiv.classList.remove('hidden');
-            document.getElementById('step4ErrorText').textContent = 'Failed to validate referral code. Please try again.';
+            document.getElementById('step4ErrorText').textContent = 'Gagal memvalidasi kode referensi. Silakan coba lagi.';
             referralCodeValidated = false;
             affiliatorInfo.classList.add('hidden');
         });
@@ -1267,7 +1267,7 @@ select.form-input:focus {
 
         // Show skip confirmation
         successDiv.classList.remove('hidden');
-        document.getElementById('step4SuccessText').textContent = 'Referral code skipped. You will be part of the owner\'s team.';
+        document.getElementById('step4SuccessText').textContent = 'Kode referensi dilewati. Anda tetap bisa lanjut dan mengisi kode referral affiliator nanti setelah anda mendapatkannya.';
 
         referralCodeSkipped = true;
         referralCodeValidated = false;
@@ -1293,7 +1293,7 @@ select.form-input:focus {
         errorDiv.classList.add('hidden');
 
         if (!termsAgreed) {
-            showError('step4Error', 'step4ErrorText', 'You must agree to the terms and conditions to continue');
+            showError('step4Error', 'step4ErrorText', 'Anda harus menyetujui syarat dan ketentuan untuk melanjutkan.');
             return;
         }
 
@@ -1301,7 +1301,7 @@ select.form-input:focus {
         const referralCode = document.getElementById('referral_code').value.trim();
 
         if (referralCode && !referralCodeValidated && !referralCodeSkipped) {
-            showError('step4Error', 'step4ErrorText', 'Please validate your referral code or skip it');
+            showError('step4Error', 'step4ErrorText', 'Silakan validasi kode referensi Anda atau lewati saja.');
             return;
         }
 
