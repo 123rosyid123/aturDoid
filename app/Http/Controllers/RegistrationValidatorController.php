@@ -116,26 +116,26 @@ class RegistrationValidatorController extends Controller
         $validator = Validator::make($request->all(), [
             'first_name' => 'required|string|max:50|regex:/^[a-zA-Z\s\-]+$/',
             'last_name' => 'required|string|max:50|regex:/^[a-zA-Z\s\-]+$/',
-            'phone' => 'required|string|max:30|regex:/^\+[0-9]{1,4}[0-9\s\-\(\)]+$/',
+            // 'phone' => 'required|string|max:30|regex:/^\+[0-9]{1,4}[0-9\s\-\(\)]+$/',
             'gender' => 'required|string|in:laki-laki,perempuan',
-            'occupation' => 'required|string|in:student,employee,business_owner,freelancer,professional,unemployed,retired,other',
+            'occupation' => 'required|string|max:100',
             'country' => 'required|string|max:100'
         ], [
-            'first_name.required' => 'First name is required',
-            'first_name.regex' => 'First name can only contain letters, spaces, and hyphens',
-            'first_name.max' => 'First name cannot exceed 50 characters',
-            'last_name.required' => 'Last name is required',
-            'last_name.regex' => 'Last name can only contain letters, spaces, and hyphens',
-            'last_name.max' => 'Last name cannot exceed 50 characters',
-            'phone.required' => 'Phone number is required',
-            'phone.regex' => 'Phone number must include country code (e.g., +62123456789)',
-            'phone.max' => 'Phone number cannot exceed 30 characters',
-            'gender.required' => 'Please select gender',
-            'gender.in' => 'Invalid gender selected',
-            'occupation.required' => 'Please select your occupation',
-            'occupation.in' => 'Invalid occupation selected',
-            'country.required' => 'Please select your country',
-            'country.max' => 'Country name cannot exceed 100 characters'
+            'first_name.required' => 'Nama depan wajib diisi.',
+            'first_name.regex' => 'Nama depan hanya boleh berisi huruf, spasi, dan tanda hubung',
+            'first_name.max' => 'Nama depan tidak boleh lebih dari 50 karakter',
+            'last_name.required' => 'Nama belakang wajib diisi.',
+            'last_name.regex' => 'Nama belakang hanya boleh berisi huruf, spasi, dan tanda hubung',
+            'last_name.max' => 'Nama belakang tidak boleh lebih dari 50 karakter',
+            // 'phone.required' => 'Nomor telepon wajib diisi.',
+            // 'phone.regex' => 'Nomor telepon harus menyertakan kode negara (misalnya, +62123456789)',
+            // 'phone.max' => 'Nomor telepon tidak boleh lebih dari 30 karakter',
+            'gender.required' => 'Silakan pilih jenis kelamin',
+            'gender.in' => 'Jenis kelamin yang dipilih tidak valid',
+            'occupation.required' => 'Silakan pilih pekerjaan Anda',
+            'occupation.max' => 'Pekerjaan tidak boleh lebih dari 100 karakter',
+            'country.required' => 'Silakan pilih negara Anda',
+            'country.max' => 'Nama negara tidak boleh lebih dari 100 karakter'
         ]);
 
         if ($validator->fails()) {
@@ -227,7 +227,7 @@ class RegistrationValidatorController extends Controller
         // check refferal code bukan berasal dari downline recursive user
         if (Auth::check()) {
             $currentUser = Auth::user();
-            
+
             // Check if the referral code owner is a downline (recursive) of current user
             if ($this->isDownlineRecursive($currentUser, $validCode)) {
                 return response()->json([
@@ -236,7 +236,7 @@ class RegistrationValidatorController extends Controller
                     'message' => 'You cannot use referral code from your downline. Please use a referral code from someone who is not in your network.',
                 ], 422);
             }
-            
+
             // Check if user is trying to use their own referral code
             if ($currentUser->id === $validCode->id) {
                 return response()->json([
@@ -259,7 +259,7 @@ class RegistrationValidatorController extends Controller
 
     /**
      * Check if a user is a downline (recursive) of another user
-     * 
+     *
      * @param User $uplineUser The potential upline user
      * @param User $downlineUser The potential downline user
      * @return bool True if downlineUser is a downline (any level) of uplineUser
@@ -273,19 +273,19 @@ class RegistrationValidatorController extends Controller
 
         // Get all direct downlines of uplineUser
         $directDownlines = $uplineUser->downlines()->get();
-        
+
         foreach ($directDownlines as $directDownline) {
             // Check if this direct downline is the target user
             if ($directDownline->id === $downlineUser->id) {
                 return true;
             }
-            
+
             // Recursively check if target user is a downline of this direct downline
             if ($this->isDownlineRecursive($directDownline, $downlineUser)) {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -374,7 +374,7 @@ class RegistrationValidatorController extends Controller
         // Log upline code usage if user registered with referral code
         if (!empty($allData['referral_code'])) {
             $uplineUser = User::where('referral_code', $allData['referral_code'])->first();
-            
+
             \App\Models\UserUplineLog::create([
                 'user_id' => $user->id,
                 'upline_user_id' => $uplineUser ? $uplineUser->id : null,

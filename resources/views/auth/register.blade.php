@@ -394,19 +394,40 @@ select.form-input:focus {
                                 </div>
                                 <div>
                                     <label class="block text-gray-700 text-sm font-medium mb-2">Pekerjaan</label>
+                                    @php
+                                        $occupations = [
+                                            'Pelajar', 'Mahasiswa', 'Karyawan', 'Pegawai', 'Pegawai Negeri',
+                                            'Wirausaha', 'Pengusaha', 'Freelancer', 'Profesional', 'Konsultan',
+                                            'Manajer', 'Supervisor', 'Direktur', 'Eksekutif', 'Administrator',
+                                            'Akuntan', 'Keuangan', 'Auditor', 'Analis', 'Data Analyst',
+                                            'Software Developer', 'Web Developer', 'Mobile Developer',
+                                            'UI/UX Designer', 'Graphic Designer', 'Product Manager', 'Project Manager',
+                                            'IT Support', 'System Administrator', 'Network Engineer',
+                                            'Digital Marketer', 'Marketing', 'Brand Strategist', 'Content Creator',
+                                            'Copywriter', 'Social Media Specialist', 'SEO Specialist', 'Performance Marketer',
+                                            'Sales', 'Business Development', 'Customer Service', 'Account Manager',
+                                            'Public Relations', 'Komunikasi', 'Media Planner',
+                                            'Guru', 'Dosen', 'Pengajar', 'Trainer', 'Mentor', 'Peneliti', 'Akademisi',
+                                            'Psikolog', 'Konselor', 'Terapis',
+                                            'Dokter', 'Perawat', 'Apoteker', 'Tenaga Medis', 'Bidan',
+                                            'Teknisi', 'Operator', 'Quality Control', 'Maintenance', 'Engineer',
+                                            'Arsitek', 'Desainer Interior', 'Surveyor', 'Kontraktor', 'Drafter',
+                                            'Logistik', 'Supply Chain', 'Procurement', 'Gudang', 'Kurir',
+                                            'HR', 'Recruiter', 'Talent Acquisition',
+                                            'Legal', 'Paralegal', 'Notaris', 'Pengacara', 'Compliance', 'Risk Analyst',
+                                            'Sekretaris', 'Administrasi', 'Office Staff', 'General Affairs', 'Operasional', 'Back Office',
+                                            'Event Organizer', 'Hospitality', 'Hotelier', 'Travel Consultant', 'Tour Guide',
+                                            'Ibu Rumah Tangga', 'Pencari Kerja', 'Pensiunan', 'Relawan', 'Lainnya'
+                                        ];
+                                    @endphp
                                     <select id="occupation"
                                             name="occupation"
                                             required
                                             class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
                                         <option value="">Pilih Pekerjaan</option>
-                                        <option value="student">Mahasiswa</option>
-                                        <option value="employee">Karyawan</option>
-                                        <option value="business_owner">Pemilik Bisnis</option>
-                                        <option value="freelancer">Freelancer</option>
-                                        <option value="professional">Profesional</option>
-                                        <option value="unemployed">Pengangguran</option>
-                                        <option value="retired">Pensiunan</option>
-                                        <option value="other">Lainnya</option>
+                                        @foreach($occupations as $occupation)
+                                            <option value="{{ $occupation }}">{{ $occupation }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -414,27 +435,28 @@ select.form-input:focus {
                             <!-- Country -->
                             <div class="mb-6">
                                 <label class="block text-gray-700 text-sm font-medium mb-2">Negara</label>
+                                @php
+                                    $countriesForSelect = json_decode(file_get_contents(public_path('countries.json')), true);
+                                    usort($countriesForSelect, function($a, $b) {
+                                        return strcmp($a['name'], $b['name']);
+                                    });
+                                @endphp
                                 <select id="country"
                                         name="country"
                                         required
                                         class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
                                     <option value="">Pilih Negara</option>
-                                    <option value="indonesia">Indonesia</option>
-                                    <option value="malaysia">Malaysia</option>
-                                    <option value="singapore">Singapore</option>
-                                    <option value="thailand">Thailand</option>
-                                    <option value="philippines">Philippines</option>
-                                    <option value="vietnam">Vietnam</option>
-                                    <option value="united States">United States</option>
-                                    <option value="united kingdom">United Kingdom</option>
-                                    <option value="australia">Australia</option>
-                                    <option value="other">Lainnya</option>
+                                    @foreach($countriesForSelect as $country)
+                                        <option value="{{ $country['code'] }}">
+                                            {{ $country['flag'] }} {{ $country['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-between items-center">
-                                <button type="button" onclick="goToStep2()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                <button type="button" onclick="goBackToStep2()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                                     <i class="fas fa-arrow-left mr-2"></i>
                                     Balik
                                 </button>
@@ -502,7 +524,7 @@ select.form-input:focus {
                                     <button type="button" onclick="skipReferralCode()" class="text-red-500 hover:text-red-600 font-medium">
                                         Tenang aja!
                                     </button>
-                                    Kalau kamu lewati bagian ini, kamu otomatis jadi bagian dari tim pemilik.
+                                    Kamu tetap bisa lanjut dan mengisi kode referral affiliator nanti setelah kamu mendapatkannya.
                                 </p>
                             </div>
 
@@ -515,7 +537,7 @@ select.form-input:focus {
                                            class="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
                                     <span class="ml-2 text-sm text-gray-600">
                                         Dengan menggunakan aplikasi ini, Anda menyetujui
-                                        <a href="#" onclick="showTerms()" class="text-blue-600 hover:text-blue-800 underline">ketentuan</a> kami.
+                                        <a href="{{ route('terms.service') }}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">ketentuan</a> kami.
                                         Kami menjaga data pribadi Anda tetap aman dan hanya menggunakannya untuk menjalankan aplikasi.
                                     </span>
                                 </label>
@@ -531,12 +553,12 @@ select.form-input:focus {
 
                             <!-- Navigation Buttons -->
                             <div class="flex justify-between items-center">
-                                <button type="button" onclick="goToStep3()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                                <button type="button" onclick="goBackToStep3()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
                                     <i class="fas fa-arrow-left mr-2"></i>
                                     Balik
                                 </button>
                                 <button type="button" onclick="completeRegistration()" class="flex items-center px-6 py-3 bg-[linear-gradient(180deg,#2E5396_0%,#212E5E_100%)] text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                                    Lanjut
+                                    Daftar Sekarang
                                     <i class="fas fa-check ml-2"></i>
                                 </button>
                             </div>
@@ -615,6 +637,24 @@ select.form-input:focus {
                 return $('<span>' + fullText + '</span>');
             }
         });
+
+        // Initialize Select2 for occupation dropdown
+        $('#occupation').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: 'Pilih Pekerjaan',
+            allowClear: false,
+            minimumResultsForSearch: 5
+        });
+
+        // Initialize Select2 for country dropdown
+        $('#country').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            placeholder: 'Pilih Negara',
+            allowClear: false,
+            minimumResultsForSearch: 5
+        });
     });
 
     let currentStep = 1;
@@ -622,6 +662,109 @@ select.form-input:focus {
 
     // Password validation regex (same as backend)
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+
+    /**
+     * Save form data to localStorage
+     */
+    function saveToLocalStorage() {
+        const registrationData = {
+            currentStep: currentStep,
+            formData: formData,
+            timestamp: new Date().getTime()
+        };
+        localStorage.setItem('aturdoit_registration', JSON.stringify(registrationData));
+    }
+
+    /**
+     * Load form data from localStorage
+     */
+    function loadFromLocalStorage() {
+        const savedData = localStorage.getItem('aturdoit_registration');
+        if (savedData) {
+            try {
+                const registrationData = JSON.parse(savedData);
+
+                // Check if data is not older than 24 hours
+                const twentyFourHours = 24 * 60 * 60 * 1000;
+                const now = new Date().getTime();
+
+                if (now - registrationData.timestamp < twentyFourHours) {
+                    return registrationData;
+                }
+            } catch (e) {
+                console.error('Error loading registration data:', e);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Clear localStorage after successful registration
+     */
+    function clearLocalStorage() {
+        localStorage.removeItem('aturdoit_registration');
+    }
+
+    /**
+     * Restore form fields from saved data
+     */
+    function restoreFormFields(savedFormData) {
+        // Step 1: Email
+        if (savedFormData.email) {
+            const emailInput = document.getElementById('email');
+            if (emailInput) emailInput.value = savedFormData.email;
+        }
+
+        // Step 2: Password (don't restore for security)
+        // Passwords are intentionally not restored from localStorage
+
+        // Step 3: Profile
+        if (savedFormData.first_name) {
+            const firstNameInput = document.getElementById('first_name');
+            if (firstNameInput) firstNameInput.value = savedFormData.first_name;
+        }
+        if (savedFormData.last_name) {
+            const lastNameInput = document.getElementById('last_name');
+            if (lastNameInput) lastNameInput.value = savedFormData.last_name;
+        }
+        if (savedFormData.phone) {
+            // Extract country code and phone number
+            const phoneMatch = savedFormData.phone.match(/^(\+\d+)(.+)$/);
+            if (phoneMatch) {
+                const countryCodeSelect = document.getElementById('country_code');
+                const phoneInput = document.getElementById('phone');
+                if (countryCodeSelect) {
+                    countryCodeSelect.value = phoneMatch[1];
+                    $(countryCodeSelect).trigger('change');
+                }
+                if (phoneInput) phoneInput.value = phoneMatch[2];
+            }
+        }
+        if (savedFormData.gender) {
+            const genderSelect = document.getElementById('gender');
+            if (genderSelect) genderSelect.value = savedFormData.gender;
+        }
+        if (savedFormData.occupation) {
+            const occupationSelect = document.getElementById('occupation');
+            if (occupationSelect) {
+                occupationSelect.value = savedFormData.occupation;
+                $(occupationSelect).trigger('change');
+            }
+        }
+        if (savedFormData.country) {
+            const countrySelect = document.getElementById('country');
+            if (countrySelect) {
+                countrySelect.value = savedFormData.country;
+                $(countrySelect).trigger('change');
+            }
+        }
+
+        // Step 4: Referral
+        if (savedFormData.referral_code) {
+            const referralInput = document.getElementById('referral_code');
+            if (referralInput) referralInput.value = savedFormData.referral_code;
+        }
+    }
 
     /**
      * Validate password strength in real-time
@@ -764,6 +907,7 @@ select.form-input:focus {
         currentStep = 1;
         showStep(1);
         updateProgressDots(1);
+        updateProgressDotsLeft(1);
     }
 
     function goToStep2() {
@@ -776,6 +920,16 @@ select.form-input:focus {
 
         // Clear previous errors
         document.getElementById('step1Error').classList.add('hidden');
+
+        // Check if email is already verified (coming from localStorage restore)
+        if (formData.email && formData.email === email && formData.emailVerified) {
+            // Email already verified, just go to step 2
+            currentStep = 2;
+            showStep(2);
+            updateProgressDots(2);
+            updateProgressDotsLeft(2);
+            return;
+        }
 
         // Show loading state
         const nextBtn = document.querySelector('button[onclick="goToStep2()"]');
@@ -803,10 +957,14 @@ select.form-input:focus {
             if (data.success) {
                 // Save step 1 data
                 formData.email = email;
+                formData.emailVerified = true;
                 // Save referral code if present
                 if (refCode) {
                     formData.ref = refCode;
                 }
+
+                // Save to localStorage
+                saveToLocalStorage();
 
                 // Show success message
                 showError('step1Error', 'step1ErrorText', data.message || 'Email verifikasi telah dikirim! Silakan cek email Anda.');
@@ -837,6 +995,20 @@ select.form-input:focus {
             nextBtn.disabled = false;
             nextBtn.innerHTML = originalText;
         });
+    }
+
+    function goBackToStep2() {
+        currentStep = 2;
+        showStep(2);
+        updateProgressDots(2);
+        updateProgressDotsLeft(2);
+    }
+
+    function goBackToStep3() {
+        currentStep = 3;
+        showStep(3);
+        updateProgressDots(3);
+        updateProgressDotsLeft(3);
     }
 
     function goToStep3() {
@@ -895,11 +1067,17 @@ select.form-input:focus {
                 // Save step 2 data
                 formData.password = password;
 
+                // Save to localStorage
+                saveToLocalStorage();
+
                 // Proceed to step 3 (Profile)
                 currentStep = 3;
                 showStep(3);
                 updateProgressDots(3);
                 updateProgressDotsLeft(3);
+
+                // Save to localStorage after moving to step 3
+                saveToLocalStorage();
             } else {
                 // Show errors
                 if (data.errors) {
@@ -908,6 +1086,8 @@ select.form-input:focus {
                 } else {
                     showError('step2Error', 'step2ErrorText', data.message || 'Validation failed');
                 }
+                nextBtn.disabled = false;
+                nextBtn.innerHTML = originalText;
             }
         })
         .catch(error => {
@@ -965,6 +1145,9 @@ select.form-input:focus {
                 formData.gender = gender;
                 formData.occupation = occupation;
                 formData.country = country;
+
+                // Save to localStorage
+                saveToLocalStorage();
 
                 // Proceed to step 4 (Referral)
                 currentStep = 4;
@@ -1047,6 +1230,9 @@ select.form-input:focus {
                 referralCodeValidated = true;
                 formData.referral_code = referralCode;
                 formData.referral_data = data.referral_data || { validated: true };
+
+                // Save to localStorage
+                saveToLocalStorage();
             } else {
                 errorDiv.classList.remove('hidden');
                 document.getElementById('step4ErrorText').textContent = data.message || 'Invalid referral code';
@@ -1087,12 +1273,15 @@ select.form-input:focus {
         referralCodeValidated = false;
         formData.referral_code = null;
         formData.referral_skipped = true;
+
+        // Save to localStorage
+        saveToLocalStorage();
     }
 
     function showTerms() {
         // Show terms modal or navigate to terms page
         // For now, we'll just open it in a new window
-        window.open('/terms', '_blank', 'width=800,height=600,scrollbars=yes');
+        window.open('{{ route('terms.service') }}', '_blank', 'width=800,height=600,scrollbars=yes');
     }
 
     function completeRegistration() {
@@ -1178,6 +1367,9 @@ select.form-input:focus {
             if (data.success) {
                 // Hide all error messages
                 hideError('step4Error');
+
+                // Clear localStorage after successful registration
+                clearLocalStorage();
 
                 // Show done step instead of redirect
                 showStep('done');
@@ -1347,6 +1539,9 @@ select.form-input:focus {
 
     // Initialize on page load
     document.addEventListener('DOMContentLoaded', function() {
+        // Try to load saved data from localStorage
+        const savedRegistration = loadFromLocalStorage();
+
         // Check for referral code and email in URL parameters
         const urlParams = new URLSearchParams(window.location.search);
         const refCode = urlParams.get('ref');
@@ -1375,6 +1570,9 @@ select.form-input:focus {
             showStep(2);
             updateProgressDots(2);
             updateProgressDotsLeft(2);
+
+            // Save to localStorage
+            saveToLocalStorage();
         @elseif(request()->has('ref') && request()->has('email'))
             // User came from invitation link with ref and email parameters
             // Email is already verified, go directly to step 2
@@ -1392,14 +1590,56 @@ select.form-input:focus {
             showStep(2);
             updateProgressDots(2);
             updateProgressDotsLeft(2);
+
+            // Save to localStorage
+            saveToLocalStorage();
         @else
-            // User not verified yet, start from step 1
-            showStep(1);
-            updateProgressDots(1);
-            updateProgressDotsLeft(1);
+            // Check if there's saved progress in localStorage
+            if (savedRegistration && savedRegistration.formData) {
+                // Restore form data
+                formData = savedRegistration.formData;
+                currentStep = savedRegistration.currentStep;
+
+                // Restore form fields
+                restoreFormFields(formData);
+
+                // Show the saved step
+                showStep(currentStep);
+                updateProgressDots(currentStep);
+                updateProgressDotsLeft(currentStep);
+
+                // Show info message about restored session
+                const stepErrorId = 'step' + currentStep + 'Error';
+                const stepErrorTextId = 'step' + currentStep + 'ErrorText';
+                const errorDiv = document.getElementById(stepErrorId);
+                const errorText = document.getElementById(stepErrorTextId);
+
+                if (errorDiv && errorText) {
+                    errorDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200');
+                    errorDiv.classList.add('bg-blue-50', 'border-blue-200');
+                    errorText.classList.remove('text-red-700');
+                    errorText.classList.add('text-blue-700');
+                    const icon = errorDiv.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-exclamation-triangle', 'text-red-500');
+                        icon.classList.add('fa-info-circle', 'text-blue-500');
+                    }
+                    errorText.textContent = 'Data Anda telah dipulihkan. Silakan lanjutkan pendaftaran.';
+
+                    // Hide message after 5 seconds
+                    setTimeout(() => {
+                        errorDiv.classList.add('hidden');
+                    }, 5000);
+                }
+            } else {
+                // User not verified yet, start from step 1
+                showStep(1);
+                updateProgressDots(1);
+                updateProgressDotsLeft(1);
+            }
         @endif
 
-        // Set referral code in input if present
+        // Set referral code in input if present (and not already set from localStorage)
         if (refCode) {
             const referralInput = document.getElementById('referral_code');
             if (referralInput && !referralInput.value) {
