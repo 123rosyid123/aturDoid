@@ -18,7 +18,7 @@
 
         <!-- Instagram Button -->
         <div class="absolute bottom-8 right-8">
-            <a href="https://www.instagram.com/cci_club?igsh=dnRkMjdlaThjbTNu" 
+            <a href="https://www.instagram.com/cci_club?igsh=dnRkMjdlaThjbTNu"
                target="_blank"
                class="inline-block">
                 <i class="fab fa-instagram text-lg md:text-2xl inline-block bg-white rounded-full p-3 shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300" style="color: #E4405F;"></i>
@@ -279,7 +279,7 @@
         <h2 class="text-center flex flex-col text-black text-4xl md:text-5xl font-semibold leading-[57.60px] break-words">
             Mitra yang Berpartisipasi Dalam Komunitas CCI
         </h2>
-        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-14 place-items-center">
+        <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-8 lg:gap-14 place-items-center">
             <div class="w-full max-w-[336px] md:max-w-full lg:max-w-[336px] flex items-center justify-center">
                 <img class="w-full h-auto md:h-24 lg:h-[124px] object-contain" src={{ asset('images/assets/community/SIOEN_Marunda_1.png') }} alt="CCI Organization" />
             </div>
@@ -291,6 +291,9 @@
             </div>
             <div class="w-full max-w-[212px] md:max-w-full lg:max-w-[212px] flex items-center justify-center">
                 <img class="w-full h-auto md:h-24 lg:h-[124px] object-contain" src={{ asset('images/assets/community/SenAd.png') }} alt="CCI Organization" />
+            </div>
+            <div class="w-full max-w-[212px] md:max-w-full lg:max-w-[212px] flex items-center justify-center">
+                <img class="w-full h-auto md:h-24 lg:h-[124px] object-contain" src={{ asset('images/assets/community/cakrawala.jpeg') }} alt="CCI Organization" />
             </div>
         </div>
     </div>

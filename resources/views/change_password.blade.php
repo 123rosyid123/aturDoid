@@ -32,19 +32,19 @@
                             </svg>
                         </div>
                     </div>
-                    
+
                     <!-- Success Title -->
                     <h1 class="text-4xl md:text-5xl font-bold text-black text-center">
                         Kata Sandi Berhasil Diubah
                     </h1>
-                    
+
                     <!-- Success Message -->
                     <p class="text-xl text-[#606778] text-center">
                         Kata sandi Anda telah berhasil diperbarui. Silakan gunakan kata sandi baru Anda untuk login.
                     </p>
-                    
+
                     <!-- Back to Profile Button -->
-                    <a href="{{ route('profile') }}" 
+                    <a href="{{ route('profile') }}"
                        class="w-full h-16 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-lg text-white text-2xl font-bold hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 flex items-center justify-center">
                         Kembali Ke Profile
                     </a>
@@ -60,12 +60,12 @@
                         <img src="{{ asset('images/icons/key.svg') }}" alt="Password Change">
                         {{-- <div class="w-16 h-16 absolute top-3 left-3 rounded-full border-8 border-[#F78422]"></div> --}}
                     </div>
-                    
+
                     <!-- Title -->
                     <h1 class="text-4xl md:text-5xl font-bold text-black text-center">
                         Ubah Kata Sandi Anda
                     </h1>
-                    
+
                     <!-- Subtitle -->
                     <p class="text-xl md:text-2xl font-bold text-[#606778] text-center px-6">
                         @if($hasPassword)
@@ -87,14 +87,14 @@
                             Kata Sandi Lama
                         </label>
                         <div class="relative">
-                            <input type="password" 
-                                   id="current_password" 
+                            <input type="password"
+                                   id="current_password"
                                    name="current_password"
                                    value="{{ old('current_password') }}"
                                    required
                                    class="w-full px-6 py-4 pr-12 border border-[#838383] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F78422] focus:border-[#F78422] text-gray-700 font-semibold"
                                    placeholder="Masukkan kata sandi lama">
-                            <button type="button" 
+                            <button type="button"
                                     onclick="togglePasswordVisibility('current_password')"
                                     class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 <svg id="eye-current_password" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -115,13 +115,14 @@
                             Kata Sandi Baru
                         </label>
                         <div class="relative">
-                            <input type="password" 
-                                   id="new_password" 
+                            <input type="password"
+                                   id="new_password"
                                    name="new_password"
                                    required
+                                   oninput="validatePasswordStrength()"
                                    class="w-full px-6 py-4 pr-12 border border-[#838383] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F78422] focus:border-[#F78422] text-gray-700 font-semibold"
                                    placeholder="Masukkan kata sandi baru">
-                            <button type="button" 
+                            <button type="button"
                                     onclick="togglePasswordVisibility('new_password')"
                                     class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 <svg id="eye-new_password" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -130,6 +131,27 @@
                                 </svg>
                             </button>
                         </div>
+
+                        <!-- Password Requirements -->
+                        <div id="passwordRequirements" class="mt-3 space-y-2 text-sm">
+                            <div id="req-length" class="flex items-center text-gray-500">
+                                <i class="fas fa-circle text-xs mr-2"></i>
+                                <span>Minimal 8 karakter</span>
+                            </div>
+                            <div id="req-lowercase" class="flex items-center text-gray-500">
+                                <i class="fas fa-circle text-xs mr-2"></i>
+                                <span>Minimal 1 huruf kecil (a-z)</span>
+                            </div>
+                            <div id="req-uppercase" class="flex items-center text-gray-500">
+                                <i class="fas fa-circle text-xs mr-2"></i>
+                                <span>Minimal 1 huruf besar (A-Z)</span>
+                            </div>
+                            <div id="req-number" class="flex items-center text-gray-500">
+                                <i class="fas fa-circle text-xs mr-2"></i>
+                                <span>Minimal 1 angka (0-9)</span>
+                            </div>
+                        </div>
+
                         @error('new_password')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                         @enderror
@@ -141,13 +163,14 @@
                             Konfirmasi Kata Sandi Baru
                         </label>
                         <div class="relative">
-                            <input type="password" 
-                                   id="new_password_confirmation" 
+                            <input type="password"
+                                   id="new_password_confirmation"
                                    name="new_password_confirmation"
                                    required
+                                   oninput="validatePasswordMatch()"
                                    class="w-full px-6 py-4 pr-12 border border-[#838383] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#F78422] focus:border-[#F78422] text-gray-700 font-semibold"
                                    placeholder="Konfirmasi kata sandi baru">
-                            <button type="button" 
+                            <button type="button"
                                     onclick="togglePasswordVisibility('new_password_confirmation')"
                                     class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
                                 <svg id="eye-new_password_confirmation" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -156,10 +179,22 @@
                                 </svg>
                             </button>
                         </div>
+
+                        <!-- Password Match Indicator -->
+                        <div id="passwordMatch" class="hidden mt-2 text-sm">
+                            <div id="match-success" class="hidden flex items-center text-green-600">
+                                <i class="fas fa-check-circle mr-2"></i>
+                                <span>Password cocok</span>
+                            </div>
+                            <div id="match-error" class="hidden flex items-center text-red-600">
+                                <i class="fas fa-times-circle mr-2"></i>
+                                <span>Password tidak cocok</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" 
+                    <button type="submit"
                             class="w-full h-16 bg-gradient-to-b from-[#F78422] to-[#E1291C] rounded-lg text-white text-2xl font-bold hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200">
                         Ubah Kata Sandi
                     </button>
@@ -167,7 +202,7 @@
 
                 <!-- Back Link -->
                 <div class="mt-6 text-center">
-                    <a href="{{ route('profile') }}" 
+                    <a href="{{ route('profile') }}"
                        class="text-gray-400 hover:text-gray-600 text-lg font-bold transition-colors duration-200">
                         ← Kembali ke profil
                     </a>
@@ -181,10 +216,89 @@
 
 @push('scripts')
 <script>
+    // Password validation regex (same as backend)
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
+
+    /**
+     * Validate password strength in real-time
+     */
+    function validatePasswordStrength() {
+        const password = document.getElementById('new_password').value;
+
+        // Check minimum length (8 characters)
+        const hasLength = password.length >= 8;
+        updateRequirement('req-length', hasLength);
+
+        // Check lowercase letter
+        const hasLowercase = /[a-z]/.test(password);
+        updateRequirement('req-lowercase', hasLowercase);
+
+        // Check uppercase letter
+        const hasUppercase = /[A-Z]/.test(password);
+        updateRequirement('req-uppercase', hasUppercase);
+
+        // Check number
+        const hasNumber = /\d/.test(password);
+        updateRequirement('req-number', hasNumber);
+
+        // Return overall validity
+        return hasLength && hasLowercase && hasUppercase && hasNumber;
+    }
+
+    /**
+     * Update individual requirement indicator
+     */
+    function updateRequirement(elementId, isMet) {
+        const element = document.getElementById(elementId);
+        const icon = element.querySelector('i');
+        const text = element.querySelector('span');
+
+        if (isMet) {
+            element.classList.remove('text-gray-500');
+            element.classList.add('text-green-600');
+            icon.classList.remove('fa-circle');
+            icon.classList.add('fa-check-circle');
+        } else {
+            element.classList.remove('text-green-600');
+            element.classList.add('text-gray-500');
+            icon.classList.remove('fa-check-circle');
+            icon.classList.add('fa-circle');
+        }
+    }
+
+    /**
+     * Validate password match
+     */
+    function validatePasswordMatch() {
+        const password = document.getElementById('new_password').value;
+        const passwordConfirmation = document.getElementById('new_password_confirmation').value;
+        const matchContainer = document.getElementById('passwordMatch');
+        const matchSuccess = document.getElementById('match-success');
+        const matchError = document.getElementById('match-error');
+
+        // Only show if confirmation field has value
+        if (passwordConfirmation.length > 0) {
+            matchContainer.classList.remove('hidden');
+
+            if (password === passwordConfirmation) {
+                matchSuccess.classList.remove('hidden');
+                matchError.classList.add('hidden');
+                return true;
+            } else {
+                matchSuccess.classList.add('hidden');
+                matchError.classList.remove('hidden');
+                return false;
+            }
+        } else {
+            matchContainer.classList.add('hidden');
+        }
+        return false;
+    }
+
     function togglePasswordVisibility(fieldId) {
         const field = document.getElementById(fieldId);
         const eyeIcon = document.getElementById('eye-' + fieldId);
-        
+
         if (field.type === 'password') {
             field.type = 'text';
             eyeIcon.innerHTML = `
