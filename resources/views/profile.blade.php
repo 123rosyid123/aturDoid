@@ -172,18 +172,18 @@
                         </div>
                         <div class="avatar-preview">
                             @php
-                                $avatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) . '&size=200&background=F78422&color=fff';
-                                
-                                if (Auth::user()->avatar) {
-                                    // Check if avatar is a full URL (from Google) or local path
-                                    if (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL)) {
-                                        // Full URL (from Google OAuth)
-                                        $avatarUrl = Auth::user()->avatar;
-                                    } else {
-                                        // Local uploaded file
-                                        $avatarUrl = url('/avatars/' . basename(Auth::user()->avatar));
-                                    }
-                                }
+$avatarUrl = 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->first_name . ' ' . Auth::user()->last_name) . '&size=200&background=F78422&color=fff';
+
+if (Auth::user()->avatar) {
+    // Check if avatar is a full URL (from Google) or local path
+    if (filter_var(Auth::user()->avatar, FILTER_VALIDATE_URL)) {
+        // Full URL (from Google OAuth)
+        $avatarUrl = Auth::user()->avatar;
+    } else {
+        // Local uploaded file
+        $avatarUrl = url('/avatars/' . basename(Auth::user()->avatar));
+    }
+}
                             @endphp
                             <div id="avatarPreview" style="background-image: url('{{ $avatarUrl }}');">
                             </div>
@@ -197,9 +197,9 @@
                     <!-- First Name -->
                     <div>
                         <label for="first_name" class="block text-sm font-bold text-gray-700 mb-2">Nama Pertama</label>
-                        <input type="text" 
-                               id="first_name" 
-                               name="first_name" 
+                        <input type="text"
+                               id="first_name"
+                               name="first_name"
                                value="{{ old('first_name', Auth::user()->first_name) }}"
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
                                placeholder="Masukkan nama pertama">
@@ -208,9 +208,9 @@
                     <!-- Last Name -->
                     <div>
                         <label for="last_name" class="block text-sm font-bold text-gray-700 mb-2">Nama Terakhir</label>
-                        <input type="text" 
-                               id="last_name" 
-                               name="last_name" 
+                        <input type="text"
+                               id="last_name"
+                               name="last_name"
                                value="{{ old('last_name', Auth::user()->last_name) }}"
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
                                placeholder="Masukkan nama terakhir">
@@ -219,8 +219,8 @@
                     {{-- <!-- Email (Read Only) -->
                     <div>
                         <label for="email" class="block text-sm font-bold text-gray-700 mb-2">Email</label>
-                        <input type="email" 
-                               id="email" 
+                        <input type="email"
+                               id="email"
                                value="{{ Auth::user()->email }}"
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 font-semibold cursor-not-allowed"
                                readonly>
@@ -231,54 +231,54 @@
                     <div>
                         <label for="phone" class="block text-sm font-bold text-gray-700 mb-2">Nomor Telepon</label>
                         @php
-                            $userPhone = old('phone', Auth::user()->phone ?? '');
-                            $countryCode = '+62';
-                            $phoneNumber = '';
-                            
-                            // Load countries from JSON file
-                            $countriesJson = file_get_contents(public_path('countries.json'));
-                            $countries = json_decode($countriesJson, true);
-                            
-                            // Extract country code and phone number
-                            if (!empty($userPhone) && str_starts_with($userPhone, '+')) {
-                                // Try to match country codes from JSON (check longest codes first)
-                                $matched = false;
-                                // Sort countries by dial_code length (longest first) to match longer codes first
-                                usort($countries, function($a, $b) {
-                                    return strlen($b['dial_code']) - strlen($a['dial_code']);
-                                });
-                                
-                                foreach ($countries as $country) {
-                                    $dialCode = $country['dial_code'];
-                                    if (str_starts_with($userPhone, $dialCode)) {
-                                        $countryCode = $dialCode;
-                                        $phoneNumber = substr($userPhone, strlen($dialCode));
-                                        $matched = true;
-                                        break;
-                                    }
-                                }
-                                
-                                // Fallback: extract country code using regex
-                                if (!$matched) {
-                                    preg_match('/^(\+\d{1,4})(.*)$/', $userPhone, $matches);
-                                    if (isset($matches[1]) && isset($matches[2])) {
-                                        $countryCode = $matches[1];
-                                        $phoneNumber = $matches[2];
-                                    } else {
-                                        $phoneNumber = $userPhone;
-                                    }
-                                }
-                            } else {
-                                $phoneNumber = $userPhone;
-                            }
-                            
-                            // Sort countries alphabetically by name for display
-                            usort($countries, function($a, $b) {
-                                return strcmp($a['name'], $b['name']);
-                            });
+$userPhone = old('phone', Auth::user()->phone ?? '');
+$countryCode = '+62';
+$phoneNumber = '';
+
+// Load countries from JSON file
+$countriesJson = file_get_contents(public_path('countries.json'));
+$countries = json_decode($countriesJson, true);
+
+// Extract country code and phone number
+if (!empty($userPhone) && str_starts_with($userPhone, '+')) {
+    // Try to match country codes from JSON (check longest codes first)
+    $matched = false;
+    // Sort countries by dial_code length (longest first) to match longer codes first
+    usort($countries, function ($a, $b) {
+        return strlen($b['dial_code']) - strlen($a['dial_code']);
+    });
+
+    foreach ($countries as $country) {
+        $dialCode = $country['dial_code'];
+        if (str_starts_with($userPhone, $dialCode)) {
+            $countryCode = $dialCode;
+            $phoneNumber = substr($userPhone, strlen($dialCode));
+            $matched = true;
+            break;
+        }
+    }
+
+    // Fallback: extract country code using regex
+    if (!$matched) {
+        preg_match('/^(\+\d{1,4})(.*)$/', $userPhone, $matches);
+        if (isset($matches[1]) && isset($matches[2])) {
+            $countryCode = $matches[1];
+            $phoneNumber = $matches[2];
+        } else {
+            $phoneNumber = $userPhone;
+        }
+    }
+} else {
+    $phoneNumber = $userPhone;
+}
+
+// Sort countries alphabetically by name for display
+usort($countries, function ($a, $b) {
+    return strcmp($a['name'], $b['name']);
+});
                         @endphp
                         <div class="flex" id="phone-wrapper">
-                            <select id="country_code_profile" 
+                            <select id="country_code_profile"
                                     data-country-code
                                     class="form-select px-4 py-4 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 bg-white text-gray-700 font-semibold"
                                     style="min-width: 150px; max-width: 200px;">
@@ -288,8 +288,8 @@
                                     </option>
                                 @endforeach
                             </select>
-                            <input type="tel" 
-                                   id="phone_number_input" 
+                            <input type="tel"
+                                   id="phone_number_input"
                                    data-phone-number
                                    value="{{ $phoneNumber }}"
                                    class="flex-1 px-6 py-4 border-t border-r border-b border-gray-300 rounded-r-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold"
@@ -302,9 +302,9 @@
                     {{-- <!-- Date of Birth -->
                     <div>
                         <label for="date_of_birth" class="block text-sm font-bold text-gray-700 mb-2">Tanggal Lahir</label>
-                        <input type="date" 
-                               id="date_of_birth" 
-                               name="date_of_birth" 
+                        <input type="date"
+                               id="date_of_birth"
+                               name="date_of_birth"
                                value="{{ old('date_of_birth', Auth::user()->date_of_birth ? (is_object(Auth::user()->date_of_birth) ? Auth::user()->date_of_birth->format('Y-m-d') : Auth::user()->date_of_birth) : '') }}"
                                class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
                     </div> --}}
@@ -312,7 +312,7 @@
                     <!-- Gender -->
                     <div>
                         <label for="gender" class="block text-sm font-bold text-gray-700 mb-2">Jenis Kelamin</label>
-                        <select id="gender" 
+                        <select id="gender"
                                 name="gender"
                                 class="w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
                             <option value="">Pilih Jenis Kelamin</option>
@@ -323,51 +323,51 @@
 
                     <!-- Country -->
                     <div>
-                        <label for="country" class="block text-sm font-bold text-gray-700 mb-2">Negara</label>
+                        <label for="country" class="block text-sm font-bold text-gray-700 mb-2">Kewarganegaraan</label>
                         @php
-                            // Load countries from JSON file for country dropdown
-                            $countriesForSelect = json_decode(file_get_contents(public_path('countries.json')), true);
-                            
-                            // Sort countries alphabetically by name
-                            usort($countriesForSelect, function($a, $b) {
-                                return strcmp($a['name'], $b['name']);
-                            });
-                            
-                            // Get selected country - try to match by code first, then by name
-                            $selectedCountry = old('country', Auth::user()->country ?? '');
-                            $selectedCountryCode = '';
-                            
-                            // Map old country values to country codes
-                            $countryMapping = [
-                                'indonesia' => 'ID',
-                                'malaysia' => 'MY',
-                                'singapore' => 'SG',
-                                'thailand' => 'TH',
-                                'philippines' => 'PH',
-                                'vietnam' => 'VN',
-                                'brunei' => 'BN',
-                                'other' => ''
-                            ];
-                            
-                            if (!empty($selectedCountry)) {
-                                // Check if it's an old value that needs mapping
-                                if (isset($countryMapping[strtolower($selectedCountry)])) {
-                                    $selectedCountryCode = $countryMapping[strtolower($selectedCountry)];
-                                } else {
-                                    // Try to find by code directly
-                                    foreach ($countriesForSelect as $country) {
-                                        if (strtolower($country['code']) === strtolower($selectedCountry)) {
-                                            $selectedCountryCode = $country['code'];
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
+// Load countries from JSON file for country dropdown
+$countriesForSelect = json_decode(file_get_contents(public_path('countries.json')), true);
+
+// Sort countries alphabetically by name
+usort($countriesForSelect, function ($a, $b) {
+    return strcmp($a['name'], $b['name']);
+});
+
+// Get selected country - try to match by code first, then by name
+$selectedCountry = old('country', Auth::user()->country ?? '');
+$selectedCountryCode = '';
+
+// Map old country values to country codes
+$countryMapping = [
+    'indonesia' => 'ID',
+    'malaysia' => 'MY',
+    'singapore' => 'SG',
+    'thailand' => 'TH',
+    'philippines' => 'PH',
+    'vietnam' => 'VN',
+    'brunei' => 'BN',
+    'other' => ''
+];
+
+if (!empty($selectedCountry)) {
+    // Check if it's an old value that needs mapping
+    if (isset($countryMapping[strtolower($selectedCountry)])) {
+        $selectedCountryCode = $countryMapping[strtolower($selectedCountry)];
+    } else {
+        // Try to find by code directly
+        foreach ($countriesForSelect as $country) {
+            if (strtolower($country['code']) === strtolower($selectedCountry)) {
+                $selectedCountryCode = $country['code'];
+                break;
+            }
+        }
+    }
+}
                         @endphp
-                        <select id="country" 
+                        <select id="country"
                                 name="country"
                                 class="form-select w-full px-6 py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 text-gray-700 font-semibold">
-                            <option value="">Pilih Negara</option>
+                            <option value="">Pilih Kewarganegaraan</option>
                             @foreach($countriesForSelect as $country)
                                 <option value="{{ $country['code'] }}" {{ $selectedCountryCode == $country['code'] ? 'selected' : '' }}>
                                     {{ $country['flag'] }} {{ $country['name'] }}
@@ -380,128 +380,128 @@
                     <div>
                         <label for="occupation" class="block text-sm font-bold text-gray-700 mb-2">Pekerjaan</label>
                         @php
-                            // List of occupations
-                            $occupations = [
-                                'Pelajar',
-                                'Mahasiswa',
-                                'Karyawan',
-                                'Pegawai',
-                                'Pegawai Negeri',
-                                'Wirausaha',
-                                'Pengusaha',
-                                'Freelancer',
-                                'Profesional',
-                                'Konsultan',
-                                'Manajer',
-                                'Supervisor',
-                                'Direktur',
-                                'Eksekutif',
-                                'Administrator',
-                                'Akuntan',
-                                'Keuangan',
-                                'Auditor',
-                                'Analis',
-                                'Data Analyst',
-                                'Software Developer',
-                                'Web Developer',
-                                'Mobile Developer',
-                                'UI/UX Designer',
-                                'Graphic Designer',
-                                'Product Manager',
-                                'Project Manager',
-                                'IT Support',
-                                'System Administrator',
-                                'Network Engineer',
-                                'Digital Marketer',
-                                'Marketing',
-                                'Brand Strategist',
-                                'Content Creator',
-                                'Copywriter',
-                                'Social Media Specialist',
-                                'SEO Specialist',
-                                'Performance Marketer',
-                                'Sales',
-                                'Business Development',
-                                'Customer Service',
-                                'Account Manager',
-                                'Public Relations',
-                                'Komunikasi',
-                                'Media Planner',
-                                'Guru',
-                                'Dosen',
-                                'Pengajar',
-                                'Trainer',
-                                'Mentor',
-                                'Peneliti',
-                                'Akademisi',
-                                'Psikolog',
-                                'Konselor',
-                                'Terapis',
-                                'Dokter',
-                                'Perawat',
-                                'Apoteker',
-                                'Tenaga Medis',
-                                'Bidan',
-                                'Teknisi',
-                                'Operator',
-                                'Quality Control',
-                                'Maintenance',
-                                'Engineer',
-                                'Arsitek',
-                                'Desainer Interior',
-                                'Surveyor',
-                                'Kontraktor',
-                                'Drafter',
-                                'Logistik',
-                                'Supply Chain',
-                                'Procurement',
-                                'Gudang',
-                                'Kurir',
-                                'HR',
-                                'Recruiter',
-                                'Talent Acquisition',
-                                'Legal',
-                                'Paralegal',
-                                'Notaris',
-                                'Pengacara',
-                                'Compliance',
-                                'Risk Analyst',
-                                'Sekretaris',
-                                'Administrasi',
-                                'Office Staff',
-                                'General Affairs',
-                                'Operasional',
-                                'Back Office',
-                                'Event Organizer',
-                                'Hospitality',
-                                'Hotelier',
-                                'Travel Consultant',
-                                'Tour Guide',
-                                'Ibu Rumah Tangga',
-                                'Pencari Kerja',
-                                'Pensiunan',
-                                'Relawan',
-                                'Lainnya'
-                            ];
-                            
-                            // Map old values to new values for backward compatibility
-                            $occupationMapping = [
-                                'student' => 'Mahasiswa',
-                                'employee' => 'Karyawan',
-                                'business_owner' => 'Pengusaha',
-                                'freelancer' => 'Freelancer',
-                                'professional' => 'Profesional',
-                                'unemployed' => 'Pencari Kerja',
-                                'retired' => 'Pensiunan',
-                                'other' => 'Lainnya'
-                            ];
-                            
-                            $selectedOccupation = old('occupation', Auth::user()->occupation ?? '');
-                            
-                            // Map old value to new value if exists
-                            if (!empty($selectedOccupation) && isset($occupationMapping[strtolower($selectedOccupation)])) {
-                                $selectedOccupation = $occupationMapping[strtolower($selectedOccupation)];
-                            }
+// List of occupations
+$occupations = [
+    'Pelajar',
+    'Mahasiswa',
+    'Karyawan',
+    'Pegawai',
+    'Pegawai Negeri',
+    'Wirausaha',
+    'Pengusaha',
+    'Freelancer',
+    'Profesional',
+    'Konsultan',
+    'Manajer',
+    'Supervisor',
+    'Direktur',
+    'Eksekutif',
+    'Administrator',
+    'Akuntan',
+    'Keuangan',
+    'Auditor',
+    'Analis',
+    'Data Analyst',
+    'Software Developer',
+    'Web Developer',
+    'Mobile Developer',
+    'UI/UX Designer',
+    'Graphic Designer',
+    'Product Manager',
+    'Project Manager',
+    'IT Support',
+    'System Administrator',
+    'Network Engineer',
+    'Digital Marketer',
+    'Marketing',
+    'Brand Strategist',
+    'Content Creator',
+    'Copywriter',
+    'Social Media Specialist',
+    'SEO Specialist',
+    'Performance Marketer',
+    'Sales',
+    'Business Development',
+    'Customer Service',
+    'Account Manager',
+    'Public Relations',
+    'Komunikasi',
+    'Media Planner',
+    'Guru',
+    'Dosen',
+    'Pengajar',
+    'Trainer',
+    'Mentor',
+    'Peneliti',
+    'Akademisi',
+    'Psikolog',
+    'Konselor',
+    'Terapis',
+    'Dokter',
+    'Perawat',
+    'Apoteker',
+    'Tenaga Medis',
+    'Bidan',
+    'Teknisi',
+    'Operator',
+    'Quality Control',
+    'Maintenance',
+    'Engineer',
+    'Arsitek',
+    'Desainer Interior',
+    'Surveyor',
+    'Kontraktor',
+    'Drafter',
+    'Logistik',
+    'Supply Chain',
+    'Procurement',
+    'Gudang',
+    'Kurir',
+    'HR',
+    'Recruiter',
+    'Talent Acquisition',
+    'Legal',
+    'Paralegal',
+    'Notaris',
+    'Pengacara',
+    'Compliance',
+    'Risk Analyst',
+    'Sekretaris',
+    'Administrasi',
+    'Office Staff',
+    'General Affairs',
+    'Operasional',
+    'Back Office',
+    'Event Organizer',
+    'Hospitality',
+    'Hotelier',
+    'Travel Consultant',
+    'Tour Guide',
+    'Ibu Rumah Tangga',
+    'Pencari Kerja',
+    'Pensiunan',
+    'Relawan',
+    'Lainnya'
+];
+
+// Map old values to new values for backward compatibility
+$occupationMapping = [
+    'student' => 'Mahasiswa',
+    'employee' => 'Karyawan',
+    'business_owner' => 'Pengusaha',
+    'freelancer' => 'Freelancer',
+    'professional' => 'Profesional',
+    'unemployed' => 'Pencari Kerja',
+    'retired' => 'Pensiunan',
+    'other' => 'Lainnya'
+];
+
+$selectedOccupation = old('occupation', Auth::user()->occupation ?? '');
+
+// Map old value to new value if exists
+if (!empty($selectedOccupation) && isset($occupationMapping[strtolower($selectedOccupation)])) {
+    $selectedOccupation = $occupationMapping[strtolower($selectedOccupation)];
+}
                         @endphp
                         <select id="occupation"
                             name="occupation"
@@ -523,7 +523,7 @@
                         <h2 class="text-2xl font-bold text-gray-900">Kata Sandi</h2>
                     </div>
                     <div class="flex">
-                        <a href="{{ route('password.change') }}" 
+                        <a href="{{ route('password.change') }}"
                         class="px-8 py-4 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white text-lg font-medium rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                             Ubah Kata Sandi
                         </a>
@@ -532,7 +532,7 @@
 
                 <!-- Submit Button -->
                 <div class="mt-8 flex justify-center">
-                    <button type="submit" 
+                    <button type="submit"
                             class="px-12 py-4 bg-gradient-to-b from-[#F78422] to-[#E1291C] text-white text-xl font-medium rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-200">
                         Save
                     </button>
@@ -544,153 +544,153 @@
 @endsection
 
 @push('scripts')
-<!-- jQuery (required for Select2) -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<!-- Select2 JS -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    // Initialize Select2 for country code dropdown
-    $(document).ready(function() {
-        $('#country_code_profile').select2({
-            theme: 'bootstrap-5',
-            width: 'auto',
-            placeholder: 'Select country code',
-            allowClear: false,
-            minimumResultsForSearch: 0,
-            templateResult: function(country) {
-                if (!country.id) {
-                    return country.text;
+    <!-- jQuery (required for Select2) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        // Initialize Select2 for country code dropdown
+        $(document).ready(function() {
+            $('#country_code_profile').select2({
+                theme: 'bootstrap-5',
+                width: 'auto',
+                placeholder: 'Select country code',
+                allowClear: false,
+                minimumResultsForSearch: 0,
+                templateResult: function(country) {
+                    if (!country.id) {
+                        return country.text;
+                    }
+                    var $country = $(country.element);
+                    return $('<span>' + $country.text() + '</span>');
+                },
+                templateSelection: function(country) {
+                    if (!country.id) {
+                        return country.text;
+                    }
+                    var $country = $(country.element);
+                    var fullText = $country.text();
+                    // Extract flag and dial code (format: "🇮🇩 Indonesia (+62)" -> "🇮🇩 +62")
+                    var match = fullText.match(/^([^\s]+)\s+.+?\s+\(([^)]+)\)$/);
+                    if (match) {
+                        var flag = match[1];
+                        var dialCode = match[2];
+                        return $('<span>' + flag + ' ' + dialCode + '</span>');
+                    }
+                    return $('<span>' + fullText + '</span>');
                 }
-                var $country = $(country.element);
-                return $('<span>' + $country.text() + '</span>');
-            },
-            templateSelection: function(country) {
-                if (!country.id) {
-                    return country.text;
+            });
+
+            // Update phone number when country code changes (Select2 compatible)
+            $('#country_code_profile').on('select2:select', function() {
+                updatePhoneNumber();
+            });
+
+            // Initialize Select2 for country dropdown
+            $('#country').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'Pilih Kewarganegaraan',
+                allowClear: true,
+                minimumResultsForSearch: 0,
+                templateResult: function(country) {
+                    if (!country.id) {
+                        return country.text;
+                    }
+                    var $country = $(country.element);
+                    return $('<span>' + $country.text() + '</span>');
+                },
+                templateSelection: function(country) {
+                    if (!country.id) {
+                        return country.text;
+                    }
+                    var $country = $(country.element);
+                    return $('<span>' + $country.text() + '</span>');
                 }
-                var $country = $(country.element);
-                var fullText = $country.text();
-                // Extract flag and dial code (format: "🇮🇩 Indonesia (+62)" -> "🇮🇩 +62")
-                var match = fullText.match(/^([^\s]+)\s+.+?\s+\(([^)]+)\)$/);
-                if (match) {
-                    var flag = match[1];
-                    var dialCode = match[2];
-                    return $('<span>' + flag + ' ' + dialCode + '</span>');
+            });
+
+            // Initialize Select2 for occupation dropdown
+            $('#occupation').select2({
+                theme: 'bootstrap-5',
+                width: '100%',
+                placeholder: 'Pilih Pekerjaan',
+                allowClear: true,
+                minimumResultsForSearch: 0,
+                templateResult: function(occupation) {
+                    if (!occupation.id) {
+                        return occupation.text;
+                    }
+                    var $occupation = $(occupation.element);
+                    return $('<span>' + $occupation.text() + '</span>');
+                },
+                templateSelection: function(occupation) {
+                    if (!occupation.id) {
+                        return occupation.text;
+                    }
+                    var $occupation = $(occupation.element);
+                    return $('<span>' + $occupation.text() + '</span>');
                 }
-                return $('<span>' + fullText + '</span>');
-            }
+            });
         });
 
-        // Update phone number when country code changes (Select2 compatible)
-        $('#country_code_profile').on('select2:select', function() {
-            updatePhoneNumber();
-        });
-
-        // Initialize Select2 for country dropdown
-        $('#country').select2({
-            theme: 'bootstrap-5',
-            width: '100%',
-            placeholder: 'Pilih Negara',
-            allowClear: true,
-            minimumResultsForSearch: 0,
-            templateResult: function(country) {
-                if (!country.id) {
-                    return country.text;
-                }
-                var $country = $(country.element);
-                return $('<span>' + $country.text() + '</span>');
-            },
-            templateSelection: function(country) {
-                if (!country.id) {
-                    return country.text;
-                }
-                var $country = $(country.element);
-                return $('<span>' + $country.text() + '</span>');
-            }
-        });
-
-        // Initialize Select2 for occupation dropdown
-        $('#occupation').select2({
-            theme: 'bootstrap-5',
-            width: '100%',
-            placeholder: 'Pilih Pekerjaan',
-            allowClear: true,
-            minimumResultsForSearch: 0,
-            templateResult: function(occupation) {
-                if (!occupation.id) {
-                    return occupation.text;
-                }
-                var $occupation = $(occupation.element);
-                return $('<span>' + $occupation.text() + '</span>');
-            },
-            templateSelection: function(occupation) {
-                if (!occupation.id) {
-                    return occupation.text;
-                }
-                var $occupation = $(occupation.element);
-                return $('<span>' + $occupation.text() + '</span>');
-            }
-        });
-    });
-
-    // Function to update phone number
-    function updatePhoneNumber() {
-        const phoneHiddenField = document.getElementById('phone');
-        const countryCodeSelect = document.getElementById('country_code_profile');
-        const phoneNumberInput = document.querySelector('[data-phone-number]');
-        
-        if (phoneHiddenField && countryCodeSelect && phoneNumberInput) {
-            const countryCode = countryCodeSelect.value;
-            const phoneNumber = phoneNumberInput.value.trim();
-            
-            if (phoneNumber) {
-                phoneHiddenField.value = countryCode + phoneNumber;
-            } else {
-                phoneHiddenField.value = '';
-            }
-        }
-    }
-
-    // Avatar Preview - Vanilla JavaScript
-    document.getElementById('avatarUpload').addEventListener('change', function(e) {
-        if (e.target.files && e.target.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var preview = document.getElementById('avatarPreview');
-                preview.style.backgroundImage = 'url(' + event.target.result + ')';
-            }
-            reader.readAsDataURL(e.target.files[0]);
-        }
-    });
-
-    // Combine country code and phone number before form submission
-    const profileForm = document.querySelector('form');
-    if (profileForm) {
-        profileForm.addEventListener('submit', function(e) {
-            const countryCodeSelect = document.querySelector('[data-country-code]');
-            const phoneNumberInput = document.querySelector('[data-phone-number]');
+        // Function to update phone number
+        function updatePhoneNumber() {
             const phoneHiddenField = document.getElementById('phone');
-            
-            if (countryCodeSelect && phoneNumberInput && phoneHiddenField) {
+            const countryCodeSelect = document.getElementById('country_code_profile');
+            const phoneNumberInput = document.querySelector('[data-phone-number]');
+
+            if (phoneHiddenField && countryCodeSelect && phoneNumberInput) {
                 const countryCode = countryCodeSelect.value;
                 const phoneNumber = phoneNumberInput.value.trim();
-                
-                // Combine country code with phone number
+
                 if (phoneNumber) {
                     phoneHiddenField.value = countryCode + phoneNumber;
-                    console.log('Phone number set to:', phoneHiddenField.value);
                 } else {
                     phoneHiddenField.value = '';
                 }
             }
-        });
-        
-        // Also update on input change for real-time feedback
-        const phoneNumberInput = document.querySelector('[data-phone-number]');
-        
-        if (phoneNumberInput) {
-            phoneNumberInput.addEventListener('input', updatePhoneNumber);
         }
-    }
-</script>
+
+        // Avatar Preview - Vanilla JavaScript
+        document.getElementById('avatarUpload').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(event) {
+                    var preview = document.getElementById('avatarPreview');
+                    preview.style.backgroundImage = 'url(' + event.target.result + ')';
+                }
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Combine country code and phone number before form submission
+        const profileForm = document.querySelector('form');
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                const countryCodeSelect = document.querySelector('[data-country-code]');
+                const phoneNumberInput = document.querySelector('[data-phone-number]');
+                const phoneHiddenField = document.getElementById('phone');
+
+                if (countryCodeSelect && phoneNumberInput && phoneHiddenField) {
+                    const countryCode = countryCodeSelect.value;
+                    const phoneNumber = phoneNumberInput.value.trim();
+
+                    // Combine country code with phone number
+                    if (phoneNumber) {
+                        phoneHiddenField.value = countryCode + phoneNumber;
+                        console.log('Phone number set to:', phoneHiddenField.value);
+                    } else {
+                        phoneHiddenField.value = '';
+                    }
+                }
+            });
+
+            // Also update on input change for real-time feedback
+            const phoneNumberInput = document.querySelector('[data-phone-number]');
+
+            if (phoneNumberInput) {
+                phoneNumberInput.addEventListener('input', updatePhoneNumber);
+            }
+        }
+    </script>
 @endpush

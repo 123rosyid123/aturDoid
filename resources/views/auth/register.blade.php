@@ -434,7 +434,7 @@ select.form-input:focus {
 
                             <!-- Country -->
                             <div class="mb-6">
-                                <label class="block text-gray-700 text-sm font-medium mb-2">Negara</label>
+                                <label class="block text-gray-700 text-sm font-medium mb-2">Kewarganegaraan</label>
                                 @php
                                     $countriesForSelect = json_decode(file_get_contents(public_path('countries.json')), true);
                                     usort($countriesForSelect, function($a, $b) {
@@ -445,7 +445,7 @@ select.form-input:focus {
                                         name="country"
                                         required
                                         class="form-input appearance-none w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white">
-                                    <option value="">Pilih Negara</option>
+                                    <option value="">Pilih Kewarganegaraan</option>
                                     @foreach($countriesForSelect as $country)
                                         <option value="{{ $country['code'] }}">
                                             {{ $country['flag'] }} {{ $country['name'] }}
@@ -651,7 +651,7 @@ select.form-input:focus {
         $('#country').select2({
             theme: 'bootstrap-5',
             width: '100%',
-            placeholder: 'Pilih Negara',
+            placeholder: 'Pilih Kewarganegaraan',
             allowClear: false,
             minimumResultsForSearch: 5
         });

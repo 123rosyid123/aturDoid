@@ -134,8 +134,8 @@ class RegistrationValidatorController extends Controller
             'gender.in' => 'Jenis kelamin yang dipilih tidak valid',
             'occupation.required' => 'Silakan pilih pekerjaan Anda',
             'occupation.max' => 'Pekerjaan tidak boleh lebih dari 100 karakter',
-            'country.required' => 'Silakan pilih negara Anda',
-            'country.max' => 'Nama negara tidak boleh lebih dari 100 karakter'
+            'country.required' => 'Silakan pilih kewarganegaraan Anda',
+            'country.max' => 'Nama kewarganegaraan tidak boleh lebih dari 100 karakter'
         ]);
 
         if ($validator->fails()) {
